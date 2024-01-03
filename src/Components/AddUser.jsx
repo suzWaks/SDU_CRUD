@@ -15,29 +15,55 @@ export const AddUser = () => {
     const [presentAddress, setPresentAddress] = useState("");
     const [gender, setGender] = useState("");
     const [userId, setUserId] = useState("");
+    const [cidno, setCidno] = useState("");
+    const [dob, setDob] = useState("");
     const [image, setImage] = useState("");
-    const [showSuccessModal, setShowSuccessModal] = useState(false);
+
 
 
 
     const postData = () => {
-        axios.post("https://65890c1b324d41715258647c.mockapi.io/api/v1/reactcrud", {
-            firstName,
-            middleName,
-            lastName,
-            gender,
-            userId,
-            email,
-            permanentAddress,
-            presentAddress,
-            department,
-            section,
-            mobileNo,
-            image,
-        });
 
-        alert("User added successfully");
+        // Check if all fields have values
+        if (
+            firstName &&
+            middleName &&
+            lastName &&
+            gender &&
+            userId &&
+            email &&
+            permanentAddress &&
+            presentAddress &&
+            department &&
+            section &&
+            mobileNo &&
+            cidno &&
+            dob &&
+            image
+        ) {
+            axios.post("https://65890c1b324d41715258647c.mockapi.io/api/v1/reactcrud", {
+                firstName,
+                middleName,
+                lastName,
+                gender,
+                userId,
+                email,
+                permanentAddress,
+                presentAddress,
+                department,
+                section,
+                mobileNo,
+                cidno,
+                dob,
+                image,
+            });
+
+            alert("User added successfully");
+        } else {
+            alert("Please fill in all fields before submitting");
+        }
     };
+
 
     return (
         <div className='w-screen overflow-scroll'>
@@ -80,11 +106,36 @@ export const AddUser = () => {
                             <div class="sm:col-span-2 grid grid-cols-3 gap-4">
                                 <div>
                                     <label for="userID" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">User ID</label>
-                                    <input onChange={(e) => setUserId(e.target.value)} type="number" name="userID" id="userID" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="12345678" required="" />
-                                </div>
+                                    <input
+                                        onInput={(e) => (e.target.value = Math.max(0, parseInt(e.target.value) || 0).toString().slice(0, 8))}
+                                        type="number"
+                                        name="userID"
+                                        id="userID"
+                                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                        placeholder="12345678"
+                                        required
+                                    /></div>
                                 <div class="col-span-2">
                                     <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email Address</label>
-                                    <input onChange={(e) => setEmail(e.target.value)} type="text" name="email" id="email" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="abc@gmail.com" required="" />
+                                    <input onChange={(e) => setEmail(e.target.value)} pattern="[^\s@]+@[^\s@]+\.[^\s@]+" type="text" name="email" id="email" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="abc@gmail.com" required="" />
+                                </div>
+                            </div>
+                            <div class="sm:col-span-2 grid grid-cols-3 gap-4">
+                                <div class="col-span-2">
+                                    <label for="CID" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">CID</label>
+                                    <input
+                                        onInput={(e) => (e.target.value = Math.max(0, parseInt(e.target.value) || 0).toString().slice(0, 11))}
+                                        type="number"
+                                        name="CID"
+                                        id="CID"
+                                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                        placeholder="12345678910"
+                                        required
+                                    />
+                                </div>
+                                <div >
+                                    <label for="dob" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">DOB</label>
+                                    <input onChange={(e) => setDob(e.target.value)} type="date" name="dob" id="dob" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" required="" />
                                 </div>
                             </div>
                             <div class="w-full">
@@ -119,8 +170,15 @@ export const AddUser = () => {
 
                             <div>
                                 <label for="mobileNo" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Mobile No</label>
-                                <input onChange={(e) => setMobileNo(e.target.value)} type="number" name="mobileNo" id="mobileNo" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="77345678" required="" />
-                            </div>
+                                <input
+                                    onInput={(e) => (e.target.value = Math.max(0, parseInt(e.target.value) || 0).toString().slice(0, 8))}
+                                    type="number"
+                                    name="mobileNo"
+                                    id="mobileNo"
+                                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                    placeholder="77345678"
+                                    required
+                                /> </div>
                             <div class="float-end">
                                 <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="user_avatar">Upload user picture</label>
                                 <input onChange={(e) => setImage(e.target.value)} class="block w-full text-sm text-blue-500 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-blue-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="user_avatar_help" id="user_avatar" type="file" />

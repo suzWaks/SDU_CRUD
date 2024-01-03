@@ -1,30 +1,155 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+
+//TODO: Image upload function not in working state 
+window.addEventListener('unhandledrejection', (event) => {
+    console.error('Unhandled Promise Rejection:', event.reason);
+});
 
 export const Departments = () => {
+    const [cardData, setCardData] = useState([]);
+
+
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    useEffect(() => {
+        // Fetch data from API when the component mounts
+        axios.get('https://6594e19204335332df819ace.mockapi.io/cards')
+            .then(response => setCardData(response.data))
+            .catch(error => console.error('Error fetching data:', error));
+    }, []);
+
+    const handleAddDepartment = async () => {
+        try {
+            // Fetch data from input fields
+            const name = document.getElementById('name').value;
+            const description = document.getElementById('description').value;
+            const imageURL = document.getElementById('url').value;
+
+            // Make sure required fields are not empty
+            if (!name || !description || !imageURL) {
+                window.alert('Please fill in all required fields.');
+                return;
+            }
+
+            // Define the data for the new department
+            const newDepartmentData = {
+                name,
+                description,
+                imageURL,
+            };
+
+            // Make a POST request to add a new department with the provided data
+            await axios.post('https://6594e19204335332df819ace.mockapi.io/cards', newDepartmentData);
+
+            // Close the modal
+            setIsModalOpen(false);
+        } catch (error) {
+            console.error('Error adding department:', error);
+        }
+    };
+
+
     return (
-        // <div className="bg-purple-500 text-white p-4 w-screen h-screen">
-        //     <h1 className="text-2xl font-bold">Departments</h1>
-        // </div>
 
+        <div className='overflow-auto max-w-screen '>
+            <div className='flex justify-between'>
+                <h1 className='pt-5  px-11 text-4xl font-bold text-blue-700'>Departments</h1>
+                <button onClick={() => setIsModalOpen(true)} className=" mr-10 mt-5 p-2 bg-blue-500 text-white rounded-md">
+                    Add Department +
+                </button>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-6 p-11">
 
+                {cardData.map((card, index) => (
+                    <div href="" key={index}>
+                        <div key={index} className="max-w-sm p-2 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 overflow-hidden " style={{ height: '24rem', width: '22rem' }}>
+                            <a href="#">
+                                <img className="rounded-t-lg" style={{ height: '65%', width: '100%' }} src={card.imageURL} alt="" />
+                            </a>
+                            <div className="p-5">
+                                <a href="#">
+                                    <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{card.name}</h5>
+                                </a>
+                                <p className="mb-3 font-normal text-gray-700 dark:text-gray-400 overflow-hidden overflow-ellipsis max-h-[3.6em] line-clamp-2">{card.description}</p>
 
-        <div className="p-4 w-screen h-screen overflow-scroll">
-            <a href="#" class="flex flex-col items-center bg-white border border-gray-200 rounded-lg shadow md:flex-row md:max-w-xl hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700">
-                <img class="object-cover w-full rounded-t-lg h-96 md:h-auto md:w-48 md:rounded-none md:rounded-s-lg" src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBxMTEhUSEhIVFRUVFRUVFRUXFxcVFRUVFRcXFxUXFxUYHSggGB0lHRUVITEhJSkrLi4uFx8zODMtNygtLisBCgoKDg0NFxAQGi0gHR0tLisuLSstLS0tLS0rMC0rLSsvLS0tLSstKy0tLS0tLS0tLSstLSstKy0tLS0tLS0tK//AABEIARMAtwMBIgACEQEDEQH/xAAaAAADAQEBAQAAAAAAAAAAAAABAgMABAUG/8QAOxAAAgIAAwYDBQUIAQUAAAAAAAECEQMhMQQSQVFhcQWBkRMiobHwFDLB0eEVIzNCUmJygvEGU4OSov/EABoBAQEBAQEBAQAAAAAAAAAAAAABAgMGBQT/xAAmEQEBAAICAAYBBQEAAAAAAAAAAQIRAxMEITEyQXESIjNRYcFS/9oADAMBAAIRAxEAPwDneGK4ivaEybxUdXJR0I2K5C2EFsVmNQCgH3TboCUDcH3Q+zYCqIaG3GCgoUBxKRgM8MI52hGjqeGD2QHLRqOl4Ym4USRh3A24AtgsZwFcQNvAM4mAt9lkb7LLmirmAip+xfNBUGFg3gg7rCoi7wyYDbgVEVMeMgGSNZt4zYAcwOQHEVwAbfNviuDMosofeM5CUZkDAoGYMyhhWycsVLVpd2kcWL4nFOlbXNaeXMDubEbOdbdhv+b5oqpXo77ZgZswywzANDbsN6SXy+Z1Ye0nym/0DDFrNWuxFfXe1TNup8D5mO3zSyk/h8yuF4liLSV98/iB9IoIzw0eB+1cTTL0G/auJ09EB7ns0FYaPC/aeJzXej09n8QjJW2k+KeX/IR2rDQVho5J+IQXG+iOPG8Yk8opL4v8gPZUECTw0rc4ru0fPT23FlrNpdPd+Rzywr4hX0f2zAq/aL0d+lHHjeLYS0Un5JJ+rv4Hh+yZnhoD1MbxmKXu4bfdpfKyMvGpVlhJPm5WvSjzW+Ql5lR2YniWJJVvV2VfE58THk9Zyf8AsxW1y+IuVhSyfmTcuhZwsk4tfmArYFJrQegNpcQF+0T4SfqzAlNamAd8M+6Gghk1yKRa5EC+z5GeRReaKKuYEkr1KQw0USSA5dGA6gCbfHyDhxbWXzorDAk/5QOSh95Lhn6nXHZpXyKSwXnp2pfgNji9owShyOr2P+TfwB9nb0S9a/QDkUObNS7lls9PP8GFbKs8/gUc1JgSSOr7PHjeXT8ScsNcEyDmlN8ial0Ovc52DEwkwOWWhKnx9DsnhtZJEpLsijnvmgbqL7vOhGkBHdMU3bMBSMHxTXaxoxS5l4yZSBhtzKVLSvWiiZ0oZQXILpKEvP5mky8cNcikYohpyK+vfgUSlwOl4aN7JDZpDDT1dDx7lXhGeAhs0mpm3vriF7N1DHAlonfmBotdfMDS1/QpLBrK2m+3El7JrjffP4ALufViSg+tlnhx5LyGjSG004ZNonPG7+p3zp6og4pZ0XZpy+ybVqhJYUjrlLoSlvcENmnJPDkuDJSvkzqmp8yMsOXMbNI2wFXhdzDZp6ywB44DJra+nzKx2zocex+jrOsDoUWAxYbV0+L/ACKfa1y+uuROxeoywegfYDLa0tVQy2yL4fn0J2HUVYHRh9ix/tscsstBvtcdM/MdkXqqXsgrBKPbI8n5Zg+3Q5eibzuh2ROqk9l3L7Hs9zT5W36MH2m/uxbzrLhzvkduyycb3klk65lme/RLhqebj2nZc08s4x+Cr8iT2dd+x6mPJNR3Um67Ou5wSxJLNwfln6rVDLPV8zHD8p5Od4PQV4BRbcrqvrq6A9tXL69CdjXUi9m6CvZ+hWO3XpH88vMWe2+nOmOw6kJYHQSWzvkVntfTPsSltbzXlwv05jsTqSlgMnLBC9sb9WqyTy8iL2mT1y9NS/mnWLwjEJY7513f5BH5nWzk73XXDX1efMK2hqVbknF/zJN/L0OSTndxuSvtpyTO7C9pG5zlHdrm7T7GLHWXa6jK06u9aeS7XnY2/lajLO741lq0lrl8SUdrwpJW5J3lU5PPnVnVDAdP2clF/wBTzSvNtozpouDNuluuuvu134t9uYd5xTvNt1UemnY2H4HjzblLEg4NNWk39Znfsnh0Ibu9O2lVvK+bzX4+Zm6am/lxYGN91Vu3lzfRdP0OyWyPVtZccqfkn8TvqDyjWTt711Wl55/8FN602vurJy+7BdN7n0WfcSW+kMsscfWuDD2Hi5d6vN970OqezwVXFJcJZZ1yTtvPXIm9oSVR97+6S93yi/vd5f8Aqc+LtGdttyfF5v8ARdDtjxfy/Plz/wDLrxMZL8NLfktPrTQTepNvWWXZHPgq3bDiYua0XVtpLzjn6HXWp5OG7lfNfBncctVoPHFUlTXldejRx7POimPHitS3zSWy7jolg3nFRk1/K1U/hr9ZnJibNHJTuLfHetS00t5ZsMMdPKR1x2trX313qXrT3vNPyOV4p8O+PPfl5b2GXCNpq962nleTV1xOPGw8RZyhKk9W/dSrVU/qz6SEYzSjCbTTyjlGXbcbqS6Rd9ESxNnkm1nLnGK3JJ9Yt2c7jY6zPGvm1Kk5Smkk+C6aaZ0RhtOcqbmssmtPpn0G24Kk92ULqn7yTu09HX1Rz7P4fhQtLCq9fetvPVK8szO2tPDxN9yynFKtHf0uPocWJtWInuyhdO71i48M9D2vEPAXNqWHjRS0qmq6ZWmaPh+LhxjF1L+5W79TUsZsrzUm3eq4R/XiYXxDHnhzXuunwrL18gmtMbelDZYpUoJcX7p04ng+/GpPdi+WT8+J0RnTe7Td6Jp5djo2rGb3YvCcvduVX+GuiMW34dJJrzceD4DhRpp72atpLLnV8fyPTw8PCwo+6klrz9OBxLZYxt+0km83FJWvPRHTsuHOdxwot1m3eUVm7lJ1GKz6F/DKp244+i0cScMlUY6JPKk9WlWfM2HCU97d3pq023UMOFf1Sul5vyJYmJhQ1ft58k3HBT6y+9ieVLqzm2ja54lbz91fdgkowj/jFZL5nTHikccua12YuPCOX8WS7xwo9tJT/wDldznxsaU6c3dZRWSjFcoxWSXY57oWWIdHLe1Z4gkI2TidECopdIhLESaco7yWsbavzQ05G2R4e/8Avb3Kel68NDOV1jf8awm8p/qUZZnTGWRx7yt1pw7FoSLErYsAYeNwY7IYkSo6ZUy+Ft84pKVYkVpGd3Ff2zXvR7J10POhMqpgevHHhipxjOm8nh4rUXn/AE42SfnunDi+Gezl97FhOvuzUXl0urXU5Zxsts3ieLhrdtTw/wDtzW9DyWsX1i0zNxjUzsTx8OcdYyrK2unZukdGHtukYrXhyyztnVs+04GJ92b2ef8ATNuWE+00rj/sn3E8S2OcV+9g1F6Tg04y5VNWn6nLLid8ebXqhtmFCazkk1xtfG0A4Np2abf7txfRumudenzMSYWLeTGl2TZ1Ftty1ySca9Un8OZ6mzrFxvdwotpa1lFf5SeS82LOGzYH8Sf2jEX8mG2sKL/uxNZeRybb4vi4q3G1DDWmFBbkF5LXzO0xjhc7XfOOBhffl7ef9GG3HCX+WJrL/X1OXa/EcTFW66jBaYcFuwX+q1fV2cEUUUjWmNnSGslvAcgHlMVClIIKpBFLETM2EaTOeZWTLbD4fLGbUWlWt3+CM5ZTGbvo3jjcrqerkiWgyeNh7snF6xbT5ZOgxZZds2aXsWQEzNlRKaApDyRKQFozCznsZTKgzgW2HxTGwL9nOovWD96Eu8HkyNisD11t2yY38SEtnnxlhrfwn/49Y+Tox4U4AJpdkgisSSGTKithsnYSKezWKFBTopERMZMIpYGxbMBmz2v+m8WMVNyklbrNpcP1PDkSkcuXjnJhcb8uvFydecynw6vEMRSxJtaOcmn0vUimTWgyN4zUkYyu7b/KsWNZJMc0yLYkhhWVEmCxpCMA7xt4nYGwKNgE3zAJFjJkkx0BRMaxLMmRToeIkR0A6GsmMA7YLFYKCjJk2xmhUiAx0ChYhQDJjJkxrKh7FZrFbKjNk5D2LICUhWx5E5ABswrZgAhkyKY6YFUx4kkyiYFEMpE0MgK2GyaY1kUQimYVmADYEyBogDBitlBsaxLNYQ+8ayTGRUGwWBgbAEiUyjkTkBNmAzAImOiaHiBWIyZOLHTAdMZMnY8QHsNiJhAZMNiINkUJM0WBsyCqQYrNBmkwMCwWZhBCLZrKgitmsVsASEkFsRsAMwDATiMmJYyAomMmSTHiwKpjJk0xkwKIwgwDmYANkUGzWLZmwHwxpMnhsaTA1gbACyoNmEs28A8mLJgsRyALEbM5CtgFsBgATsYRMawHQ1iIZMCkWMTTGTAoFMmmMmBSxWwJmkwPQ8H8O9rJ71qPNVrll8T6PZvBsKHDe6ySZxf9OR9xdbfx/Q94+N4zxHJjyWY3Ufb8H4bjvHLlN2vifFo1jTSySehxs7vG/wCPPv8AgefJn1uO7wl/p8jlms8p/YWaxd4DZtzEzYJMFgGxWzOQLAzFZmLYBCJZgEsKETGTKH3gpiWGyCqYyZKxkwKJjInYUwKoST6ATArbS5gfZeCRqMV0XyPWZ5nh2X1wPQs874q75K9L4aa44+O8df7+eXE4Js7PHf48+6OFn3uL9vH6jz3N+5l90rYGxbNZ0cxQLA2K2A1gsU1gEVswACzCMxQgbJpjBFEw2ImGwqikGydjIgomMTsNgUspsWc4r+5fmc9nZ4SrxF0v5Ey9K1h55R9bsB3uR5+xcPM7ZSPOeIv669LwT9EfGeOS/fT7/mcLZ2+Ov9/Pv+ZwN+R6Hi9mP085y/uZfdCwNi2Bs25mbBYoLAZmFsDKGbA2BsDYBbMI5BAimOmYwQyYz4GMFFcAoxgCkMzGIA+J6Hgn332f4AMZz9tb4/fH1uw/gdcjGPN8/vr0/F7I+I8Xf7+Xf8TgTMY9Hx+yfTzHL78vsKFayMY6MMKzGAZITmYwGTEloYwE5SCYwR//2Q==" alt="" />
-                <div class="flex flex-col justify-between p-4 leading-normal">
-                    <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Noteworthy technology acquisitions 2021</h5>
-                    <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">Here are the biggest enterprise technology acquisitions of 2021 so far, in reverse chronological order.</p>
+                            </div>
+                        </div>
+                    </div>
+                ))}
+            </div>
+
+            {/* Modal for adding a new department */}
+            {isModalOpen && (
+                <div id="crud-modal" role="dialog" aria-hidden="false" tabIndex="-1" className="fixed top-0 right-0 bottom-0 left-0 z-50 flex items-center justify-center max-h-screen max-w-screen bg-stone-800/50">
+                    <div className="relative p-4 w-full max-w-md max-h-full">
+                        <div className="relative bg-white rounded-lg shadow dark:bg-gray-700 p-1">
+                            <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+                                <h3 className="text-2xl font-semibold text-gray-900 dark:text-white">
+                                    Add new department
+                                </h3>
+                                <button
+                                    type="button"
+                                    className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                                    onClick={() => setIsModalOpen(false)}
+                                >
+                                    <svg className="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                                    </svg>
+                                    <span className="sr-only">Close modal</span>
+                                </button>
+                            </div>
+                            <form className="p-4 md:p-5">
+                                <div className="grid gap-4 mb-4 grid-cols-2">
+                                    <div className="col-span-2">
+                                        <label htmlFor="name" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Name</label>
+                                        <input
+                                            type="text"
+                                            name="name"
+                                            id="name"
+
+                                            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                            placeholder="Type department name"
+                                            required=""
+                                        />
+                                    </div>
+
+                                    <div className="col-span-2">
+                                        <label htmlFor="description" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Product Description</label>
+                                        <textarea
+                                            id="description"
+                                            maxLength="256"
+                                            rows="4"
+
+                                            className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                            placeholder="Write something about the department"
+                                        ></textarea>
+                                    </div>
+                                    <label htmlFor="url" className="block mt-1 text-sm font-medium text-gray-900 dark:text-white">Image URL</label>
+
+                                    <div className="col-span-2">
+
+                                        <input
+                                            type="text"
+                                            name="url"
+                                            id="url"
+
+                                            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                            placeholder="Enter image URL"
+                                            required=""
+                                        />
+                                    </div>
+                                </div>
+                                <button onClick={handleAddDepartment} className="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                    <svg className="me-1 -ms-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path></svg>
+                                    Add new department
+                                </button>
+                            </form>
+                        </div>
+                    </div>
                 </div>
-            </a>
-            <a href="#" class="flex flex-col items-center bg-white border border-gray-200 rounded-lg shadow md:flex-row md:max-w-xl hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700">
-                <img class="object-cover w-full rounded-t-lg h-96 md:h-auto md:w-48 md:rounded-none md:rounded-s-lg" src="data:image/jpeg;base64,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" alt="" />
-                <div class="flex flex-col justify-between p-4 leading-normal">
-                    <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Noteworthy technology acquisitions 2021</h5>
-                    <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">Here are the biggest enterprise technology acquisitions of 2021 so far, in reverse chronological order.</p>
-                </div>
-            </a>
-        </div>
-
-
-    )
-}
+            )
+            }
+        </div >
+    );
+};

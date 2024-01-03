@@ -6,6 +6,7 @@ import { SideNav } from "./Components/SideNav";
 import { Departments } from "./Components/Departments";
 import { NotFound } from "./Components/NotFound";
 import { Userview } from "./Components/Userview";
+import { DeptView } from "./Components/Departments/DeptView";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
           <Route path="/adduser" element={<AddUser />} />
           <Route path="/departments" element={<Departments />} />
           <Route path="/userview" element={<Userview />} />
+          <Route path="/deptview" element={<DeptView />} />
           <Route path="/*" element={<NotFound />} />
         </Routes>
       </Router>
