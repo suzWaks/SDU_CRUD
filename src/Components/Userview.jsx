@@ -1,11 +1,7 @@
 import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { Dashboard } from "./Dashboard";
-// import DeleteUser from "./delete";
-// function editUser() {
-//   return <tr></tr>;
-// }
+// import { Dashboard } from "./Dashboard";
 
 export const Userview = (props) => {
     const location = useLocation();
@@ -19,9 +15,6 @@ export const Userview = (props) => {
     const [isUpdateConfirmationModalVisible, setUpdateConfirmationModalVisible] =
         useState(false);
 
-    // const handleEdit = () => {
-    //   setIsEditing(true);
-    // };
     const handleEdit = () => {
         setIsEditing(true);
         // Enable input fields
@@ -48,37 +41,44 @@ export const Userview = (props) => {
         setUpdateConfirmationModalVisible(false);
     };
     // const handleUpdate = async () => {
-    //   try {
-    //     // await updateAPIData(id, userData);
-    //     await updateAPIData(location.state.userDetails.id, userData);
-    //     setIsEditing(false);
-    //   } catch (error) {
-    //     console.error("Error updating data:", error);
-    //   }
-    //   // isEditing(false);
+    //   // Show the confirmation dialog before updating
+    //   showUpdateConfirmationModal();
     // };
-    const handleUpdate = async () => {
-        // Show the confirmation dialog before updating
-        showUpdateConfirmationModal();
-    };
-    const updateAPIData = async (id, updatedData) => {
+    // const updateAPIData = async (id, updatedData) => {
+    //   try {
+    //     const response = await axios.put(
+    //       https://65890c1b324d41715258647c.mockapi.io/api/v1/reactcrud/${id}
+    //       // updatedData
+    //     );
+
+    //     console.log(response.data);
+    //     // alert("Updated successfully");
+    //     navigate("/");
+    //   } catch (error) {
+    //     console.error(error);
+    //     // alert("Update failed");
+    //     throw error; // Re-throwing the error to be caught by the calling function if needed
+    //   }
+    // };
+    const updateAPIData = async () => {
+        const id = location.state.userDetails.id;
+
         try {
             const response = await axios.put(
-                `https://65890c1b324d41715258647c.mockapi.io/api/v1/reactcrud/${id}`
-                // updatedData
+                `https://65890c1b324d41715258647c.mockapi.io/api/v1/reactcrud/${id}`,
+                userData // Pass the updated user data
             );
 
             console.log(response.data);
-            // alert("Updated successfully");
             navigate("/");
         } catch (error) {
             console.error(error);
-            // alert("Update failed");
-            throw error; // Re-throwing the error to be caught by the calling function if needed
+            // Handle error as needed
         }
     };
 
     const handleChange = (e) => {
+        console.log(e.target.value);
         const { id, value } = e.target;
         setUserData((prevData) => ({
             ...prevData,
@@ -109,7 +109,7 @@ export const Userview = (props) => {
         <section className="h-screen w-screen bg-gray-100/50 pt-10 overflow-scroll">
             {
                 <form className="container w-screen mx-auto shadow-md md:w-3/4">
-                    <div className="p-4 border-t-2 border-indigo-400 rounded-lg bg-gray-100/5 ">
+                    <div className="p-4 border-t-2 border-sky-600 rounded-lg bg-gray-100/5 ">
                         <div className="max-w-sm mx-auto md:w-full md:mx-0">
                             <div className="inline-flex items-center space-x-4">
                                 <a href="/" className="relative block">
@@ -120,9 +120,12 @@ export const Userview = (props) => {
                                     />
                                 </a>
                                 <h1 className="text-gray-600">
-                                    {location.state.userDetails.firstName}{" "}
-                                    {location.state.userDetails.middleName}{" "}
-                                    {location.state.userDetails.lastName}
+                                    {/* {location.state.userDetails.firstName}{" "}
+                  {location.state.userDetails.middleName}{" "}
+                  {location.state.userDetails.lastName} */}
+                                    {userData.firstName}
+                                    {""} {userData.middleName} {""}
+                                    {userData.lastName}
                                 </h1>
                             </div>
                         </div>
@@ -138,9 +141,9 @@ export const Userview = (props) => {
                                             disabled={!isEditing}
                                             onChange={handleChange}
                                             // value={location.state.userDetails.userId}
-                                            value={userData.userId}
+                                            defaultValue={userData.userId}
                                             type="text"
-                                            id="Gender"
+                                            id="userId"
                                             className="rounded-lg border-transparent border border-gray-300 w-full px-4 bg-white text-gray-500 placeholder-gray-600 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                         />
                                     </div>
@@ -155,30 +158,35 @@ export const Userview = (props) => {
                                             disabled={!isEditing}
                                             onChange={handleChange}
                                             // value={location.state.userDetails.firstName}
-                                            value={userData.firstName}
+                                            defaultValue={userData.firstName}
                                             type="text"
-                                            id="Name1"
-                                            class="rounded-lg border-transparent border border-gray-300 w-full px-4 bg-white text-gray-500 placeholder-gray-600 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                            id="firstName"
+                                            style={{ padding: '8px 0px' }}
+                                            class="rounded-lg border-transparent border  w-full  bg-white text-gray-500 placeholder-gray-600 shadow-md text-base focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                         />
                                     </div>
                                     <div class="relative flex-1">
                                         <input
                                             disabled={!isEditing}
                                             onChange={handleChange}
-                                            value={location.state.userDetails.middleName}
+                                            // value={location.state.userDetails.middleName}
+                                            defaultValue={userData.middleName}
                                             type="text"
-                                            id="Name2"
-                                            class="rounded-lg border-transparent border border-gray-300 w-full px-4 bg-white text-gray-500 placeholder-gray-600 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                            id="middleName"
+                                            style={{ padding: '8px 0px' }}
+                                            class="rounded-lg border-transparent border border-gray-400 w-full  bg-white text-gray-500 placeholder-gray-600 shadow-md text-base focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                         />
                                     </div>
                                     <div class="relative flex-1">
                                         <input
                                             disabled={!isEditing}
                                             onChange={handleChange}
-                                            value={location.state.userDetails.lastName}
+                                            // value={location.state.userDetails.lastName}
+                                            defaultValue={userData.lastName}
                                             type="text"
-                                            id="Name3"
-                                            class="rounded-lg border-transparent border border-gray-300 w-full px-4 bg-white text-gray-500 placeholder-gray-600 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                            id="lastName"
+                                            style={{ padding: '8px 0px' }}
+                                            class="rounded-lg border-transparent border  w-full  bg-white text-gray-500 placeholder-gray-600 shadow-md text-base focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                         />
                                     </div>
                                 </div>
@@ -190,9 +198,10 @@ export const Userview = (props) => {
                                         <input
                                             disabled={!isEditing}
                                             onChange={handleChange}
-                                            value={location.state.userDetails.gender}
+                                            // value={location.state.userDetails.gender}
+                                            defaultValue={userData.gender}
                                             type="text"
-                                            id="Gender"
+                                            id="gender"
                                             class=" rounded-lg border-transparent  border border-gray-300 w-full px-4 bg-white text-gray-500 placeholder-gray-600 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                         />
                                     </div>
@@ -205,9 +214,10 @@ export const Userview = (props) => {
                                         <input
                                             disabled={!isEditing}
                                             onChange={handleChange}
-                                            value={location.state.userDetails.email}
+                                            // value={location.state.userDetails.email}
+                                            defaultValue={userData.email}
                                             type="text"
-                                            id="Gender"
+                                            id="email"
                                             class=" rounded-lg border-transparent  border border-gray-300 w-full px-4 bg-white text-gray-500 placeholder-gray-600 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                         />
                                     </div>
@@ -222,9 +232,10 @@ export const Userview = (props) => {
                                             <input
                                                 disabled={!isEditing}
                                                 onChange={handleChange}
-                                                value={location.state.userDetails.permanentAddress}
+                                                // value={location.state.userDetails.permanentAddress}
+                                                defaultValue={userData.permanentAddress}
                                                 type="text"
-                                                id="user-info-name"
+                                                id="permanentAddress"
                                                 class=" rounded-lg border-transparent flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-500 placeholder-gray-900 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                             />
                                         </div>
@@ -234,9 +245,10 @@ export const Userview = (props) => {
                                             <input
                                                 disabled={!isEditing}
                                                 onChange={handleChange}
-                                                value={location.state.userDetails.presentAddress}
+                                                // value={location.state.userDetails.presentAddress}
+                                                defaultValue={userData.presentAddress}
                                                 type="text"
-                                                id="user-info-phone"
+                                                id="presentAddress"
                                                 class=" rounded-lg border-transparent flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-500 placeholder-gray-900 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-blue-500  focus:border-transparent"
                                             />
                                         </div>
@@ -247,15 +259,32 @@ export const Userview = (props) => {
 
                         <div className="flex-1 p-10">
                             <div className="items-center w-full p-4 space-y-4 text-gray-900 md:inline-flex md:space-y-0 ">
+                                <h2 className="max-w-sm mx-auto md:w-1/3">Mobile Number</h2>
+                                <div className="max-w-sm mx-auto md:w-2/3 flex-1">
+                                    <div className="relative">
+                                        <input
+                                            disabled={!isEditing}
+                                            onChange={handleChange}
+                                            // value={location.state.userDetails.department}
+                                            defaultValue={userData.mobileNo}
+                                            type="text"
+                                            id="mobileNo"
+                                            className="rounded-lg border-transparent border border-gray-500 w-full px-4 bg-white text-gray-500 placeholder-gray-600 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="items-center w-full p-4 space-y-4 text-gray-900 md:inline-flex md:space-y-0 ">
                                 <h2 className="max-w-sm mx-auto md:w-1/3">Department</h2>
                                 <div className="max-w-sm mx-auto md:w-2/3 flex-1">
                                     <div className="relative">
                                         <input
                                             disabled={!isEditing}
                                             onChange={handleChange}
-                                            value={location.state.userDetails.department}
+                                            // value={location.state.userDetails.department}
+                                            defaultValue={userData.department}
                                             type="text"
-                                            id="Gender"
+                                            id="department"
                                             className="rounded-lg border-transparent border border-gray-300 w-full px-4 bg-white text-gray-500 placeholder-gray-600 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                         />
                                     </div>
@@ -269,9 +298,10 @@ export const Userview = (props) => {
                                         <input
                                             disabled={!isEditing}
                                             onChange={handleChange}
-                                            value={location.state.userDetails.section}
+                                            // value={location.state.userDetails.section}
+                                            defaultValue={userData.section}
                                             type="text"
-                                            id="Gender"
+                                            id="section"
                                             class=" rounded-lg border-transparent  border border-gray-300 w-full px-4 bg-white text-gray-500 placeholder-gray-600 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                         />
                                     </div>
@@ -327,46 +357,6 @@ export const Userview = (props) => {
                                     </div>
                                 </div>
                             )}
-                            {/* <button
-                onClick={() => onDelete(location.state.userDetails.id())}
-                // onClick={() => onDelete()}
-                type="submit"
-                className="py-2 px-4 bg-red-600 hover:bg-red-700 focus:ring-red-500 focus:ring-offset-red-200 text-white transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 rounded-lg"
-              >
-                Delete
-              </button> */}
-                            {/* {isEditing ? (
-                <div className="flex w-full px-4 pb-4 text-gray-500 bg-white">
-                  <div className="ml-auto">
-                    <button
-                      onClick={handleUpdate}
-                      type="button"
-                      className="py-2 px-4 mr-4 bg-green-600 hover:bg-green-700 focus:ring-green-500 focus:ring-offset-green-200 text-white transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 rounded-lg"
-                    >
-                      Update
-                    </button>
-                  </div>
-                </div>
-              ) : (
-                <div className="flex w-full px-4 pb-4 text-gray-500 bg-white">
-                  <div className="ml-auto">
-                    <button
-                      onClick={handleEdit}
-                      type="button"
-                      className="py-2 px-4 mr-4 bg-blue-600 hover:bg-blue-700 focus:ring-blue-500 focus:ring-offset-blue-200 text-white transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 rounded-lg"
-                    >
-                      Edit
-                    </button>
-                    <button
-                      onClick={() => onDelete(location.state.userDetails.id)}
-                      type="button"
-                      className="py-2 px-4 bg-red-600 hover:bg-red-700 focus:ring-red-500 focus:ring-offset-red-200 text-white transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 rounded-lg"
-                    >
-                      Delete
-                    </button>
-                  </div>
-                </div>
-              )} */}
                         </div>
                     </div>
                 </form>
@@ -434,9 +424,11 @@ export const Userview = (props) => {
                         </h3>
                         <button
                             onClick={() => {
+                                updateAPIData();
                                 hideUpdateConfirmationModal();
-                                handleUpdate();
+                                // handleUpdate();
                             }}
+                            // onClick={updateAPIData}
                             className="bg-blue-600 text-white px-4 py-2 rounded-lg mr-5 ml-12 hover:bg-blue-500"
                         >
                             Yes, Update

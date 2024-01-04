@@ -66,10 +66,11 @@ export const AddUser = () => {
 
 
     return (
-        <div className='w-screen overflow-scroll'>
-            <section class="pt-8 dark:bg-gray-900 ">
-                <div class=" px-8 mx-auto max-w-2xl lg:py-4 shadow-md md:w-3/4 border-t-2 border-indigo-400 rounded-lg p-8">
-                    <h2 class="mb-4 text-xl font-bold text-gray-900 dark:text-white">Add a new user</h2>
+        <div className='w-screen overflow-scroll pb-11'>
+            <h1 className='pt-11 pb-7 ml-5 px-11 text-4xl font-bold text-sky-600'>Add a new user</h1>
+            <hr></hr>
+            <section class="pt-8 ">
+                <div class=" px-8 mx-auto max-w-2xl lg:py-4 shadow-md md:w-3/4 border-t-2 border-sky-600 rounded-lg p-8">
                     <form action="#" className='rounded'>
                         <div class="grid gap-4 sm:grid-cols-2 sm:gap-6">
                             <div class="sm:col-span-2 grid grid-cols-3 gap-4">
@@ -188,10 +189,10 @@ export const AddUser = () => {
 
                         </div>
 
-                        <button onClick={postData} type="submit" class="inline-flex  items-center px-5 py-2.5 mt-4 sm:mt-6 text-sm font-medium text-center text-white bg-blue-500 rounded-lg focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900  hover:bg-primary-800">
+                        <button onClick={postData} type="submit" class="inline-flex  items-center px-5 py-2.5 mt-4 sm:mt-6 text-sm font-medium text-center text-white bg-sky-600 rounded-lg focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900  hover:bg-sky-700">
                             Add User
                         </button>
-                        <button type="reset" class="text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-500 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 ml-5 text-center me-2 mb-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-500 dark:focus:ring-blue-800">Reset</button>
+                        <button type="reset" class="text-sky-600 hover:text-white border border-sky-600 hover:bg-sky-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 ml-5 text-center me-2 mb-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-500 dark:focus:ring-blue-800">Reset</button>
 
                     </form>
                 </div>

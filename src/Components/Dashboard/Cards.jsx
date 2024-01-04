@@ -21,7 +21,7 @@ export const Cards = () => {
                             <h5 className="mb-2 text-3xl font-bold tracking-tight text-gray-600 dark:text-white">{data.count}</h5>
                             <p className="font-normal text-gray-400 dark:text-gray-400">{data.gender}</p>
                         </div>
-                        <div className="ml-auto mt-2 w   text-blue-500 ">{data.icon}</div>
+                        <div className="ml-auto mt-2 w   text-sky-600 ">{data.icon}</div>
                     </div>
                 ))}
             </div>

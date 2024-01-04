@@ -119,7 +119,7 @@ export const Table = () => {
                                     <td className="px-6 py-4">{user.department}</td>
                                     <td className="px-6 py-4 cursor-pointer ">
                                         <a
-                                            className="bg-blue-500 text-white px-3 py-2 rounded "
+                                            className="bg-sky-600 text-white px-3 py-2 rounded "
                                             onClick={() => viewUserHandler(user.id)}
                                         >
                                             View

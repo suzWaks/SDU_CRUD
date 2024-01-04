@@ -72,13 +72,15 @@ export const Departments = () => {
 
     return (
 
-        <div className='overflow-auto max-w-screen '>
+        <div className='w-full h-full overflow-auto'>
             <div className='flex justify-between'>
-                <h1 className='pt-5  px-11 text-4xl font-bold text-blue-700'>Departments</h1>
-                <button onClick={() => setIsModalOpen(true)} className=" mr-10 mt-5 p-2 bg-blue-500 text-white rounded-md">
-                    Add Department +
+                <h1 className='pt-11 ml-5 px-11 text-4xl font-bold text-sky-600'>Departments</h1>
+                <button onClick={() => setIsModalOpen(true)} className=" mr-10 mt-11 mb-9 p-2 bg-sky-600 text-white rounded-md">
+                    Add Department <span className='font-extrabold'>+</span>
                 </button>
+
             </div>
+            <hr></hr>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-6 p-11">
 
                 {cardData.map((card, index) => (

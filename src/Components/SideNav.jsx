@@ -7,6 +7,8 @@ export const SideNav = () => {
     const navigate = useNavigate();
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [apiData, setApiData] = useState(null);
+    const [expanded, setExpanded] = useState(true);
+    const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth <= 768);
 
     const DashHandler = () => {
         navigate('/');
@@ -23,6 +25,9 @@ export const SideNav = () => {
     const toggleDropdown = () => {
         setIsDropdownOpen(!isDropdownOpen);
     };
+    const handleBarsClick = () => {
+        setExpanded(!expanded);
+    };
 
     useEffect(() => {
         const fetchData = async () => {
@@ -35,6 +40,24 @@ export const SideNav = () => {
         };
 
         fetchData();
+    }, []);
+
+    useEffect(() => {
+        const handleResize = () => {
+            const newIsSmallScreen = window.innerWidth <= 768;
+            setIsSmallScreen(newIsSmallScreen);
+
+            // Collapse the sidebar automatically on small screens
+            if (newIsSmallScreen) {
+                setExpanded(false);
+            }
+        };
+
+        window.addEventListener('resize', handleResize);
+
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
     }, []);
 
     const viewDeptHandler = (id) => {
@@ -50,19 +73,27 @@ export const SideNav = () => {
             .catch(error => console.error('Error fetching department data:', error));
     };
 
+    const sidebarStyle = {
+        width: isSmallScreen ? (expanded ? '310px' : '0') : '310px',
+    };
 
+    const barsIconClass = `w-8 h-8 mt-3 text-sky-600 lg:hidden ${isSmallScreen ? '' : 'hidden'} ${isSmallScreen && expanded ? 'text-cyan-100' : 'text-sky-600'}`;
     return (
         <aside>
-            <div className="h-full flex flex-col items-center px-10 py-4 overflow-y-auto bg-gray-300 dark:bg-gray-800">
+            <div style={sidebarStyle} className="sidebar h-full top-0 bottom-0 items-center text-center lg:w-[310px] xl:w-[310px] w-[310px] py-4 rounded-r-3xl bg-sky-700 dark:bg-gray-800">
+                <span className='absolute text-4xl top-5 mt-5 mr-5 left-4 cursor-pointer' onClick={handleBarsClick}>
+                    <FaBars className={barsIconClass} />
+                </span>
                 <div className="text-center py-8">
-                    <img src="https://www.tashicell.com/themes/tashicell/assets/images/logo.png" alt="Logo" />
-                    <h1 className="text-2xl font-bold mb-4 dark:text-white">SDU UMS</h1>
+                    <img className='pl-11 ml-9' src="https://www.tashicell.com/themes/tashicell/assets/images/logo.png" alt="Logo" />
+                    <h1 className="text-2xl font-bold mb-4 text-white">SDU UMS</h1>
                 </div>
-                <ul className="space-y-2 font-medium">
+                <hr className='w-[224px] ml-10 mb-11'></hr>
+                <ul className="space-y-2 font-medium pl-9">
                     <li onClick={DashHandler} className="flex items-right">
-                        <a href="#" className="flex items-center py-4 px-10 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                            <FaTable className="mr-2 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
-                            <div className="ms-3  ">Dashboard</div>
+                        <a href="#" className="flex items-center py-4 px-10 text-white rounded-lg dark:text-white hover:bg-sky-800 dark:hover:bg-gray-700 group">
+                            <FaTable className="mr-2 w-5 h-5 text-white transition duration-75 dark:text-gray-400  dark:group-hover:text-white" />
+                            <div className="ms-3 text-lg ">Dashboard</div>
                         </a>
                     </li>
 
@@ -70,10 +101,10 @@ export const SideNav = () => {
                     <li className="flex items-right mb-5">
                         <button
                             onClick={toggleDropdown}
-                            className="flex items-center py-4 px-10 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+                            className="flex items-center py-4 px-10 text-white rounded-lg dark:text-white hover:bg-sky-800 dark:hover:bg-gray-700 group"
                         >
-                            <FaFolder className="mr-2 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
-                            <div className="ms-3">Departments</div>
+                            <FaFolder className="mr-2 w-5 h-5 text-white transition duration-75 dark:text-gray-400  dark:group-hover:text-white" />
+                            <div className="ms-3 text-lg">Departments</div>
                             <svg
                                 className={`w-2.5 h-2.5 ms-3 ${isDropdownOpen ? 'transform rotate-180' : ''}`}
                                 aria-hidden="true"
@@ -88,7 +119,7 @@ export const SideNav = () => {
 
                     {/* Dropdown Content */}
                     <div
-                        className={`z-10 ${isDropdownOpen ? 'block' : 'hidden'} bg-white divide-y divide-gray-300 rounded-lg shadow w-44 dark:bg-gray-700 mx-7`}
+                        className={`z-10 ${isDropdownOpen ? 'block' : 'hidden'} bg-white divide-y divide-gray-300 rounded-lg overflow-auto h-[200px] shadow w-44 dark:bg-gray-700 mx-7`}
                     >
                         <div onClick={DeptHandler}>
                             <a href="#" className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
@@ -106,13 +137,13 @@ export const SideNav = () => {
                         ))}
                     </div>
                     <li onClick={AddUserHandler} className="flex items-right mb-5">
-                        <a href="#" className="flex items-center py-4 px-10 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                            <FaUserPlus className="mr-2 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
-                            <span className="ms-3  ">Add User</span>
+                        <a href="#" className="flex items-center py-4 px-10 text-white rounded-lg dark:text-white hover:bg-sky-800 dark:hover:bg-gray-700 group">
+                            <FaUserPlus className="mr-2 w-5 h-5 text-white transition duration-75 dark:text-gray-400  dark:group-hover:text-white" />
+                            <span className="ms-3  text-lg">Add User</span>
                         </a>
                     </li>
                 </ul>
             </div>
-        </aside>
+        </aside >
     );
 };
