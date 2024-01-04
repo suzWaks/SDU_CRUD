@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FaBars, FaTable, FaCaretDown, FaUserPlus, FaFolder } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 export const SideNav = () => {
     const navigate = useNavigate();
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+    const [apiData, setApiData] = useState(null);
 
     const DashHandler = () => {
         navigate('/');
@@ -21,6 +23,33 @@ export const SideNav = () => {
     const toggleDropdown = () => {
         setIsDropdownOpen(!isDropdownOpen);
     };
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await axios.get('https://6594e19204335332df819ace.mockapi.io/cards');
+                setApiData(response.data);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        };
+
+        fetchData();
+    }, []);
+
+    const viewDeptHandler = (id) => {
+        // Make an API call to fetch user details based on id
+        axios.get(`https://6594e19204335332df819ace.mockapi.io/cards/${id}`)
+            .then(response => {
+                const deptDetails = response.data;
+                console.log(deptDetails);
+
+                // Navigate to the /userview page and pass the user details as props
+                navigate('/deptview', { replace: true, state: { deptDetails } });
+            })
+            .catch(error => console.error('Error fetching department data:', error));
+    };
+
 
     return (
         <aside>
@@ -66,23 +95,15 @@ export const SideNav = () => {
                                 All Departments
                             </a>
                         </div>
-                        <ul className="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefaultButton">
-                            <li>
-                                <a href="#" className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
-                                    SDU
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
-                                    Customer Care
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
-                                    Tashi Electronics
-                                </a>
-                            </li>
-                        </ul>
+                        {Array.isArray(apiData) && apiData.map((data) => (
+                            <ul key={data.id} className="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefaultButton">
+                                <li>
+                                    <a onClick={() => viewDeptHandler(data.id)} className="block px-4 py-2 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                                        {data.name}
+                                    </a>
+                                </li>
+                            </ul>
+                        ))}
                     </div>
                     <li onClick={AddUserHandler} className="flex items-right mb-5">
                         <a href="#" className="flex items-center py-4 px-10 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 //TODO: Image upload function not in working state 
@@ -7,9 +8,8 @@ window.addEventListener('unhandledrejection', (event) => {
 });
 
 export const Departments = () => {
+    const navigate = useNavigate();
     const [cardData, setCardData] = useState([]);
-
-
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     useEffect(() => {
@@ -57,6 +57,18 @@ export const Departments = () => {
         }
     };
 
+    const viewDeptHandler = (id) => {
+        // Make an API call to fetch user details based on id
+        axios.get(`https://6594e19204335332df819ace.mockapi.io/cards/${id}`)
+            .then(response => {
+                const deptDetails = response.data;
+                console.log(deptDetails);
+
+                // Navigate to the /userview page and pass the user details as props
+                navigate('/deptview', { replace: true, state: { deptDetails } });
+            })
+            .catch(error => console.error('Error fetching department data:', error));
+    };
 
     return (
 
@@ -70,7 +82,7 @@ export const Departments = () => {
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-6 p-11">
 
                 {cardData.map((card, index) => (
-                    <div href="" key={index}>
+                    <div onClick={() => viewDeptHandler(card.id)} key={index}>
                         <div key={index} className="max-w-sm p-2 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 overflow-hidden " style={{ height: '24rem', width: '22rem' }}>
                             <a href="#">
                                 <img className="rounded-t-lg" style={{ height: '65%', width: '100%' }} src={card.imageURL} alt="" />
