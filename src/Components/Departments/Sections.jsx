@@ -19,25 +19,22 @@ export const Sections = () => {
         try {
             // Fetch data from input fields
             const name = document.getElementById('name').value;
-            const description = document.getElementById('description').value;
-            const imageURL = document.getElementById('url').value;
+            
 
             // Make sure required fields are not empty
-            if (!name || !description || !imageURL) {
-                window.alert('Please fill in all required fields.');
+            if (!name) {
+                window.alert('Please fill in the section name!');
                 return;
             }
 
             // Define the data for the new department
-            const newDepartmentData = {
-                name,
-                description,
-                imageURL,
+            const newSectionData = {
+                name
             };
-            console.log(newDepartmentData, "Adding data");
+            console.log(newSectionData, "Adding data");
 
             // Make a POST request to add a new department with the provided data
-            axios.post('https://6594e19204335332df819ace.mockapi.io/cards', newDepartmentData)
+            axios.post('https://6594e19204335332df819ace.mockapi.io/cards', newSectionData)
                 .then(() => {
                     // Close the modal
                     setIsModalOpen(false);
@@ -46,9 +43,9 @@ export const Sections = () => {
                     // Refresh the page
                     window.location.reload();
                 })
-                .catch(error => console.error('Error adding department:', error));
+                .catch(error => console.error('Error adding section:', error));
         } catch (error) {
-            console.error('Error adding department:', error);
+            console.error('Error adding section:', error);
         }
     };
     return (

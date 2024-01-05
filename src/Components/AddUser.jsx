@@ -68,6 +68,7 @@ export const AddUser = () => {
                 image,
             });
         }
+        alert("Error adding user, you might need to check if there are existing departments and sections");
 
         //     alert("User added successfully");
         // } else {
@@ -161,7 +162,7 @@ export const AddUser = () => {
                             <div>
                                 <label for="category" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Department</label>
                                 <select onChange={(e) => setDepartmentId(e.target.value)} id="category" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-                                    <option key={1} disabled value="0">Select department</option>
+                                    <option key={1} selected disabled value="0">Select department</option>
                                     <option key={2} value="1">SDU</option>
                                     <option key={3} value="2">Customer Care</option>
                                     <option key={4} value="3">Tashi Electronics</option>
@@ -172,7 +173,7 @@ export const AddUser = () => {
                             <div>
                                 <label for="category" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Section</label>
                                 <select onChange={(e) => setSectionId(e.target.value)} id="category" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-                                    <option key={1} value="0" disabled>Select section</option>
+                                    <option key={1} selected value="0" disabled>Select section</option>
                                     <option key={2} value="1">Frontend</option>
                                     <option key={3} value="2">Backend</option>
                                     <option key={4} value="3">FullStack</option>
