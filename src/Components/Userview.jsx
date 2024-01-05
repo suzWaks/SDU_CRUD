@@ -119,7 +119,7 @@ export const Userview = (props) => {
                                         className="mx-auto object-cover rounded-full h-16 w-16 "
                                     />
                                 </a>
-                                <h1 className="text-gray-600">
+                                <h1 className="text-gray-600 text-xl">
                                     {/* {location.state.userDetails.firstName}{" "}
                   {location.state.userDetails.middleName}{" "}
                   {location.state.userDetails.lastName} */}
@@ -144,7 +144,7 @@ export const Userview = (props) => {
                                             defaultValue={userData.userId}
                                             type="text"
                                             id="userId"
-                                            className="rounded-lg border-transparent border border-gray-300 w-full px-4 bg-white text-gray-500 placeholder-gray-600 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                            className="rounded-lg  border-transparent border border-gray-300 w-full px-4 bg-white text-gray-500 placeholder-gray-600 shadow-md text-base focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                         />
                                     </div>
                                 </div>
@@ -202,7 +202,7 @@ export const Userview = (props) => {
                                             defaultValue={userData.gender}
                                             type="text"
                                             id="gender"
-                                            class=" rounded-lg border-transparent  border border-gray-300 w-full px-4 bg-white text-gray-500 placeholder-gray-600 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                            class=" rounded-lg border-transparent  border border-gray-300 w-full px-4 bg-white text-gray-500 placeholder-gray-600 shadow-md text-base focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                         />
                                     </div>
                                 </div>
@@ -218,7 +218,7 @@ export const Userview = (props) => {
                                             defaultValue={userData.email}
                                             type="text"
                                             id="email"
-                                            class=" rounded-lg border-transparent  border border-gray-300 w-full px-4 bg-white text-gray-500 placeholder-gray-600 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                            class=" rounded-lg border-transparent  border border-gray-300 w-full px-4 bg-white text-gray-500 placeholder-gray-600 shadow-md text-base focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                         />
                                     </div>
                                 </div>
@@ -236,7 +236,7 @@ export const Userview = (props) => {
                                                 defaultValue={userData.permanentAddress}
                                                 type="text"
                                                 id="permanentAddress"
-                                                class=" rounded-lg border-transparent flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-500 placeholder-gray-900 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                                class=" rounded-lg border-transparent flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-500 placeholder-gray-900 shadow-md text-base focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                             />
                                         </div>
                                     </div>
@@ -249,7 +249,7 @@ export const Userview = (props) => {
                                                 defaultValue={userData.presentAddress}
                                                 type="text"
                                                 id="presentAddress"
-                                                class=" rounded-lg border-transparent flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-500 placeholder-gray-900 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-blue-500  focus:border-transparent"
+                                                class=" rounded-lg border-transparent flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-500 placeholder-gray-900 shadow-md text-base focus:outline-none focus:ring-2 focus:ring-blue-500  focus:border-transparent"
                                             />
                                         </div>
                                     </div>
@@ -269,7 +269,7 @@ export const Userview = (props) => {
                                             defaultValue={userData.mobileNo}
                                             type="text"
                                             id="mobileNo"
-                                            className="rounded-lg border-transparent border border-gray-500 w-full px-4 bg-white text-gray-500 placeholder-gray-600 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                            className="rounded-lg border-transparent border border-gray-500 w-full px-4 bg-white text-gray-500 placeholder-gray-600 shadow-md text-base focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                         />
                                     </div>
                                 </div>
@@ -285,7 +285,7 @@ export const Userview = (props) => {
                                             defaultValue={userData.department}
                                             type="text"
                                             id="department"
-                                            className="rounded-lg border-transparent border border-gray-300 w-full px-4 bg-white text-gray-500 placeholder-gray-600 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                            className="rounded-lg border-transparent border border-gray-300 w-full px-4 bg-white text-gray-500 placeholder-gray-600 shadow-md text-base focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                         />
                                     </div>
                                 </div>
@@ -302,12 +302,46 @@ export const Userview = (props) => {
                                             defaultValue={userData.section}
                                             type="text"
                                             id="section"
-                                            class=" rounded-lg border-transparent  border border-gray-300 w-full px-4 bg-white text-gray-500 placeholder-gray-600 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                            class=" rounded-lg border-transparent  border border-gray-300 w-full px-4 bg-white text-gray-500 placeholder-gray-600 shadow-md text-base focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                         />
                                     </div>
                                 </div>
                             </div>
                             <hr />
+                            <div className="items-center w-full p-4 space-y-4 text-gray-900 md:inline-flex md:space-y-0 ">
+                                <h2 className="max-w-sm mx-auto md:w-1/3">CID</h2>
+                                <div className="max-w-sm mx-auto md:w-2/3 flex-1">
+                                    <div className="relative">
+                                        <input
+                                            disabled={!isEditing}
+                                            onChange={handleChange}
+                                            // value={location.state.userDetails.department}
+                                            defaultValue={userData.cidNo}
+                                            type="number"
+                                            id="cid"
+                                            className="rounded-lg border-transparent border border-gray-300 w-full px-4 bg-white text-gray-500 placeholder-gray-600 shadow-md text-base focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="items-center w-full p-4 space-y-4 text-gray-900 md:inline-flex md:space-y-0 ">
+                                <h2 class="max-w-sm mx-auto md:w-1/3">DOB</h2>
+                                <div class="max-w-sm mx-auto md:w-2/3">
+                                    <div class=" relative ">
+                                        <input
+                                            disabled={!isEditing}
+                                            onChange={handleChange}
+                                            // value={location.state.userDetails.section}
+                                            defaultValue={userData.dob}
+                                            type="dob"
+                                            id="dob"
+                                            class=" rounded-lg border-transparent  border border-gray-300 w-full px-4 bg-white text-gray-500 placeholder-gray-600 shadow-md text-base focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
 

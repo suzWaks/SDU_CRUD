@@ -88,11 +88,13 @@ export const Tabledpt = () => {
                 <tbody>
                     {Array.isArray(data) &&
                         data
-                            .filter((user) =>
-                                `${user.firstName} "" ${user.middleName} ${user.lastName}`
-                                    .toLowerCase()
-                                    .includes(searchTerm.toLowerCase())
-                            )
+                            .filter((user) => {
+                                const fullName = [user.firstName, user.middleName, user.lastName]
+                                    .filter((name) => name) // Filter out empty or undefined names
+                                    .join(' ');
+
+                                return fullName.toLowerCase().includes(searchTerm.toLowerCase());
+                            })
                             .map((user, index) => (
                                 <tr
                                     key={user.id}
