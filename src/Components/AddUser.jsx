@@ -7,15 +7,15 @@ export const AddUser = () => {
     const [firstName, setFirstName] = useState("");
     const [middleName, setMiddleName] = useState("");
     const [lastName, setLastName] = useState("");
-    const [email, setEmail] = useState("");
+    const [cidNo, setCidNo] = useState("");
     const [mobileNo, setMobileNo] = useState("");
-    const [department, setDepartment] = useState("");
-    const [section, setSection] = useState("");
+    const [email, setEmail] = useState("");
+    const [departmentId, setDepartmentId] = useState("");
+    const [sectionId, setSectionId] = useState("");
     const [permanentAddress, setPermanentAddress] = useState("");
-    const [presentAddress, setPresentAddress] = useState("");
-    const [gender, setGender] = useState("");
+    const [currentAddress, setCurrentAddress] = useState("");
+    const [genderId, setGenderId] = useState("");
     const [userId, setUserId] = useState("");
-    const [cidno, setCidno] = useState("");
     const [dob, setDob] = useState("");
     const [image, setImage] = useState("");
 
@@ -25,43 +25,54 @@ export const AddUser = () => {
     const postData = () => {
 
         // Check if all fields have values
-        if (
-            firstName &&
-            middleName &&
-            lastName &&
-            gender &&
-            userId &&
-            email &&
-            permanentAddress &&
-            presentAddress &&
-            department &&
-            section &&
-            mobileNo &&
-            cidno &&
-            dob &&
-            image
-        ) {
-            axios.post("https://65890c1b324d41715258647c.mockapi.io/api/v1/reactcrud", {
+        // if (
+        //     firstName &&
+        //     middleName &&
+        //     lastName &&
+        //     genderId &&
+        //     userId &&
+        //     email &&
+        //     permanentAddress &&
+        //     currentAddress &&
+        //     departmentId &&
+        //     sectionId &&
+        //     mobileNo &&
+        //     cidNo &&
+        //     dob &&
+        //     image
+        // ) 
+        {
+            axios.post("https://smiling-mark-production.up.railway.app/users", {
                 firstName,
                 middleName,
                 lastName,
-                gender,
+                gender: {
+                    genderId: genderId,
+                },
                 userId,
                 email,
-                permanentAddress,
-                presentAddress,
-                department,
-                section,
+                address: {
+                    permanentAddress: permanentAddress,
+                    currentAddress: currentAddress,
+
+                },
+                section: {
+                    sectId: sectionId,
+                    department: {
+                        deptId: departmentId,
+                    }
+                },
                 mobileNo,
-                cidno,
+                cidNo,
                 dob,
                 image,
             });
-
-            alert("User added successfully");
-        } else {
-            alert("Please fill in all fields before submitting");
         }
+
+        //     alert("User added successfully");
+        // } else {
+        //     alert("Please fill in all fields before submitting");
+        // }
     };
 
 
@@ -71,7 +82,7 @@ export const AddUser = () => {
             <hr></hr>
             <section class="pt-8 ">
                 <div class=" px-8 mx-auto max-w-2xl lg:py-4 shadow-md md:w-3/4 border-t-2 border-sky-600 rounded-lg p-8">
-                    <form action="#" className='rounded'>
+                    <form onSubmit={(e) => e.preventDefault()} className='rounded'>
                         <div class="grid gap-4 sm:grid-cols-2 sm:gap-6">
                             <div class="sm:col-span-2 grid grid-cols-3 gap-4">
                                 <div>
@@ -89,17 +100,17 @@ export const AddUser = () => {
                             </div>
 
                             <label for="description" class="block  text-sm font-medium text-gray-900 dark:text-white">Gender</label>
-                            <div onChange={(e) => setGender(e.target.value)} class="sm:col-span-2 grid grid-cols-3 gap-4">
+                            <div onChange={(e) => setGenderId(e.target.value)} class="sm:col-span-2 grid grid-cols-3 gap-4">
                                 <div class="flex items-center ps-4 border border-gray-200 rounded dark:border-gray-700">
-                                    <input id="bordered-radio-1" type="radio" value="Male" name="bordered-radio" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
+                                    <input id="bordered-radio-1" type="radio" value="1" name="bordered-radio" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
                                     <label for="bordered-radio-1" class="w-full py-4 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Male</label>
                                 </div>
                                 <div class="flex items-center ps-4 border border-gray-200 rounded dark:border-gray-700">
-                                    <input checked id="bordered-radio-2" type="radio" value="Female" name="bordered-radio" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
+                                    <input id="bordered-radio-2" type="radio" value="2" name="bordered-radio" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
                                     <label for="bordered-radio-2" class="w-full py-4 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Female</label>
                                 </div>
                                 <div class="flex items-center ps-4 border border-gray-200 rounded dark:border-gray-700">
-                                    <input checked id="bordered-radio-3" type="radio" value="Others" name="bordered-radio" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
+                                    <input id="bordered-radio-3" type="radio" value="3" name="bordered-radio" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
                                     <label for="bordered-radio-3" class="w-full py-4 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Others</label>
                                 </div>
                             </div>
@@ -125,7 +136,7 @@ export const AddUser = () => {
                                 <div class="col-span-2">
                                     <label for="CID" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">CID</label>
                                     <input
-                                        onInput={(e) => (e.target.value = Math.max(0, parseInt(e.target.value) || 0).toString().slice(0, 11))}
+                                        onInput={(e) => setCidNo(e.target.value = Math.max(0, parseInt(e.target.value) || 0).toString().slice(0, 11))}
                                         type="number"
                                         name="CID"
                                         id="CID"
@@ -145,26 +156,26 @@ export const AddUser = () => {
                             </div>
                             <div class="w-full">
                                 <label for="price" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">.</label>
-                                <input onChange={(e) => setPresentAddress(e.target.value)} type="text" name="price" id="price" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Present Address" required="" />
+                                <input onChange={(e) => setCurrentAddress(e.target.value)} type="text" name="price" id="price" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Present Address" required="" />
                             </div>
                             <div>
                                 <label for="category" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Department</label>
-                                <select onChange={(e) => setDepartment(e.target.value)} id="category" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-                                    <option selected="">Select department</option>
-                                    <option value="sdu">SDU</option>
-                                    <option value="cc">Customer Care</option>
-                                    <option value="te">Tashi Electronics</option>
+                                <select onChange={(e) => setDepartmentId(e.target.value)} id="category" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                                    <option key={1} disabled value="0">Select department</option>
+                                    <option key={2} value="1">SDU</option>
+                                    <option key={3} value="2">Customer Care</option>
+                                    <option key={4} value="3">Tashi Electronics</option>
 
                                 </select>
                             </div>
                             {/* TODO: Change the section according to the department */}
                             <div>
                                 <label for="category" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Section</label>
-                                <select onChange={(e) => setSection(e.target.value)} id="category" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-                                    <option selected="">Select section</option>
-                                    <option value="sdu">SDU</option>
-                                    <option value="cc">Customer Care</option>
-                                    <option value="te">Tashi Electronics</option>
+                                <select onChange={(e) => setSectionId(e.target.value)} id="category" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                                    <option key={1} value="0" disabled>Select section</option>
+                                    <option key={2} value="1">Frontend</option>
+                                    <option key={3} value="2">Backend</option>
+                                    <option key={4} value="3">FullStack</option>
 
                                 </select>
                             </div>
@@ -172,7 +183,7 @@ export const AddUser = () => {
                             <div>
                                 <label for="mobileNo" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Mobile No</label>
                                 <input
-                                    onInput={(e) => (e.target.value = Math.max(0, parseInt(e.target.value) || 0).toString().slice(0, 8))}
+                                    onInput={(e) => setMobileNo(e.target.value = Math.max(0, parseInt(e.target.value) || 0).toString().slice(0, 8))}
                                     type="number"
                                     name="mobileNo"
                                     id="mobileNo"
@@ -182,7 +193,7 @@ export const AddUser = () => {
                                 /> </div>
                             <div class="float-end">
                                 <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="user_avatar">Upload user picture</label>
-                                <input onChange={(e) => setImage(e.target.value)} class="block w-full text-sm text-blue-500 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-blue-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="user_avatar_help" id="user_avatar" type="file" />
+                                <input onChange={(e) => setImage(e.target.files[0])} class="block w-full text-sm text-blue-500 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-blue-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="user_avatar_help" id="user_avatar" type="file" />
                             </div>
 
 

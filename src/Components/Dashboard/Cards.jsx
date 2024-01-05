@@ -1,12 +1,46 @@
-import React from 'react';
-import { FaMale, FaFemale, FaUser, FaUsers, FaFolder } from 'react-icons/fa';
+import React, { useEffect, useState } from 'react';
+import { FaMale, FaFemale, FaTransgender, FaUsers, FaFolder } from 'react-icons/fa';
+import axios from 'axios';
 
 export const Cards = () => {
+
+    const [male, setMale] = useState();
+    const [female, setFemale] = useState();
+    const [others, setOthers] = useState();
+    const [totalData, setTotalData] = useState();
+
+
+    useEffect(() => {
+        axios
+            .get("https://smiling-mark-production.up.railway.app/users/total")
+            .then((response) => setTotalData(response.data))
+            .catch((error) => console.error("Error fetching data:", error));
+    }, []);
+    useEffect(() => {
+        axios
+            .get("https://smiling-mark-production.up.railway.app/users/total/1")
+            .then((response) => setMale(response.data))
+            .catch((error) => console.error("Error fetching data:", error));
+    }, []);
+    useEffect(() => {
+        axios
+            .get("https://smiling-mark-production.up.railway.app/users/total/2")
+            .then((response) => setFemale(response.data))
+            .catch((error) => console.error("Error fetching data:", error));
+    }, []);
+    useEffect(() => {
+        axios
+            .get("https://smiling-mark-production.up.railway.app/users/total/3")
+            .then((response) => setOthers(response.data))
+            .catch((error) => console.error("Error fetching data:", error));
+    }, []);
+
     const cardData = [
-        { count: 200, gender: 'Male', icon: <FaMale className="w-10 h-10" /> },
-        { count: 150, gender: 'Female', icon: <FaFemale className="w-10 h-10" /> },
-        { count: 300, gender: 'Total Employee', icon: <FaUsers className="w-10 h-10" /> },
-        { count: 250, gender: 'Total Departments', icon: <FaFolder className="w-10 h-10" /> },
+        { count: male, gender: 'Male', icon: <FaMale className="w-10 h-10" /> },
+        { count: female, gender: 'Female', icon: <FaFemale className="w-10 h-10" /> },
+        { count: others, gender: 'Others', icon: <FaTransgender className="w-10 h-10" /> },
+        { count: totalData, gender: 'Total Employee', icon: <FaUsers className="w-10 h-10" /> },
+
     ];
 
     return (

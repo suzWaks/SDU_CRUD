@@ -321,14 +321,26 @@ export const Userview = (props) => {
                 Edit
               </button> */}
                             {isEditing ? (
-                                <button
-                                    // onClick={handleUpdate}
-                                    onClick={showUpdateConfirmationModal}
-                                    type="button"
-                                    className="py-2 px-4 mr-4 bg-green-600 hover:bg-green-700 focus:ring-green-500 focus:ring-offset-green-200 text-white transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 rounded-lg"
-                                >
-                                    Update
-                                </button>
+                                <div className="flex">
+                                    <button
+                                        // onClick={handleUpdate}
+                                        onClick={showUpdateConfirmationModal}
+                                        type="button"
+                                        className="py-2 px-4 mr-4 bg-green-600 hover:bg-green-700 focus:ring-green-500 focus:ring-offset-green-200 text-white transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 rounded-lg"
+                                    >
+                                        Update
+                                    </button>
+
+                                    <button
+                                        // onClick={handleUpdate}
+                                        onClick={() => setIsEditing(false)}
+                                        type="button"
+                                        className="py-2 px-4 mr-4 outline-green-600 hover:bg-green-700 focus:ring-green-500 focus:ring-offset-green-200 text-green-500 hover:text-white transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 rounded-lg"
+                                    >
+                                        Cancel
+                                    </button>
+                                </div>
+
                             ) : (
                                 // <button
                                 //   onClick={handleEdit}
@@ -359,89 +371,93 @@ export const Userview = (props) => {
                             )}
                         </div>
                     </div>
-                </form>
+                </form >
             }
             {/* {isConfirmationModalVisible && confirmationModal} */}
-            {isDeleteConfirmationModalVisible && (
-                <div
-                    className="fixed inset-0 z-50 overflow-hidden flex items-center justify-center"
-                    onClick={hideDeleteConfirmationModal}
-                >
-                    <div className="absolute inset-0 bg-black opacity-10"></div>
+            {
+                isDeleteConfirmationModalVisible && (
+                    <div
+                        className="fixed inset-0 z-50 overflow-hidden flex items-center justify-center"
+                        onClick={hideDeleteConfirmationModal}
+                    >
+                        <div className="absolute inset-0 bg-black opacity-10"></div>
 
-                    <div className="z-50 bg-white p-6 rounded-lg shadow-md">
-                        <div className="z-50 flex flex-col items-center justify-center">
-                            <svg
-                                className="flex-shrink-0 inline w-10 h-10 mx-auto mb-3"
-                                aria-hidden="true"
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="currentColor"
-                                viewBox="0 0 20 20"
+                        <div className="z-50 bg-white p-6 rounded-lg shadow-md">
+                            <div className="z-50 flex flex-col items-center justify-center">
+                                <svg
+                                    className="flex-shrink-0 inline w-10 h-10 mx-auto mb-3"
+                                    aria-hidden="true"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="currentColor"
+                                    viewBox="0 0 20 20"
+                                >
+                                    <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
+                                </svg>
+                            </div>
+                            <h3 className="text-lg font-normal mb-4">
+                                This action cannot be recovered! <br></br>Are you sure you want to
+                                delete this person?
+                            </h3>
+                            <button
+                                onClick={onDelete}
+                                className="bg-red-600 text-white px-4 py-2 rounded-lg mr-5 ml-12 hover:bg-red-500"
                             >
-                                <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
-                            </svg>
+                                Yes, I'm sure
+                            </button>
+                            <button
+                                onClick={hideDeleteConfirmationModal}
+                                className="bg-gray-300 text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-200"
+                            >
+                                No, cancel
+                            </button>
                         </div>
-                        <h3 className="text-lg font-normal mb-4">
-                            This action cannot be recovered! <br></br>Are you sure you want to
-                            delete this person?
-                        </h3>
-                        <button
-                            onClick={onDelete}
-                            className="bg-red-600 text-white px-4 py-2 rounded-lg mr-5 ml-12 hover:bg-red-500"
-                        >
-                            Yes, I'm sure
-                        </button>
-                        <button
-                            onClick={hideDeleteConfirmationModal}
-                            className="bg-gray-300 text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-200"
-                        >
-                            No, cancel
-                        </button>
                     </div>
-                </div>
-            )}
-            {isUpdateConfirmationModalVisible && (
-                <div
-                    className="fixed inset-0 z-50 overflow-hidden flex items-center justify-center"
-                    onClick={hideUpdateConfirmationModal}
-                >
-                    <div className="absolute inset-0 bg-black opacity-10"></div>
+                )
+            }
+            {
+                isUpdateConfirmationModalVisible && (
+                    <div
+                        className="fixed inset-0 z-50 overflow-hidden flex items-center justify-center"
+                        onClick={hideUpdateConfirmationModal}
+                    >
+                        <div className="absolute inset-0 bg-black opacity-10"></div>
 
-                    <div className="z-50 bg-white p-6 rounded-lg shadow-md">
-                        <div className="flex flex-col items-center justify-center">
-                            <svg
-                                className="flex-shrink-0 inline w-10 h-10 mx-auto mb-3"
-                                aria-hidden="true"
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="currentColor"
-                                viewBox="0 0 20 20"
+                        <div className="z-50 bg-white p-6 rounded-lg shadow-md">
+                            <div className="flex flex-col items-center justify-center">
+                                <svg
+                                    className="flex-shrink-0 inline w-10 h-10 mx-auto mb-3"
+                                    aria-hidden="true"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="currentColor"
+                                    viewBox="0 0 20 20"
+                                >
+                                    <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
+                                </svg>
+                            </div>
+                            <h3 className="text-lg font-normal mb-4">
+                                Are you sure you want to update it?
+                            </h3>
+                            <button
+                                onClick={() => {
+                                    updateAPIData();
+                                    hideUpdateConfirmationModal();
+                                    // handleUpdate();
+                                }}
+                                // onClick={updateAPIData}
+                                className="bg-blue-600 text-white px-4 py-2 rounded-lg mr-5 ml-12 hover:bg-blue-500"
                             >
-                                <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
-                            </svg>
+                                Yes, Update
+                            </button>
+                            <button
+                                onClick={hideUpdateConfirmationModal}
+                                className="bg-gray-300 text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-200"
+                            >
+                                No, Cancel
+                            </button>
                         </div>
-                        <h3 className="text-lg font-normal mb-4">
-                            Are you sure you want to update it?
-                        </h3>
-                        <button
-                            onClick={() => {
-                                updateAPIData();
-                                hideUpdateConfirmationModal();
-                                // handleUpdate();
-                            }}
-                            // onClick={updateAPIData}
-                            className="bg-blue-600 text-white px-4 py-2 rounded-lg mr-5 ml-12 hover:bg-blue-500"
-                        >
-                            Yes, Update
-                        </button>
-                        <button
-                            onClick={hideUpdateConfirmationModal}
-                            className="bg-gray-300 text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-200"
-                        >
-                            No, Cancel
-                        </button>
                     </div>
-                </div>
-            )}
-        </section>
+                )
+            }
+        </section >
     );
 };

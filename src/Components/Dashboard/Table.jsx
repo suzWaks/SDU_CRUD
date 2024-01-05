@@ -89,7 +89,7 @@ export const Table = () => {
                     {Array.isArray(data) &&
                         data
                             .filter((user) =>
-                                `${user.firstName} "" ${user.middleName} ${user.lastName}`
+                                `${user.firstName}${user.middleName}${user.lastName}`
                                     .toLowerCase()
                                     .includes(searchTerm.toLowerCase())
                             )
