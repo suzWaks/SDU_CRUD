@@ -35,9 +35,13 @@ export const Departments = () => {
 
             // Define the data for the new department
             const newDepartmentData = {
-                name,
-                description,
-                imageURL,
+                department: { 
+                    name,
+                    description
+                },
+                departmentImage:{
+                    imageURL
+                }
             };
             console.log(newDepartmentData, "Adding data");
 

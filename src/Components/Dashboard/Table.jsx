@@ -11,7 +11,7 @@ export const Table = () => {
     const viewUserHandler = (id) => {
         // Make an API call to fetch user details based on id
         axios
-            .get(`https://65890c1b324d41715258647c.mockapi.io/api/v1/reactcrud/${id}`)
+            .get(`https://smiling-mark-production.up.railway.app/users/${id}`)
             .then((response) => {
                 const userDetails = response.data;
                 console.log(userDetails);
@@ -24,7 +24,7 @@ export const Table = () => {
 
     useEffect(() => {
         axios
-            .get("https://65890c1b324d41715258647c.mockapi.io/api/v1/reactcrud")
+            .get("https://smiling-mark-production.up.railway.app/users")
             .then((response) => setData(response.data))
             .catch((error) => console.error("Error fetching data:", error));
     }, []);
@@ -107,8 +107,8 @@ export const Table = () => {
                                     >
                                         <img
                                             class="w-10 h-10 rounded-full"
-                                            src="https://cdn-icons-png.flaticon.com/512/3177/3177440.png"
-                                            alt="Jese image"
+                                            src={`https://smiling-mark-production.up.railway.app/profile_images/${user.userId}`}
+
                                         />
                                         <div className="ps-3">
                                             <div className="text-base font-semibold">{`${user.firstName} ${user.middleName} ${user.lastName}`}</div>
@@ -118,11 +118,11 @@ export const Table = () => {
                                         </div>
                                     </th>
                                     <td className="px-6 py-4">{user.mobileNo}</td>
-                                    <td className="px-6 py-4">{user.department}</td>
+                                    <td className="px-6 py-4">{user?.section?.department?.deptName}</td>
                                     <td className="px-6 py-4 cursor-pointer ">
                                         <a
                                             className="bg-sky-600 text-white px-3 py-2 rounded "
-                                            onClick={() => viewUserHandler(user.id)}
+                                            onClick={() => viewUserHandler(user.userId)}
                                         >
                                             View
                                         </a>

@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-
-
 export const AddUser = () => {
     const [firstName, setFirstName] = useState("");
     const [middleName, setMiddleName] = useState("");
@@ -17,64 +15,105 @@ export const AddUser = () => {
     const [genderId, setGenderId] = useState("");
     const [userId, setUserId] = useState("");
     const [dob, setDob] = useState("");
-    const [image, setImage] = useState("");
-
-
-
+    const [image, setImage] = useState(null);
 
     const postData = () => {
 
-        // Check if all fields have values
-        // if (
-        //     firstName &&
-        //     middleName &&
-        //     lastName &&
-        //     genderId &&
-        //     userId &&
-        //     email &&
-        //     permanentAddress &&
-        //     currentAddress &&
-        //     departmentId &&
-        //     sectionId &&
-        //     mobileNo &&
-        //     cidNo &&
-        //     dob &&
-        //     image
-        // ) 
-        {
-            axios.post("https://smiling-mark-production.up.railway.app/users", {
-                firstName,
-                middleName,
-                lastName,
-                gender: {
-                    genderId: genderId,
-                },
-                userId,
-                email,
-                address: {
-                    permanentAddress: permanentAddress,
-                    currentAddress: currentAddress,
+        console.log("Type of image:", typeof image);
 
-                },
-                section: {
-                    sectId: sectionId,
-                    department: {
-                        deptId: departmentId,
-                    }
-                },
-                mobileNo,
-                cidNo,
-                dob,
-                image,
-            });
+
+        var bodyFormData = new FormData();
+
+        const userBody = {
+            firstName,
+            middleName,
+            lastName,
+            gender: {
+                genderId: genderId,
+            },
+            userId,
+            email,
+            address: {
+                permanentAddress: permanentAddress,
+                currentAddress: currentAddress,
+            },
+            section: {
+                sectId: sectionId,
+                department: {
+                    deptId: departmentId,
+                }
+            },
+            mobileNo,
+            cidNo,
+            dob
         }
-        alert("Error adding user, you might need to check if there are existing departments and sections");
 
-        //     alert("User added successfully");
-        // } else {
-        //     alert("Please fill in all fields before submitting");
-        // }
-    };
+        bodyFormData.append('user', JSON.stringify(userBody));
+        bodyFormData.append('profileImageFile', image);
+
+        axios.post('https://smiling-mark-production.up.railway.app/users', bodyFormData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        })
+            .then(response => {
+                console.log(response.data);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }
+    // Check if all fields have values
+    // if (
+    //     firstName &&
+    //     middleName &&
+    //     lastName &&
+    //     genderId &&
+    //     userId &&
+    //     email &&
+    //     permanentAddress &&
+    //     currentAddress &&
+    //     departmentId &&
+    //     sectionId &&
+    //     mobileNo &&
+    //     cidNo &&
+    //     dob &&
+    //     image
+    // ) 
+    // {
+    //     axios.post("https://smiling-mark-production.up.railway.app/users", {
+    //         firstName,
+    //         middleName,
+    //         lastName,
+    //         gender: {
+    //             genderId: genderId,
+    //         },
+    //         userId,
+    //         email,
+    //         address: {
+    //             permanentAddress: permanentAddress,
+    //             currentAddress: currentAddress,
+
+    //         },
+    //         section: {
+    //             sectId: sectionId,
+    //             department: {
+    //                 deptId: departmentId,
+    //             }
+    //         },
+    //         mobileNo,
+    //         cidNo,
+    //         dob,
+    //         image,
+    //     });
+    // }
+    // // alert("Error adding user, you might need to check if there are existing departments and sections");
+
+    //     alert("User added successfully");
+    // } else {
+    //     alert("Please fill in all fields before submitting");
+    // }
+
 
 
     return (
@@ -120,7 +159,7 @@ export const AddUser = () => {
                                 <div>
                                     <label for="userID" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">User ID</label>
                                     <input
-                                        onInput={(e) => (e.target.value = Math.max(0, parseInt(e.target.value) || 0).toString().slice(0, 8))}
+                                        onInput={(e) => setUserId(e.target.value = Math.max(0, parseInt(e.target.value) || 0).toString().slice(0, 8))}
                                         type="number"
                                         name="userID"
                                         id="userID"
@@ -162,10 +201,10 @@ export const AddUser = () => {
                             <div>
                                 <label for="category" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Department</label>
                                 <select onChange={(e) => setDepartmentId(e.target.value)} id="category" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-                                    <option key={1} selected disabled value="0">Select department</option>
-                                    <option key={2} value="1">SDU</option>
-                                    <option key={3} value="2">Customer Care</option>
-                                    <option key={4} value="3">Tashi Electronics</option>
+                                    <option >Select department</option>
+                                    <option value="1">SDU</option>
+                                    <option value="2">Customer Care</option>
+                                    <option value="3">Tashi Electronics</option>
 
                                 </select>
                             </div>
@@ -173,11 +212,10 @@ export const AddUser = () => {
                             <div>
                                 <label for="category" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Section</label>
                                 <select onChange={(e) => setSectionId(e.target.value)} id="category" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-                                    <option key={1} selected value="0" disabled>Select section</option>
-                                    <option key={2} value="1">Frontend</option>
-                                    <option key={3} value="2">Backend</option>
-                                    <option key={4} value="3">FullStack</option>
-
+                                    <option >Select section</option>
+                                    <option value="1">Frontend</option>
+                                    <option value="2">Backend</option>
+                                    <option value="3">FullStack</option>
                                 </select>
                             </div>
 

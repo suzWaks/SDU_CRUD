@@ -65,7 +65,7 @@ export const Userview = (props) => {
 
         try {
             const response = await axios.put(
-                `https://65890c1b324d41715258647c.mockapi.io/api/v1/reactcrud/${id}`,
+                `https://smiling-mark-production.up.railway.app/users/`,
                 userData // Pass the updated user data
             );
 
@@ -115,7 +115,7 @@ export const Userview = (props) => {
                                 <a href="/" className="relative block">
                                     <img
                                         alt="profile"
-                                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS40p_bpiybIoS6kcQ-MZf6qWD_oZKS_ZgwCw"
+                                        src={`https://smiling-mark-production.up.railway.app/profile_images/${userData.userId}`}
                                         className="mx-auto object-cover rounded-full h-16 w-16 "
                                     />
                                 </a>
@@ -141,9 +141,9 @@ export const Userview = (props) => {
                                             disabled={!isEditing}
                                             onChange={handleChange}
                                             // value={location.state.userDetails.userId}
-                                            defaultValue={userData.userId}
+                                            defaultValue={userData.employeeId}
                                             type="text"
-                                            id="userId"
+                                            id="employeeId"
                                             className="rounded-lg  border-transparent border border-gray-300 w-full px-4 bg-white text-gray-500 placeholder-gray-600 shadow-md text-base focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                         />
                                     </div>
@@ -199,7 +199,7 @@ export const Userview = (props) => {
                                             disabled={!isEditing}
                                             onChange={handleChange}
                                             // value={location.state.userDetails.gender}
-                                            defaultValue={userData.gender}
+                                            defaultValue={userData?.gender?.genderType}
                                             type="text"
                                             id="gender"
                                             class=" rounded-lg border-transparent  border border-gray-300 w-full px-4 bg-white text-gray-500 placeholder-gray-600 shadow-md text-base focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
@@ -233,7 +233,7 @@ export const Userview = (props) => {
                                                 disabled={!isEditing}
                                                 onChange={handleChange}
                                                 // value={location.state.userDetails.permanentAddress}
-                                                defaultValue={userData.permanentAddress}
+                                                defaultValue={userData?.address?.permanentAddress}
                                                 type="text"
                                                 id="permanentAddress"
                                                 class=" rounded-lg border-transparent flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-500 placeholder-gray-900 shadow-md text-base focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
@@ -246,7 +246,7 @@ export const Userview = (props) => {
                                                 disabled={!isEditing}
                                                 onChange={handleChange}
                                                 // value={location.state.userDetails.presentAddress}
-                                                defaultValue={userData.presentAddress}
+                                                defaultValue={userData?.address?.currentAddress}
                                                 type="text"
                                                 id="presentAddress"
                                                 class=" rounded-lg border-transparent flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-500 placeholder-gray-900 shadow-md text-base focus:outline-none focus:ring-2 focus:ring-blue-500  focus:border-transparent"
@@ -282,7 +282,7 @@ export const Userview = (props) => {
                                             disabled={!isEditing}
                                             onChange={handleChange}
                                             // value={location.state.userDetails.department}
-                                            defaultValue={userData.department}
+                                            defaultValue={userData?.section?.department?.deptName}
                                             type="text"
                                             id="department"
                                             className="rounded-lg border-transparent border border-gray-300 w-full px-4 bg-white text-gray-500 placeholder-gray-600 shadow-md text-base focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
@@ -299,7 +299,7 @@ export const Userview = (props) => {
                                             disabled={!isEditing}
                                             onChange={handleChange}
                                             // value={location.state.userDetails.section}
-                                            defaultValue={userData.section}
+                                            defaultValue={userData?.section?.sectName}
                                             type="text"
                                             id="section"
                                             class=" rounded-lg border-transparent  border border-gray-300 w-full px-4 bg-white text-gray-500 placeholder-gray-600 shadow-md text-base focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
