@@ -50,6 +50,7 @@ export const AddUser = () => {
 
         bodyFormData.append('user', JSON.stringify(userBody));
         bodyFormData.append('profileImageFile', image);
+        // formData.append('File', selectedFiles);
 
         axios.post('https://smiling-mark-production.up.railway.app/users', bodyFormData, {
             headers: {
