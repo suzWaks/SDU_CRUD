@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useLocation } from 'react-router-dom';
 import axios from "axios";
 
 export const Tabledpt = () => {
+    const location = useLocation();
     const [data, setData] = useState([]);
     const [counter, setCounter] = useState(1);
     const navigate = useNavigate();
@@ -11,7 +13,7 @@ export const Tabledpt = () => {
     const viewUserHandler = (id) => {
         // Make an API call to fetch user details based on id
         axios
-            .get(`https://65890c1b324d41715258647c.mockapi.io/api/v1/reactcrud/${id}`)
+            .get(`https://smiling-mark-production.up.railway.app/users/${id}`)
             .then((response) => {
                 const userDetails = response.data;
                 console.log(userDetails);
@@ -24,7 +26,7 @@ export const Tabledpt = () => {
 
     useEffect(() => {
         axios
-            .get("https://65890c1b324d41715258647c.mockapi.io/api/v1/reactcrud")
+            .get(`https://smiling-mark-production.up.railway.app/users/departments/${location.state.deptDetails.deptId}`)
             .then((response) => setData(response.data))
             .catch((error) => console.error("Error fetching data:", error));
     }, []);
@@ -61,7 +63,7 @@ export const Tabledpt = () => {
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                         class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        placeholder="Search by first name"
+                        placeholder="Search by name"
                     />
                 </div>
             </div>
@@ -107,8 +109,8 @@ export const Tabledpt = () => {
                                     >
                                         <img
                                             class="w-10 h-10 rounded-full"
-                                            src="https://cdn-icons-png.flaticon.com/512/3177/3177440.png"
-                                            alt="Jese image"
+                                            src={`https://smiling-mark-production.up.railway.app/profile_images/${user.userId}`}
+
                                         />
                                         <div className="ps-3">
                                             <div className="text-base font-semibold">{`${user.firstName} ${user.middleName} ${user.lastName}`}</div>
@@ -118,11 +120,11 @@ export const Tabledpt = () => {
                                         </div>
                                     </th>
                                     <td className="px-6 py-4">{user.mobileNo}</td>
-                                    <td className="px-6 py-4">{user.department}</td>
+                                    <td className="px-6 py-4">{user?.section?.department?.deptName}</td>
                                     <td className="px-6 py-4 cursor-pointer ">
                                         <a
-                                            className="bg-blue-500 text-white px-3 py-2 rounded "
-                                            onClick={() => viewUserHandler(user.id)}
+                                            className="bg-sky-600 text-white px-3 py-2 rounded "
+                                            onClick={() => viewUserHandler(user.userId)}
                                         >
                                             View
                                         </a>

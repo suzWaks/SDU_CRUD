@@ -1,24 +1,33 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { FaEdit } from "react-icons/fa";
 
 export const Departments = () => {
+    const [deptName, setDeptName] = useState("");
+    const [deptDescription, setDeptDescription] = useState("");
+    const [deptId, setDeptId] = useState("");
+
     const navigate = useNavigate();
     const [cardData, setCardData] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [modalMessage, setModalMessage] = useState("");
     const [formValues, setFormValues] = useState({
-        name: "",
-        description: "",
-        imageURL: "",
+        deptName: "",
+        deptDescription: "",
+        image: null,
     });
     const [image, setImage] = useState(null);
+    const [editingDepartmentId, setEditingDepartmentId] = useState(null);
 
     useEffect(() => {
         // Fetch data from API when the component mounts
         axios
-            .get("https://6594e19204335332df819ace.mockapi.io/cards")
-            .then((response) => setCardData(response.data))
+            .get("https://smiling-mark-production.up.railway.app/departments")
+            .then((response) => setCardData(response.data),
+                console.log("data: ", cardData)
+            )
+
             .catch((error) => console.error("Error fetching data:", error));
     }, []);
 
@@ -33,60 +42,174 @@ export const Departments = () => {
         window.location.reload();
     };
 
-    const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        setFormValues((prevValues) => ({ ...prevValues, [name]: value }));
-    };
+    // 
 
-    const handleAddDepartment = (event) => {
-        event.preventDefault();
-        try {
-            // Fetch data from input fields
-            const { name, description, imageURL } = formValues;
+    const addDept = () => {
+        setFormValues({
+            deptName: "",
+            deptDescription: "",
+            image: "",
+        })
+        setIsModalOpen(true);
+    }
 
-            // Make sure required fields are not empty
-            //   if (!name || !description || !imageURL) {
-            //     openModal("Please fill in all required fields.");
-            //     return;
-            //   }
+    const handleEditDepartment = (id) => {
+        // Find the department with the given id in cardData
+        const department = cardData.find((dept) => dept.deptId === id);
 
-            // Define the data for the new department
-            const newDepartmentData = {
-                name,
-                description,
-                imageURL,
-            };
-            console.log(newDepartmentData, "Adding data");
-
-            // Make a POST request to add a new department with the provided data
-            axios
-                .post(
-                    "https://6594e19204335332df819ace.mockapi.io/cards",
-                    newDepartmentData
-                )
-                .then(() => {
-                    // Clear form values
-                    setFormValues({
-                        name: "",
-                        description: "",
-                        imageURL: "",
-                    });
-
-                    // Open the success message modal
-                    openModal("Department added successfully!");
-                    //   window.location.reload();
-                    console.log("Added data");
-                })
-                .catch((error) => console.error("Error adding department:", error));
-        } catch (error) {
-            console.error("Error adding department:", error);
+        // Check if the department is found
+        if (department) {
+            // Call the function to handle editing with the department details
+            editDepartment(department);
         }
     };
 
+    const editDepartment = (department) => {
+        console.log("Editing department:", department);
+
+        // Navigate to the edit page or open a modal for editing
+        setIsModalOpen(true);
+
+        // Set the editing department ID
+        setEditingDepartmentId(department.deptId);
+
+        const imagePath = department.departmentImage ? department.departmentImage.deptImagePath : '';
+        setFormValues({
+            deptName: department.deptName,
+            deptDescription: department.deptDescription,
+            image: null, // Clear the previous image to prevent displaying the wrong image
+        });
+
+        // Fetch the image and set it in the state
+        axios
+            .get(`https://smiling-mark-production.up.railway.app/departments/images/${department.deptId}`, {
+                responseType: 'blob',
+            })
+            .then((response) => {
+                console.log("Fetching image")
+                const imageFile = new File([response.data], `${department.deptId}.png`, { type: 'image/png' });
+                console.log(imageFile);
+                setImage(imageFile);
+            })
+            .catch((error) => {
+                console.error("Error fetching department image:", error);
+            });
+    };
+
+    const handleUpdateDepartment = (event) => {
+        event.preventDefault();
+        console.log("Updating");
+        // Check if an image is selected
+        if (image) {
+            var bodyFormData = new FormData();
+
+            const updatedDepartmentData = {
+                deptId: editingDepartmentId,
+                deptName: formValues.deptName,
+                deptDescription: formValues.deptDescription,
+            };
+
+            console.log("Dept Name: ", updatedDepartmentData);
+
+            const json = JSON.stringify(updatedDepartmentData);
+            const blob = new Blob([json], {
+                type: 'application/json',
+            });
+
+            bodyFormData.append('department', blob);
+            bodyFormData.append('departmentImage', image);
+
+            axios
+                .put(
+                    `https://smiling-mark-production.up.railway.app/departments`,
+                    bodyFormData,
+                    {
+                        headers: {
+                            'Content-Type': 'multipart/form-data',
+                        },
+                    }
+                )
+                .then(() => {
+                    console.log("Updating data")
+                    // Clear form values and close the modal
+                    setFormValues({
+                        deptName: "",
+                        deptDescription: "",
+                        image: null,
+                    });
+                    setIsModalOpen(false);
+                    setEditingDepartmentId(null);
+
+                    // Open the success message modal
+                    openModal("Department updated successfully!");
+                })
+                .catch((error) =>
+                    console.error("Error updating department:", error)
+                );
+        } else {
+            // Handle the case where no image is selected
+            console.error("Please select an image");
+        }
+    };
+
+
+    //handle add department
+    const handleAddDepartment = (event) => {
+        event.preventDefault();
+        console.log("Adding");
+
+        // Check if an image is selected
+        if (image) {
+            var bodyFormData = new FormData();
+
+            const newDepartmentData = {
+                deptName: formValues.deptName,
+                deptDescription: formValues.deptDescription,
+            };
+
+            const json = JSON.stringify(newDepartmentData);
+            const blob = new Blob([json], {
+                type: 'application/json',
+            });
+
+            bodyFormData.append('department', blob);
+            bodyFormData.append('departmentImage', image);
+
+            axios
+                .post(
+                    'https://smiling-mark-production.up.railway.app/departments',
+                    bodyFormData,
+                    {
+                        headers: {
+                            'Content-Type': 'multipart/form-data',
+                        },
+                    }
+                )
+                .then(() => {
+                    console.log(bodyFormData);
+                    // Clear form values and close the modal
+                    setFormValues({
+                        deptName: "",
+                        deptDescription: "",
+                        image: null,
+                    });
+                    setIsModalOpen(false);
+
+                    // Open the success message modal
+                    openModal("Department added successfully!");
+                })
+                .catch((error) =>
+                    console.error("Error adding department:", error)
+                );
+        } else {
+            // Handle the case where no image is selected
+            console.error("Please select an image");
+        }
+    };
     const viewDeptHandler = (id) => {
         // Make an API call to fetch user details based on id
         axios
-            .get(`https://6594e19204335332df819ace.mockapi.io/cards/${id}`)
+            .get(`https://smiling-mark-production.up.railway.app/departments/${id}`)
             .then((response) => {
                 const deptDetails = response.data;
                 console.log(deptDetails);
@@ -106,39 +229,46 @@ export const Departments = () => {
                     Departments
                 </h1>
                 <button
-                    onClick={() => setIsModalOpen(true)}
+                    onClick={() => addDept()}
                     className="mr-10 mt-11 mb-9 p-2 bg-sky-600 text-white rounded-md"
                 >
                     Add Department <span className="font-extrabold">+</span>
                 </button>
             </div>
             <hr></hr>
+
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-6 p-11">
                 {cardData.map((card, index) => (
-                    <div onClick={() => viewDeptHandler(card.id)} key={index}>
-                        <div
-                            key={index}
-                            className="max-w-sm p-2 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 overflow-hidden "
-                            style={{ height: "24rem", width: "22rem" }}
-                        >
-                            <a href="/">
-                                <img
-                                    className="rounded-t-lg"
-                                    style={{ height: "65%", width: "100%" }}
-                                    src={card.imageURL}
-                                    alt=""
-                                />
-                            </a>
-                            <div className="p-5">
-                                <a href="/">
-                                    <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-                                        {card.name}
+                    <div
+                        key={index}
+                        className="max-w-sm p-2 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 overflow-hidden"
+                        style={{ height: "24rem", width: "22rem" }}
+                    >
+                        <a onClick={() => viewDeptHandler(card.deptId)}>
+                            <img
+                                className="rounded-t-lg cursor-pointer"
+                                style={{ height: "65%", width: "100%" }}
+                                src={`https://smiling-mark-production.up.railway.app/departments/images/${card.deptId}`}
+
+                            />
+                        </a>
+                        <div className="p-5 flex flex-col justify-between">
+                            <div className="flex items-center justify-between mb-2">
+                                <a onClick={() => viewDeptHandler(card.deptId)}>
+                                    <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white cursor-pointer">
+                                        {card.deptName}
                                     </h5>
                                 </a>
-                                <p className="mb-3 font-normal text-gray-700 dark:text-gray-400 overflow-hidden overflow-ellipsis max-h-[3.6em] line-clamp-2">
-                                    {card.description}
-                                </p>
+                                <button
+                                    onClick={() => handleEditDepartment(card.deptId)}
+                                    className="px-1 py-1 text-white rounded-md"
+                                >
+                                    <FaEdit className="text-sky-500 w-6 h-auto" />
+                                </button>
                             </div>
+                            <p onClick={() => viewDeptHandler(card.deptId)} className="cursor-pointer mb-3 font-normal text-gray-700 dark:text-gray-400 overflow-hidden overflow-ellipsis max-h-[3.6em] line-clamp-2">
+                                {card.deptDescription}
+                            </p>
                         </div>
                     </div>
                 ))}
@@ -157,7 +287,9 @@ export const Departments = () => {
                         <div className="relative bg-white rounded-lg shadow dark:bg-gray-700 p-1">
                             <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
                                 <h3 className="text-2xl font-semibold text-gray-900 dark:text-white">
-                                    Add new department
+                                    {editingDepartmentId
+                                        ? "Update department"
+                                        : "Add new department"}
                                 </h3>
                                 <button
                                     type="button"
@@ -182,7 +314,9 @@ export const Departments = () => {
                                     <span className="sr-only">Close modal</span>
                                 </button>
                             </div>
-                            <form onSubmit={handleAddDepartment} className="p-4 md:p-5">
+                            <form onSubmit={editingDepartmentId
+                                ? handleUpdateDepartment
+                                : handleAddDepartment} className="p-4 md:p-5">
                                 <div className="grid gap-4 mb-4 grid-cols-2">
                                     <div className="col-span-2">
                                         <label
@@ -195,8 +329,8 @@ export const Departments = () => {
                                             type="text"
                                             name="name"
                                             id="name"
-                                            value={formValues.name}
-                                            onChange={handleInputChange}
+                                            defaultValue={formValues.deptName}
+                                            onChange={(e) => setFormValues({ ...formValues, deptName: e.target.value })}
                                             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                                             placeholder="Type department name"
                                             required
@@ -215,8 +349,8 @@ export const Departments = () => {
                                             name="description"
                                             maxLength="256"
                                             rows="4"
-                                            value={formValues.description}
-                                            onChange={handleInputChange}
+                                            defaultValue={formValues.deptDescription}
+                                            onChange={(e) => setFormValues({ ...formValues, deptDescription: e.target.value })}
                                             className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                             placeholder="Write something about the department"
                                             required
@@ -226,20 +360,23 @@ export const Departments = () => {
                                     <div class="float-end">
                                         <label
                                             class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                                            for="user_avatar"
+                                            htmlFor="image"
                                         >
                                             Upload user picture
                                         </label>
                                         <input
                                             onChange={(e) => setImage(e.target.files[0])}
                                             class="block w-full text-sm text-blue-500 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-blue-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
-                                            aria-describedby="user_avatar_help"
-                                            id="user_avatar"
+
+                                            id="image"
                                             type="file"
-                                            required
+                                            name="image"
+
                                         />
+                                        <span>{image ? image.name : 'No file selected'}</span>
                                     </div>
                                 </div>
+
                                 <button
                                     type="submit"
                                     className="text-white inline-flex items-center bg-sky-600 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
@@ -256,7 +393,9 @@ export const Departments = () => {
                                             clipRule="evenodd"
                                         ></path>
                                     </svg>
-                                    Add new department
+                                    {editingDepartmentId
+                                        ? "Update department"
+                                        : "Add new department"}
                                 </button>
                             </form>
                         </div>

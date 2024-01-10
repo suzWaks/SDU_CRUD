@@ -1,25 +1,35 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useLocation } from 'react-router-dom';
+import { FaPlus } from "react-icons/fa";
 import axios from 'axios';
 
 export const Sections = () => {
+    const location = useLocation();
     const navigate = useNavigate();
-    const [cardData, setCardData] = useState([]);
+    const [sectionData, setSectionData] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     useEffect(() => {
-        // Fetch data from API when the component mounts
-        axios.get('http://smiling-mark-production.up.railway.app/departments')
-            .then(response => setCardData(response.data))
-            .catch(error => console.error('Error fetching data:', error));
-    }, []);
+        const fetchData = async () => {
+            try {
+                const response = await axios.get(`https://smiling-mark-production.up.railway.app/sections/departments/${location.state.deptDetails.deptId}`);
+                setSectionData(response.data);
+                console.log(response.data);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        };
+
+        fetchData();
+    })
 
     const handleAddSection = (event) => {
         event.preventDefault();
         try {
             // Fetch data from input fields
             const name = document.getElementById('name').value;
-            
+
 
             // Make sure required fields are not empty
             if (!name) {
@@ -29,12 +39,15 @@ export const Sections = () => {
 
             // Define the data for the new department
             const newSectionData = {
-                name
+                sectName: name,
+                department: {
+                    deptId: location.state.deptDetails.deptId
+                }
             };
             console.log(newSectionData, "Adding data");
 
             // Make a POST request to add a new department with the provided data
-            axios.post('https://6594e19204335332df819ace.mockapi.io/cards', newSectionData)
+            axios.post('https://smiling-mark-production.up.railway.app/sections', newSectionData)
                 .then(() => {
                     // Close the modal
                     setIsModalOpen(false);
@@ -54,29 +67,23 @@ export const Sections = () => {
             <hr></hr>
             <div className='flex justify-between'>
                 <h1 className='pt-11 ml-5 px-11 text-4xl font-bold text-gray-500'>Sections</h1>
-                <button onClick={() => setIsModalOpen(true)} className=" mr-10 mt-11 mb-9 p-2 bg-sky-600 text-white rounded-md">
-                    Add Section <span className='font-extrabold'>+</span>
+                <button onClick={() => setIsModalOpen(true)} className="flex items-center mr-10 mt-11 mb-9 p-2 bg-sky-600 text-white rounded-md">
+                    Add Section <FaPlus className='w-3 ml-2' />
                 </button>
 
+
             </div>
+
             <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 <li className="flex flex-row mb-2 border-gray-400">
-                    <div className="transition duration-500 shadow ease-in-out transform hover:-translate-y-1 hover:shadow-lg select-none cursor-pointer bg-[#eac808] dark:bg-gray-800 rounded-md flex flex-1 items-center p-4">
-                        <h1 className="mb-4 text-xl font-bold leading-none tracking-tight text-white" >Front End Development</h1>
-                    </div>
+                    {sectionData.map((section) => (
+                        <div className="transition duration-500 shadow ease-in-out transform hover:-translate-y-1 hover:shadow-lg select-none cursor-pointer bg-sky-600 dark:bg-gray-800 rounded-md flex flex-1 items-center p-4">
+                            <h1 className="mb-4 text-xl font-bold leading-none tracking-tight text-white" >{section.sectName}</h1>
+                        </div>
+                    ))}
                 </li>
-                <li className="flex flex-row mb-2 border-gray-400">
-                    <div className="transition duration-500 shadow ease-in-out transform hover:-translate-y-1 hover:shadow-lg select-none cursor-pointer bg-[#3b82f6] dark:bg-gray-800 rounded-md flex flex-1 items-center p-4">
-                        <h1 className="mb-4 text-xl font-bold leading-none tracking-tight text-white" >Back End Development</h1>
-                    </div>
-                </li>
-                <li className="flex flex-row mb-2 border-gray-400">
-                    <div className="transition duration-500 shadow ease-in-out transform hover:-translate-y-1 hover:shadow-lg select-none cursor-pointer bg-[#a855f7] dark:bg-gray-800 rounded-md flex flex-1 items-center p-4">
-                        <h1 className="mb-4 text-xl font-bold leading-none tracking-tight text-white" >DevOps</h1>
-                    </div>
-                </li>
-
             </ul>
+
             {isModalOpen && (
                 <div id="crud-modal" role="dialog" aria-hidden="false" tabIndex="-1" className="fixed top-0 right-0 bottom-0 left-0 z-50 flex items-center justify-center max-h-screen max-w-screen bg-stone-800/50">
                     <div className="relative p-4 w-full max-w-md max-h-full">

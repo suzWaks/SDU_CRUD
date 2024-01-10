@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
-// import { Dashboard } from "./Dashboard";
 
-export const Userview = (props) => {
+export const Userview = () => {
     const location = useLocation();
     const navigate = useNavigate();
     // const [APIData, setAPIData] = useState([]);
@@ -40,42 +39,80 @@ export const Userview = (props) => {
     const hideUpdateConfirmationModal = () => {
         setUpdateConfirmationModalVisible(false);
     };
-    // const handleUpdate = async () => {
-    //   // Show the confirmation dialog before updating
-    //   showUpdateConfirmationModal();
-    // };
-    // const updateAPIData = async (id, updatedData) => {
-    //   try {
-    //     const response = await axios.put(
-    //       https://65890c1b324d41715258647c.mockapi.io/api/v1/reactcrud/${id}
-    //       // updatedData
-    //     );
 
-    //     console.log(response.data);
-    //     // alert("Updated successfully");
-    //     navigate("/");
-    //   } catch (error) {
-    //     console.error(error);
-    //     // alert("Update failed");
-    //     throw error; // Re-throwing the error to be caught by the calling function if needed
-    //   }
-    // };
     const updateAPIData = async () => {
-        const id = location.state.userDetails.id;
+        console.log("data format: ", userData);
+        var bodyFormData = new FormData();
+        const updatedUserData = {
+            userId: userData.userId,
+            employeeId: userData.employeeId,
+            firstName: userData.firstName,
+            middleName: userData.middleName,
+            lastName: userData.lastName,
+            gender: {
+                genderId: parseInt(userData.gender),
+                genderType: getGenderType(parseInt(userData.gender)),
+            },
+            email: userData.email,
+            mobileNo: userData.mobileNo,
+            cidNo: userData.cidNo,
+            dob: userData.dob,
+            address: {
+                addressId: userData.address.addressId,
+                currentAddress: userData.address.currentAddress,
+                permanentAddress: userData.address.permanentAddress,
+            },
+            section: {
+                sectId: userData.section.sectId,
+                sectName: userData.section.sectName,
+                department: {
+                    deptId: userData.section.department.deptId,
+                    deptName: userData.section.department.deptName,
+                    deptDescription: userData.section.department.deptDescription,
+                    departmentImage: userData.section.department.departmentImage,
+                },
+            },
+            profileImage: userData.profileImage,
+        };
 
-        try {
-            const response = await axios.put(
-                `https://smiling-mark-production.up.railway.app/users/`,
-                userData // Pass the updated user data
-            );
+        const json = JSON.stringify(updatedUserData);
+        const blob = new Blob([json], {
+            type: 'application/json'
+        })
+        bodyFormData.append('user', blob);
+        // bodyFormData.append('profileImageFile', image);
 
-            console.log(response.data);
-            navigate("/");
-        } catch (error) {
-            console.error(error);
-            // Handle error as needed
+        function getGenderType(genderId) {
+            switch (genderId) {
+                case 1:
+                    return 'Male';
+                case 2:
+                    return 'Female';
+                case 3:
+                    return 'Others';
+                default:
+                    return '';
+            }
         }
+
+        console.log("updated data format: ", updatedUserData);
+        axios.put('https://smiling-mark-production.up.railway.app/users', bodyFormData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        })
+            .then(response => {
+                console.log(response.status);
+                if (response.status === 201) {
+                    window.alert("User edited successfully");
+                    navigate('/');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
     };
+
 
     const handleChange = (e) => {
         console.log(e.target.value);
@@ -86,22 +123,19 @@ export const Userview = (props) => {
         }));
     };
 
-    // console.log("Location:", APIData);
-    const id = location.state.userDetails.id;
-
     const onDelete = async () => {
+        const ID = location.state.userDetails?.userId;
         try {
             await axios.delete(
-                `https://65890c1b324d41715258647c.mockapi.io/api/v1/reactcrud/${id}`
+                `https://smiling-mark-production.up.railway.app/users/${ID}`
             );
 
             // alert("Deleted Successfully");
             console.log("Location:", location);
-            // window.location.reload(); // Reload the page after successful deletion
-            //redirect to dashboard
             navigate("/");
         } catch (error) {
             console.error("Error deleting data:", error);
+
         }
     };
 
@@ -112,17 +146,15 @@ export const Userview = (props) => {
                     <div className="p-4 border-t-2 border-sky-600 rounded-lg bg-gray-100/5 ">
                         <div className="max-w-sm mx-auto md:w-full md:mx-0">
                             <div className="inline-flex items-center space-x-4">
-                                <a href="/" className="relative block">
+                                <a className="relative block">
                                     <img
                                         alt="profile"
-                                        src={`https://smiling-mark-production.up.railway.app/profile_images/${userData.userId}`}
+                                        src={`https://smiling-mark-production.up.railway.app/profile_images/${userData?.userId}`}
                                         className="mx-auto object-cover rounded-full h-16 w-16 "
                                     />
                                 </a>
                                 <h1 className="text-gray-600 text-xl">
-                                    {/* {location.state.userDetails.firstName}{" "}
-                  {location.state.userDetails.middleName}{" "}
-                  {location.state.userDetails.lastName} */}
+
                                     {userData.firstName}
                                     {""} {userData.middleName} {""}
                                     {userData.lastName}
@@ -195,15 +227,19 @@ export const Userview = (props) => {
                                 <h2 class="max-w-sm mx-auto md:w-1/3">Gender</h2>
                                 <div class="max-w-sm mx-auto md:w-2/3">
                                     <div class=" relative ">
-                                        <input
+                                        <select
                                             disabled={!isEditing}
                                             onChange={handleChange}
                                             // value={location.state.userDetails.gender}
-                                            defaultValue={userData?.gender?.genderType}
-                                            type="text"
+                                            value={userData && userData.gender ? userData.gender.genderId : ''}
                                             id="gender"
                                             class=" rounded-lg border-transparent  border border-gray-300 w-full px-4 bg-white text-gray-500 placeholder-gray-600 shadow-md text-base focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                        />
+                                        >
+                                            <option value="1">Male</option>
+                                            <option value="2">Female</option>
+                                            <option value="3">Others</option>
+                                        </select>
+
                                     </div>
                                 </div>
                             </div>
@@ -267,7 +303,7 @@ export const Userview = (props) => {
                                             onChange={handleChange}
                                             // value={location.state.userDetails.department}
                                             defaultValue={userData.mobileNo}
-                                            type="text"
+                                            type="number"
                                             id="mobileNo"
                                             className="rounded-lg border-transparent border border-gray-500 w-full px-4 bg-white text-gray-500 placeholder-gray-600 shadow-md text-base focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                         />
@@ -317,7 +353,7 @@ export const Userview = (props) => {
                                             onChange={handleChange}
                                             // value={location.state.userDetails.department}
                                             defaultValue={userData.cidNo}
-                                            type="number"
+                                            type="text"
                                             id="cid"
                                             className="rounded-lg border-transparent border border-gray-300 w-full px-4 bg-white text-gray-500 placeholder-gray-600 shadow-md text-base focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                         />

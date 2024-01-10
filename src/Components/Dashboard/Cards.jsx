@@ -36,10 +36,10 @@ export const Cards = () => {
     }, []);
 
     const cardData = [
-        { count: male, gender: 'Male', icon: <FaMale className="w-10 h-10" /> },
-        { count: female, gender: 'Female', icon: <FaFemale className="w-10 h-10" /> },
-        { count: others, gender: 'Others', icon: <FaTransgender className="w-10 h-10" /> },
-        { count: totalData, gender: 'Total Employee', icon: <FaUsers className="w-10 h-10" /> },
+        { count: male, gender: 'Male', icon: <FaMale className="w-10 h-10" />, bg: '#646AD4' },
+        { count: female, gender: 'Female', icon: <FaFemale className="w-10 h-10" />, bg: '#D464A1' },
+        { count: others, gender: 'Others', icon: <FaTransgender className="w-10 h-10" />, bg: '#75D464' },
+        { count: totalData, gender: 'Total Employee', icon: <FaUsers className="w-10 h-10" />, bg: '#D46464' },
 
     ];
 
@@ -49,13 +49,16 @@ export const Cards = () => {
                 {cardData.map((data, index) => (
                     <div
                         key={index}
-                        className="flex-grow w-64 p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700 flex"
+                        className="transition duration-200 shadow-md ease-in-out transform hover:-translate-y-1 flex-grow w-64 p-6  border border-gray-200 rounded-lg hover:shadow-lg dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700 flex"
+                        style={{
+                            backgroundColor: data.bg,
+                        }}
                     >
                         <div>
-                            <h5 className="mb-2 text-3xl font-bold tracking-tight text-gray-600 dark:text-white">{data.count}</h5>
-                            <p className="font-normal text-gray-400 dark:text-gray-400">{data.gender}</p>
+                            <h5 className="mb-2 text-3xl font-bold tracking-tight text-white dark:text-white">{data.count}</h5>
+                            <p className="font-normal text-gray-200 dark:text-gray-400">{data.gender}</p>
                         </div>
-                        <div className="ml-auto mt-2 w   text-sky-600 ">{data.icon}</div>
+                        <div className="ml-auto mt-2 w text-white ">{data.icon}</div>
                     </div>
                 ))}
             </div>

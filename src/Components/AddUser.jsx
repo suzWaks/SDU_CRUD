@@ -13,15 +13,11 @@ export const AddUser = () => {
     const [permanentAddress, setPermanentAddress] = useState("");
     const [currentAddress, setCurrentAddress] = useState("");
     const [genderId, setGenderId] = useState("");
-    const [userId, setUserId] = useState("");
+    const [employeeId, setEmployeeId] = useState("");
     const [dob, setDob] = useState("");
     const [image, setImage] = useState(null);
 
     const postData = () => {
-
-        console.log("Type of image:", typeof image);
-
-
         var bodyFormData = new FormData();
 
         const userBody = {
@@ -31,7 +27,7 @@ export const AddUser = () => {
             gender: {
                 genderId: genderId,
             },
-            userId,
+            employeeId,
             email,
             address: {
                 permanentAddress: permanentAddress,
@@ -48,9 +44,13 @@ export const AddUser = () => {
             dob
         }
 
-        bodyFormData.append('user', JSON.stringify(userBody));
+        const json = JSON.stringify(userBody);
+        const blob = new Blob([json], {
+            type: 'application/json'
+        })
+        bodyFormData.append('user', blob);
         bodyFormData.append('profileImageFile', image);
-        // formData.append('File', selectedFiles);
+
 
         axios.post('https://smiling-mark-production.up.railway.app/users', bodyFormData, {
             headers: {
@@ -58,63 +58,17 @@ export const AddUser = () => {
             },
         })
             .then(response => {
-                console.log(response.data);
+                console.log(response.status);
+                if (response.status === 201) {
+                    window.alert("User added successfully"); //TODO: Make Modal
+                    window.location.reload();
+                }
             })
             .catch(error => {
                 console.error('Error:', error);
             });
+
     }
-    // Check if all fields have values
-    // if (
-    //     firstName &&
-    //     middleName &&
-    //     lastName &&
-    //     genderId &&
-    //     userId &&
-    //     email &&
-    //     permanentAddress &&
-    //     currentAddress &&
-    //     departmentId &&
-    //     sectionId &&
-    //     mobileNo &&
-    //     cidNo &&
-    //     dob &&
-    //     image
-    // ) 
-    // {
-    //     axios.post("https://smiling-mark-production.up.railway.app/users", {
-    //         firstName,
-    //         middleName,
-    //         lastName,
-    //         gender: {
-    //             genderId: genderId,
-    //         },
-    //         userId,
-    //         email,
-    //         address: {
-    //             permanentAddress: permanentAddress,
-    //             currentAddress: currentAddress,
-
-    //         },
-    //         section: {
-    //             sectId: sectionId,
-    //             department: {
-    //                 deptId: departmentId,
-    //             }
-    //         },
-    //         mobileNo,
-    //         cidNo,
-    //         dob,
-    //         image,
-    //     });
-    // }
-    // // alert("Error adding user, you might need to check if there are existing departments and sections");
-
-    //     alert("User added successfully");
-    // } else {
-    //     alert("Please fill in all fields before submitting");
-    // }
-
 
 
     return (
@@ -158,12 +112,12 @@ export const AddUser = () => {
 
                             <div class="sm:col-span-2 grid grid-cols-3 gap-4">
                                 <div>
-                                    <label for="userID" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">User ID</label>
+                                    <label for="employeeId" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">User ID</label>
                                     <input
-                                        onInput={(e) => setUserId(e.target.value = Math.max(0, parseInt(e.target.value) || 0).toString().slice(0, 8))}
+                                        onInput={(e) => setEmployeeId(e.target.value = Math.max(0, parseInt(e.target.value) || 0).toString().slice(0, 8))}
                                         type="number"
-                                        name="userID"
-                                        id="userID"
+                                        name="employeeId"
+                                        id="employeeId"
                                         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                                         placeholder="12345678"
                                         required
@@ -216,7 +170,7 @@ export const AddUser = () => {
                                     <option >Select section</option>
                                     <option value="1">Frontend</option>
                                     <option value="2">Backend</option>
-                                    <option value="3">FullStack</option>
+                                    <option value="5">FullStack</option>
                                 </select>
                             </div>
 
