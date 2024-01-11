@@ -80,7 +80,7 @@ export const Tabledpt = () => {
                             Phone
                         </th>
                         <th scope="col" class="px-6 py-3">
-                            Department
+                            Section
                         </th>
                         <th scope="col" class="px-6 py-3">
                             Action
@@ -88,7 +88,7 @@ export const Tabledpt = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {Array.isArray(data) &&
+                    {Array.isArray(data) && data.length > 0 ? (
                         data
                             .filter((user) => {
                                 const fullName = [user.firstName, user.middleName, user.lastName]
@@ -120,7 +120,7 @@ export const Tabledpt = () => {
                                         </div>
                                     </th>
                                     <td className="px-6 py-4">{user.mobileNo}</td>
-                                    <td className="px-6 py-4">{user?.section?.department?.deptName}</td>
+                                    <td className="px-6 py-4">{user?.section?.sectName}</td>
                                     <td className="px-6 py-4 cursor-pointer ">
                                         <a
                                             className="bg-sky-600 text-white px-3 py-2 rounded "
@@ -130,7 +130,15 @@ export const Tabledpt = () => {
                                         </a>
                                     </td>
                                 </tr>
-                            ))}
+                            ))
+                    ) : (
+                        <tr>
+                            <td colspan="5" className="p-4 text-center">
+                                <h1 className="text-lg">No users found</h1>
+                            </td>
+                        </tr>
+                    )
+                    }
                 </tbody>
             </table>
         </div>

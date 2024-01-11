@@ -75,13 +75,15 @@ export const Sections = () => {
             </div>
 
             <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                <li className="flex flex-row mb-2 border-gray-400">
-                    {sectionData.map((section) => (
+                {sectionData.map((section) => (
+                    <li className="flex flex-row mb-2 border-gray-400">
+
                         <div className="transition duration-500 shadow ease-in-out transform hover:-translate-y-1 hover:shadow-lg select-none cursor-pointer bg-sky-600 dark:bg-gray-800 rounded-md flex flex-1 items-center p-4">
-                            <h1 className="mb-4 text-xl font-bold leading-none tracking-tight text-white" >{section.sectName}</h1>
+                            <h1 className="mb-4 text-xl font-bold capitalize leading-none tracking-tight text-white" >{section.sectName}</h1>
                         </div>
-                    ))}
-                </li>
+
+                    </li>
+                ))}
             </ul>
 
             {isModalOpen && (

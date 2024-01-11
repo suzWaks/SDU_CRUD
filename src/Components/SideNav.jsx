@@ -32,7 +32,7 @@ export const SideNav = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get('https://6594e19204335332df819ace.mockapi.io/cards');
+                const response = await axios.get('https://smiling-mark-production.up.railway.app/departments');
                 setApiData(response.data);
             } catch (error) {
                 console.error('Error fetching data:', error);
@@ -62,7 +62,7 @@ export const SideNav = () => {
 
     const viewDeptHandler = (id) => {
         // Make an API call to fetch user details based on id
-        axios.get(`https://6594e19204335332df819ace.mockapi.io/cards/${id}`)
+        axios.get(`https://smiling-mark-production.up.railway.app/departments/${id}`)
             .then(response => {
                 const deptDetails = response.data;
                 console.log(deptDetails);
@@ -127,10 +127,10 @@ export const SideNav = () => {
                             </a>
                         </div>
                         {Array.isArray(apiData) && apiData.map((data) => (
-                            <ul key={data.id} className="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefaultButton">
+                            <ul key={data.deptId} className="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefaultButton">
                                 <li>
-                                    <a onClick={() => viewDeptHandler(data.id)} className="block px-4 py-2 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
-                                        {data.name}
+                                    <a onClick={() => viewDeptHandler(data.deptId)} className="block px-4 py-2 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                                        {data.deptName}
                                     </a>
                                 </li>
                             </ul>

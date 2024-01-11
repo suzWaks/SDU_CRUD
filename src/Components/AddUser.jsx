@@ -70,6 +70,33 @@ export const AddUser = () => {
 
     }
 
+    const [department, setDepartment] = useState();
+
+    useEffect(() => {
+        axios.get('https://smiling-mark-production.up.railway.app/departments')
+            .then(response => {
+                setDepartment(response.data);
+                console.log("department data:", response.data);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            })
+    }
+        , []);
+    const [sections, setSections] = useState([]);
+
+    useEffect(() => {
+        axios.get('https://smiling-mark-production.up.railway.app/sections')
+            .then(response => {
+                // Filter sections based on the selected departmentId
+                const filteredSections = response.data.filter(section => section.department.deptId === parseInt(departmentId));
+                setSections(filteredSections);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }, [departmentId]);
+
 
     return (
         <div className='w-screen overflow-scroll pb-11'>
@@ -157,9 +184,11 @@ export const AddUser = () => {
                                 <label for="category" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Department</label>
                                 <select onChange={(e) => setDepartmentId(e.target.value)} id="category" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
                                     <option >Select department</option>
-                                    <option value="1">SDU</option>
-                                    <option value="2">Customer Care</option>
-                                    <option value="3">Tashi Electronics</option>
+                                    {Array.isArray(department) && department.map((dpt) => (
+                                        <option value={dpt.deptId}>{dpt.deptName}</option>
+                                        // , console.log("ID:", dpt.deptId)
+                                    ))}
+
 
                                 </select>
                             </div>
@@ -167,10 +196,21 @@ export const AddUser = () => {
                             <div>
                                 <label for="category" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Section</label>
                                 <select onChange={(e) => setSectionId(e.target.value)} id="category" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-                                    <option >Select section</option>
-                                    <option value="1">Frontend</option>
-                                    <option value="2">Backend</option>
-                                    <option value="5">FullStack</option>
+
+                                    {departmentId ? (
+                                        <>
+                                            <option>Select section</option>
+                                            {Array.isArray(sections) && sections.map((section) => (
+                                                <option key={section.sectId} value={section.sectId}>{section.sectName}</option>
+                                            ))}
+                                        </>
+                                    ) : (
+                                        <>
+                                            <option >Select section</option>
+                                            <option disabled>Select a department first!!!</option>
+                                        </>
+
+                                    )}
                                 </select>
                             </div>
 
