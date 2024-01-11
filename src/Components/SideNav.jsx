@@ -104,8 +104,8 @@ export const SideNav = () => {
                             className="flex items-center py-4 px-10 text-white rounded-lg dark:text-white hover:bg-sky-800 dark:hover:bg-gray-700 group"
                         >
                             <FaFolder className="mr-2 w-5 h-5 text-white transition duration-75 dark:text-gray-400  dark:group-hover:text-white" />
-                            <div className="ms-3 text-lg">Departments</div>
-                            <svg
+                            <div onClick={DeptHandler} className="ms-3 text-lg">Departments</div>
+                            {/* <svg
                                 className={`w-2.5 h-2.5 ms-3 ${isDropdownOpen ? 'transform rotate-180' : ''}`}
                                 aria-hidden="true"
                                 xmlns="http://www.w3.org/2000/svg"
@@ -113,12 +113,12 @@ export const SideNav = () => {
                                 viewBox="0 0 10 6"
                             >
                                 <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 4 4 4-4" />
-                            </svg>
+                            </svg> */}
                         </button>
                     </li>
 
                     {/* Dropdown Content */}
-                    <div
+                    {/* <div
                         className={`z-10 ${isDropdownOpen ? 'block' : 'hidden'} bg-white divide-y divide-gray-300 rounded-lg overflow-auto h-[200px] shadow w-44 dark:bg-gray-700 mx-7`}
                     >
                         <div onClick={DeptHandler}>
@@ -135,7 +135,7 @@ export const SideNav = () => {
                                 </li>
                             </ul>
                         ))}
-                    </div>
+                    </div> */}
                     <li onClick={AddUserHandler} className="flex items-right mb-5">
                         <a href="#" className="flex items-center py-4 px-10 text-white rounded-lg dark:text-white hover:bg-sky-800 dark:hover:bg-gray-700 group">
                             <FaUserPlus className="mr-2 w-5 h-5 text-white transition duration-75 dark:text-gray-400  dark:group-hover:text-white" />

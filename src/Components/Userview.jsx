@@ -1,14 +1,52 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 export const Userview = () => {
+
+    const [successMessage, setSuccessMessage] = useState("");
+
+    // Show success modal function
+    const showSuccessModal = (message) => {
+        console.log("showSuccessModal called: ", message);
+        setSuccessMessage(message);
+        // setAddConfirmationModalVisible(true);
+        setTimeout(() => {
+            hideSuccessModal();
+            navigate('/');
+        }, 3000);
+    };
+
+    // Hide success modal function
+    const hideSuccessModal = () => {
+        setSuccessMessage("");
+    };
+
+    //Delete message
+    const [deleteMessage, setDeleteMessage] = useState("");
+
+    // Show success modal function
+    const showDeleteModal = (message) => {
+        console.log("showDeleteModal called: ", message);
+        setDeleteMessage(message);
+        // setAddConfirmationModalVisible(true);
+        setTimeout(() => {
+            hideDeleteModal();
+            navigate('/');
+        }, 3000);
+    };
+
+    // Hide delete modal function
+    const hideDeleteModal = () => {
+        setDeleteMessage("");
+    };
+
     const location = useLocation();
     const navigate = useNavigate();
-    // const [APIData, setAPIData] = useState([]);
-    // const [deleteData, setDeleteData] = useState([]);
+
     const [isEditing, setIsEditing] = useState(false);
     const [userData, setUserData] = useState(location.state.userDetails);
+    const [departmentId, setDepartmentId] = useState(location.state.userDetails?.section?.department?.deptId);
     const [isDeleteConfirmationModalVisible, setDeleteConfirmationModalVisible] =
         useState(false);
     const [isUpdateConfirmationModalVisible, setUpdateConfirmationModalVisible] =
@@ -43,6 +81,9 @@ export const Userview = () => {
     const updateAPIData = async () => {
         console.log("data format: ", userData);
         var bodyFormData = new FormData();
+
+        console.log("New Gender", userData.gender.genderId);
+
         const updatedUserData = {
             userId: userData.userId,
             employeeId: userData.employeeId,
@@ -50,27 +91,21 @@ export const Userview = () => {
             middleName: userData.middleName,
             lastName: userData.lastName,
             gender: {
-                genderId: parseInt(userData.gender),
-                genderType: getGenderType(parseInt(userData.gender)),
+                genderId: parseInt(userData.gender.genderId !== undefined ? userData.gender.genderId : userData.gender),
+                // genderType: getGenderType(parseInt(userData.gender)),
+                // genderId: userData.gender.genderId,
             },
             email: userData.email,
             mobileNo: userData.mobileNo,
-            cidNo: userData.cidNo,
+            cidNo: userData.cid === undefined ? userData.cidNo : userData.cid,
             dob: userData.dob,
             address: {
                 addressId: userData.address.addressId,
-                currentAddress: userData.address.currentAddress,
-                permanentAddress: userData.address.permanentAddress,
+                currentAddress: userData.presentAddress === undefined ? userData.address.currentAddress : userData.presentAddress,
+                permanentAddress: userData.permanentAddress === undefined ? userData.address.permanentAddress : userData.permanentAddress,
             },
             section: {
-                sectId: userData.section.sectId,
-                sectName: userData.section.sectName,
-                department: {
-                    deptId: userData.section.department.deptId,
-                    deptName: userData.section.department.deptName,
-                    deptDescription: userData.section.department.deptDescription,
-                    departmentImage: userData.section.department.departmentImage,
-                },
+                sectId: parseInt(userData.section.sectId === undefined ? userData.section : userData.section.sectId),
             },
             profileImage: userData.profileImage,
         };
@@ -95,6 +130,8 @@ export const Userview = () => {
             }
         }
 
+
+
         console.log("updated data format: ", updatedUserData);
         axios.put('https://smiling-mark-production.up.railway.app/users', bodyFormData, {
             headers: {
@@ -104,18 +141,20 @@ export const Userview = () => {
             .then(response => {
                 console.log(response.status);
                 if (response.status === 201) {
-                    window.alert("User edited successfully");
-                    navigate('/');
+
+                    showSuccessModal("User edited successfully");
+
                 }
             })
             .catch(error => {
-                console.error('Error:', error);
+                showSuccessModal("Unable to edit user, please check your CID/ Emlpoyee ID")
             });
     };
 
 
     const handleChange = (e) => {
-        console.log(e.target.value);
+        console.log("Department inside handle", department);
+        console.log("Changing value: ", e.target.value);
         const { id, value } = e.target;
         setUserData((prevData) => ({
             ...prevData,
@@ -129,15 +168,51 @@ export const Userview = () => {
             await axios.delete(
                 `https://smiling-mark-production.up.railway.app/users/${ID}`
             );
-
-            // alert("Deleted Successfully");
+            showDeleteModal("User deleted successfully")
+            // alert("Deleted Successfully"); 
             console.log("Location:", location);
-            navigate("/");
+
         } catch (error) {
+            showDeleteModal("Failed to delete user")
             console.error("Error deleting data:", error);
 
         }
     };
+    console.log("User Details::: ", userData);
+
+    //Fetch departments
+    const [department, setDepartment] = useState();
+    // console.log("User Details: ", location.state.userDetails);
+    useEffect(() => {
+        axios.get('https://smiling-mark-production.up.railway.app/departments')
+            .then(response => {
+                setDepartment(response.data);
+                console.log("department data:", response.data);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            })
+    }
+        , []);
+
+
+    //Fetch sections
+    const [sections, setSections] = useState([]);
+    console.log("Dept ID: ", departmentId);
+    useEffect(() => {
+        axios.get('https://smiling-mark-production.up.railway.app/sections')
+            .then(response => {
+                // Filter sections based on the selected departmentId
+                const filteredSections = response.data.filter(section => section.department.deptId === parseInt(departmentId));
+                setSections(filteredSections);
+                console.log("Filtered sections:", filteredSections);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }, [departmentId]);
+
+
 
     return (
         <section className="h-screen w-screen bg-gray-100/50 pt-10 overflow-scroll">
@@ -166,7 +241,7 @@ export const Userview = () => {
                     <div className="grid grid-cols-1 md:grid-cols-2 max-w-screen bg-white">
                         <div className="flex-1">
                             <div className="items-center w-full p-4 space-y-4 text-gray-900 md:inline-flex  ">
-                                <h2 className="max-w-sm mx-auto md:w-1/3">User ID</h2>
+                                <h2 className="max-w-sm mx-auto md:w-1/3">Employee ID</h2>
                                 <div className="max-w-sm mx-auto md:w-2/3 flex-1">
                                     <div className="relative">
                                         <input
@@ -314,15 +389,22 @@ export const Userview = () => {
                                 <h2 className="max-w-sm mx-auto md:w-1/3">Department</h2>
                                 <div className="max-w-sm mx-auto md:w-2/3 flex-1">
                                     <div className="relative">
-                                        <input
+
+                                        <select
                                             disabled={!isEditing}
-                                            onChange={handleChange}
-                                            // value={location.state.userDetails.department}
-                                            defaultValue={userData?.section?.department?.deptName}
-                                            type="text"
+                                            value={departmentId}
+                                            onChange={(e) => setDepartmentId(e.target.value)}
                                             id="department"
-                                            className="rounded-lg border-transparent border border-gray-300 w-full px-4 bg-white text-gray-500 placeholder-gray-600 shadow-md text-base focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                        />
+                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                        >
+                                            <option >Select department</option>
+                                            {Array.isArray(department) && department.map((dpt) => (
+                                                <option value={parseInt(dpt.deptId)}>{dpt.deptName}</option>
+
+                                            ))}
+
+
+                                        </select>
                                     </div>
                                 </div>
                             </div>
@@ -331,15 +413,15 @@ export const Userview = () => {
                                 <h2 class="max-w-sm mx-auto md:w-1/3">Section</h2>
                                 <div class="max-w-sm mx-auto md:w-2/3">
                                     <div class=" relative ">
-                                        <input
-                                            disabled={!isEditing}
-                                            onChange={handleChange}
-                                            // value={location.state.userDetails.section}
-                                            defaultValue={userData?.section?.sectName}
-                                            type="text"
-                                            id="section"
-                                            class=" rounded-lg border-transparent  border border-gray-300 w-full px-4 bg-white text-gray-500 placeholder-gray-600 shadow-md text-base focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                        />
+                                        <select disabled={!isEditing}
+                                            value={userData.section.sectId} onChange={handleChange} id="section" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                                            <option >Select section</option>
+                                            {Array.isArray(sections) && sections.map((section) => (
+                                                <option value={parseInt(section.sectId)}>{section.sectName}</option>
+
+                                            ))}
+
+                                        </select>
                                     </div>
                                 </div>
                             </div>
@@ -370,7 +452,7 @@ export const Userview = () => {
                                             onChange={handleChange}
                                             // value={location.state.userDetails.section}
                                             defaultValue={userData.dob}
-                                            type="dob"
+                                            type="date"
                                             id="dob"
                                             class=" rounded-lg border-transparent  border border-gray-300 w-full px-4 bg-white text-gray-500 placeholder-gray-600 shadow-md text-base focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                         />
@@ -403,7 +485,10 @@ export const Userview = () => {
 
                                     <button
                                         // onClick={handleUpdate}
-                                        onClick={() => setIsEditing(false)}
+                                        onClick={() => {
+                                            setIsEditing(false);
+                                            window.location.reload();
+                                        }}
                                         type="button"
                                         className="py-2 px-4 mr-4 outline-green-600 hover:bg-green-700 focus:ring-green-500 focus:ring-offset-green-200 text-green-500 hover:text-white transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 rounded-lg"
                                     >
@@ -528,6 +613,50 @@ export const Userview = () => {
                     </div>
                 )
             }
+            {successMessage && (
+                <div
+                    className={`fixed flex-col animate-pulse top-4 right-4 z-50 p-4 text-sm text-${successMessage === "Unable to edit user, please check your CID/ Emlpoyee ID" ? 'red' : 'green'}-800 rounded-lg bg-${successMessage === "Unable to edit user, please check your CID/ Emlpoyee ID" ? 'red' : 'green'}-300`}
+                    role="alert"
+                >
+                    <div>
+                        <svg
+                            className="flex-shrink-0 inline w-4 h-4 me-3"
+                            aria-hidden="true"
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="white"
+                            viewBox="0 0 20 20"
+                        >
+                            <path d="M10 ..." />
+                        </svg>
+                        <span className="sr-only">Info</span>
+                        <span className="font-medium">{successMessage === "Unable to edit user, please check your CID/ Emlpoyee ID" ? 'Error' : 'Success'}</span> {successMessage}
+                        {/* <span className="font-medium">Success!</span> {successMessage} */}
+                    </div>
+                </div>
+            )}
+            {deleteMessage && (
+                <div
+                    className={`fixed flex-col animate-pulse top-4 right-4 z-50 p-4 text-sm text-${deleteMessage === "User deleted successfully" ? 'red' : 'green'}-800
+                         rounded-lg bg-${deleteMessage === "User deleted successfully" ? 'red' : 'green'}-300`}
+                    role="alert"
+                >
+                    <div>
+                        <svg
+                            className="flex-shrink-0 inline w-4 h-4 me-3"
+                            aria-hidden="true"
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="white"
+                            viewBox="0 0 20 20"
+                        >
+                            <path d="M10 ..." />
+                        </svg>
+                        <span className="sr-only">Info</span>
+                        <span className="font-medium">{deleteMessage === "User deleted successfully" ? 'Success' : 'Error'}
+                        </span> {deleteMessage}
+                        {/* <span className="font-medium">Success!</span> {successMessage} */}
+                    </div>
+                </div>
+            )}
         </section >
     );
 };
