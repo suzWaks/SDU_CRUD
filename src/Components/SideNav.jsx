@@ -17,7 +17,7 @@ export const SideNav = () => {
     };
 
     const AddUserHandler = () => {
-        navigate('/adduser');
+        navigate('https://sdu-ums-internship.netlify.app/adduser');
     };
 
     const handleBarsClick = () => {
