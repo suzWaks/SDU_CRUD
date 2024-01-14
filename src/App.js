@@ -16,7 +16,7 @@ function App() {
         <Routes>
           <Route path="" element={<Dashboard />} />
           <Route path="/" element={<Dashboard />} />
-          <Route path="https://sdu-ums-internship.netlify.app/adduser" element={<AddUser />} />
+          <Route path="/adduser" element={<AddUser />} />
           <Route path="/departments" element={<Departments />} />
           <Route path="/userview" element={<Userview />} />
           <Route path="/deptview" element={<DeptView />} />
