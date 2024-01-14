@@ -38,7 +38,7 @@ export const SideNav = () => {
             if (newIsSmallScreen) {
                 setExpanded(false);
             }
-        };  
+        };
 
         window.addEventListener('resize', handleResize);
 
@@ -78,21 +78,20 @@ export const SideNav = () => {
                 <hr className='w-[224px] ml-10 mb-11'></hr>
                 <ul className="space-y-2 font-medium pl-9">
                     <li onClick={DashHandler} className="flex items-right">
-                        <a className="flex items-center py-4 px-10 text-white rounded-lg dark:text-white hover:bg-sky-800 dark:hover:bg-gray-700 group">
+                        <div className="flex items-center cursor-pointer py-4 px-10 text-white rounded-lg dark:text-white hover:bg-sky-800 dark:hover:bg-gray-700 group">
                             <FaTable className="mr-2 w-5 h-5 text-white transition duration-75 dark:text-gray-400  dark:group-hover:text-white" />
                             <div className="ms-3 text-lg ">Dashboard</div>
-                        </a>
+                        </div>
                     </li>
 
                     {/* Dropdown Button */}
                     <li className="flex items-right mb-5">
-                        <button
-                            onClick={toggleDropdown}
-                            className="flex items-center py-4 px-10 text-white rounded-lg dark:text-white hover:bg-sky-800 dark:hover:bg-gray-700 group"
-                        >
+
+                        <div onClick={DeptHandler} className="flex items-center cursor-pointer py-4 px-10 text-white rounded-lg dark:text-white hover:bg-sky-800 dark:hover:bg-gray-700 group">
                             <FaFolder className="mr-2 w-5 h-5 text-white transition duration-75 dark:text-gray-400  dark:group-hover:text-white" />
-                            <div onClick={DeptHandler} className="ms-3 text-lg">Departments</div>
-                            {/* <svg
+                            <div className="ms-3 text-lg">Departments</div>
+                        </div>
+                        {/* <svg
                                 className={`w-2.5 h-2.5 ms-3 ${isDropdownOpen ? 'transform rotate-180' : ''}`}
                                 aria-hidden="true"
                                 xmlns="http://www.w3.org/2000/svg"
@@ -101,7 +100,7 @@ export const SideNav = () => {
                             >
                                 <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 4 4 4-4" />
                             </svg> */}
-                        </button>
+
                     </li>
 
                     {/* Dropdown Content */}
@@ -124,10 +123,10 @@ export const SideNav = () => {
                         ))}
                     </div> */}
                     <li onClick={AddUserHandler} className="flex items-right mb-5">
-                        <a className="flex items-center py-4 px-10 text-white rounded-lg dark:text-white hover:bg-sky-800 dark:hover:bg-gray-700 group">
+                        <div className="flex cursor-pointer items-center py-4 px-10 text-white rounded-lg dark:text-white hover:bg-sky-800 dark:hover:bg-gray-700 group">
                             <FaUserPlus className="mr-2 w-5 h-5 text-white transition duration-75 dark:text-gray-400  dark:group-hover:text-white" />
                             <span className="ms-3  text-lg">Add User</span>
-                        </a>
+                        </div>
                     </li>
                 </ul>
             </div>
