@@ -509,7 +509,7 @@ export const Userview = () => {
                                         <button
                                             onClick={handleEdit}
                                             type="button"
-                                            className="py-2 px-4 mr-4 bg-blue-600 hover:bg-blue-700 focus:ring-blue-500 focus:ring-offset-blue-200 text-white transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 rounded-lg"
+                                            className="py-2 px-4 mr-4 bg-sky-600 hover:bg-sky-700 focus:ring-blue-500 focus:ring-offset-blue-200 text-white transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 rounded-lg"
                                         >
                                             Edit
                                         </button>
@@ -599,7 +599,7 @@ export const Userview = () => {
                                     // handleUpdate();
                                 }}
                                 // onClick={updateAPIData}
-                                className="bg-blue-600 text-white px-4 py-2 rounded-lg mr-5 ml-12 hover:bg-blue-500"
+                                className="bg-sky-600 text-white px-4 py-2 rounded-lg mr-5 ml-12 hover:bg-sky-500"
                             >
                                 Yes, Update
                             </button>

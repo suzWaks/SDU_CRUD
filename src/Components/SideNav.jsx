@@ -84,7 +84,7 @@ export const SideNav = () => {
                 <span className='absolute text-4xl top-5 mt-5 mr-5 left-4 cursor-pointer' onClick={handleBarsClick}>
                     <FaBars className={barsIconClass} />
                 </span>
-                <div className="text-center py-8">
+                <div onClick={DashHandler} className="text-center py-8 cursor-pointer">
                     <img className='pl-11 ml-9' src="https://www.tashicell.com/themes/tashicell/assets/images/logo.png" alt="Logo" />
                     <h1 className="text-2xl font-bold mb-4 text-white">SDU UMS</h1>
                 </div>
