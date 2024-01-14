@@ -16,8 +16,7 @@ export const AddUser = () => {
     const [employeeId, setEmployeeId] = useState("");
     const [dob, setDob] = useState("");
     const [image, setImage] = useState(null);
-    const navigate = useNavigate();
-    //
+
     const [isAddConfirmationModalVisible, setAddConfirmationModalVisible] =
         useState(false);
     const [successMessage, setSuccessMessage] = useState("");
