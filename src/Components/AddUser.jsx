@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useNavigate } from 'react-router-dom';
+
 export const AddUser = () => {
     const [firstName, setFirstName] = useState("");
     const [middleName, setMiddleName] = useState("");
@@ -16,7 +16,7 @@ export const AddUser = () => {
     const [employeeId, setEmployeeId] = useState("");
     const [dob, setDob] = useState("");
     const [image, setImage] = useState(null);
-    const navigate = useNavigate();
+    
     //
     const [isAddConfirmationModalVisible, setAddConfirmationModalVisible] =
         useState(false);
@@ -30,7 +30,7 @@ export const AddUser = () => {
         // setAddConfirmationModalVisible(true);
         setTimeout(() => {
             hideSuccessModal();
-            navigate('/adduser')
+            window.location.reload();
         }, 3000);
 
     };
