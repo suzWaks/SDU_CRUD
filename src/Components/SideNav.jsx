@@ -30,19 +30,6 @@ export const SideNav = () => {
     };
 
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await axios.get('https://smiling-mark-production.up.railway.app/departments');
-                setApiData(response.data);
-            } catch (error) {
-                console.error('Error fetching data:', error);
-            }
-        };
-
-        fetchData();
-    }, []);
-
-    useEffect(() => {
         const handleResize = () => {
             const newIsSmallScreen = window.innerWidth <= 768;
             setIsSmallScreen(newIsSmallScreen);
@@ -51,7 +38,7 @@ export const SideNav = () => {
             if (newIsSmallScreen) {
                 setExpanded(false);
             }
-        };
+        };  
 
         window.addEventListener('resize', handleResize);
 
@@ -137,7 +124,7 @@ export const SideNav = () => {
                         ))}
                     </div> */}
                     <li onClick={AddUserHandler} className="flex items-right mb-5">
-                        <a  className="flex items-center py-4 px-10 text-white rounded-lg dark:text-white hover:bg-sky-800 dark:hover:bg-gray-700 group">
+                        <a className="flex items-center py-4 px-10 text-white rounded-lg dark:text-white hover:bg-sky-800 dark:hover:bg-gray-700 group">
                             <FaUserPlus className="mr-2 w-5 h-5 text-white transition duration-75 dark:text-gray-400  dark:group-hover:text-white" />
                             <span className="ms-3  text-lg">Add User</span>
                         </a>
