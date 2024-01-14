@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-
+import { useNavigate } from 'react-router-dom';
 export const AddUser = () => {
     const [firstName, setFirstName] = useState("");
     const [middleName, setMiddleName] = useState("");
@@ -16,7 +16,8 @@ export const AddUser = () => {
     const [employeeId, setEmployeeId] = useState("");
     const [dob, setDob] = useState("");
     const [image, setImage] = useState(null);
-
+    const navigate = useNavigate();
+    //
     const [isAddConfirmationModalVisible, setAddConfirmationModalVisible] =
         useState(false);
     const [successMessage, setSuccessMessage] = useState("");
@@ -29,16 +30,10 @@ export const AddUser = () => {
         // setAddConfirmationModalVisible(true);
         setTimeout(() => {
             hideSuccessModal();
-            resetForm();
+            navigate('/adduser')
         }, 3000);
 
     };
-
-    const resetForm = () => {
-        // Assuming 'myForm' is the ID of your form
-        document.getElementById('adduserform').reset();
-    };
-
 
     // Hide success modal function
     const hideSuccessModal = () => {
@@ -182,7 +177,7 @@ export const AddUser = () => {
             <hr></hr>
             <section class="pt-8 ">
                 <div class=" px-8 mx-auto max-w-2xl lg:py-4 shadow-md md:w-3/4 border-t-2 border-sky-600 rounded-lg p-8">
-                    <form onSubmit={(e) => e.preventDefault()} id="adduserform" className="rounded">
+                    <form onSubmit={(e) => e.preventDefault()} className="rounded">
                         <div class="grid gap-4 sm:grid-cols-2 sm:gap-6">
                             <div class="sm:col-span-2 grid grid-cols-3 gap-4">
                                 <div>
