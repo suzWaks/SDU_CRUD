@@ -45,7 +45,7 @@ export const Cards = () => {
 
     return (
         <div className='w-max-screen pt-10 pb-5 overflow-auto'>
-            <div className="flex justify-evenly space-x-4 m-4">
+            <div className="flex justify-evenly space-x-4 m-4 overflow-auto">
                 {cardData.map((data, index) => (
                     <div
                         key={index}
