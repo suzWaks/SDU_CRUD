@@ -25,7 +25,7 @@ export const Departments = () => {
             )
 
             .catch((error) => console.error("Error fetching data:", error));
-    }, []);
+    });
 
     const openModal = (message) => {
         setModalMessage(message);
@@ -36,7 +36,6 @@ export const Departments = () => {
         navigate('/departments');
         setIsModalOpen(false);
         setModalMessage("");
-        
     };
 
     // 
