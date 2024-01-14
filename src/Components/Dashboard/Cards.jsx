@@ -56,7 +56,7 @@ export const Cards = () => {
               >
                 <div className="flex justify-between">
                   <div>
-                    <h5 className="mb-2 text-3xl font-bold tracking-tight text-white dark:text-white">{data.count}1</h5>
+                    <h5 className="mb-2 text-3xl font-bold tracking-tight text-white dark:text-white">{data.count}</h5>
                     <p className="font-normal text-gray-200 dark:text-gray-400">{data.gender}</p>
                   </div>
                   <div className="ml-auto w text-white ">{data.icon}</div>
