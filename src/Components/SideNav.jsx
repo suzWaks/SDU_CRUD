@@ -62,7 +62,7 @@ export const SideNav = () => {
     const barsIconClass = `w-8 h-8 mt-3 text-sky-600 lg:hidden ${isSmallScreen ? '' : 'hidden'} ${isSmallScreen && expanded ? 'text-cyan-100' : 'text-sky-600'}`;
     return (
         <aside>
-            <div style={sidebarStyle} className="sidebar h-full top-0 bottom-0 items-center text-center lg:w-[310px] xl:w-[310px] w-[310px] py-4 rounded-r-3xl bg-sky-700 dark:bg-gray-800">
+            <div style={sidebarStyle} className="sidebar h-full top-0 bottom-0 items-center text-center lg:w-[310px] xl:w-[310px] w-[310px] py-4 rounded-r-3xl bg-red-700 dark:bg-gray-800">
                 <span className='absolute text-4xl top-5 mt-5 mr-5 left-4 cursor-pointer' onClick={handleBarsClick}>
                     <FaBars className={barsIconClass} />
                 </span>

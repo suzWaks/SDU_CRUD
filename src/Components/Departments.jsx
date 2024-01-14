@@ -35,7 +35,7 @@ export const Departments = () => {
     const closeModal = () => {
         setIsModalOpen(false);
         setModalMessage("");
-        window.location.reload();
+        navigate('/departments');
     };
 
     // 
@@ -251,7 +251,7 @@ export const Departments = () => {
                         />
 
                         <div className="p-5 flex flex-col justify-between">
-                            <div  className="flex items-center justify-between mb-2">
+                            <div className="flex items-center justify-between mb-2">
 
                                 <h5 onClick={() => viewDeptHandler(card.deptId)} className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white cursor-pointer">
                                     {card.deptName}
