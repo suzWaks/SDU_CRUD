@@ -4,9 +4,6 @@ import axios from "axios";
 import { FaEdit } from "react-icons/fa";
 
 export const Departments = () => {
-    const [deptName, setDeptName] = useState("");
-    const [deptDescription, setDeptDescription] = useState("");
-    const [deptId, setDeptId] = useState("");
 
     const navigate = useNavigate();
     const [cardData, setCardData] = useState([]);
@@ -246,6 +243,7 @@ export const Departments = () => {
                     >
                         <a onClick={() => viewDeptHandler(card.deptId)}>
                             <img
+                                alt="department_image"
                                 className="rounded-t-lg cursor-pointer"
                                 style={{ height: "65%", width: "100%" }}
                                 src={`https://smiling-mark-production.up.railway.app/departments/images/${card.deptId}`}

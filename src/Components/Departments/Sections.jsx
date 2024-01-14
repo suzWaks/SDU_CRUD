@@ -6,7 +6,6 @@ import axios from "axios";
 
 export const Sections = () => {
     const location = useLocation();
-    const navigate = useNavigate();
     const [sectionData, setSectionData] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
     //   const [modalMessage, setModalMessage] = useState("");

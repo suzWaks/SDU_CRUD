@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { FaBars, FaTable, FaCaretDown, FaUserPlus, FaFolder } from 'react-icons/fa';
+import { FaBars, FaTable, FaUserPlus, FaFolder } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 export const SideNav = () => {
     const navigate = useNavigate();
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-    const [apiData, setApiData] = useState(null);
+
     const [expanded, setExpanded] = useState(true);
     const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth <= 768);
 
@@ -60,18 +60,18 @@ export const SideNav = () => {
         };
     }, []);
 
-    const viewDeptHandler = (id) => {
-        // Make an API call to fetch user details based on id
-        axios.get(`https://smiling-mark-production.up.railway.app/departments/${id}`)
-            .then(response => {
-                const deptDetails = response.data;
-                console.log(deptDetails);
+    // const viewDeptHandler = (id) => {
+    //     // Make an API call to fetch user details based on id
+    //     axios.get(`https://smiling-mark-production.up.railway.app/departments/${id}`)
+    //         .then(response => {
+    //             const deptDetails = response.data;
+    //             console.log(deptDetails);
 
-                // Navigate to the /userview page and pass the user details as props
-                navigate('/deptview', { replace: true, state: { deptDetails } });
-            })
-            .catch(error => console.error('Error fetching department data:', error));
-    };
+    //             // Navigate to the /userview page and pass the user details as props
+    //             navigate('/deptview', { replace: true, state: { deptDetails } });
+    //         })
+    //         .catch(error => console.error('Error fetching department data:', error));
+    // };
 
     const sidebarStyle = {
         width: isSmallScreen ? (expanded ? '310px' : '0') : '310px',
@@ -91,7 +91,7 @@ export const SideNav = () => {
                 <hr className='w-[224px] ml-10 mb-11'></hr>
                 <ul className="space-y-2 font-medium pl-9">
                     <li onClick={DashHandler} className="flex items-right">
-                        <a href="#" className="flex items-center py-4 px-10 text-white rounded-lg dark:text-white hover:bg-sky-800 dark:hover:bg-gray-700 group">
+                        <a className="flex items-center py-4 px-10 text-white rounded-lg dark:text-white hover:bg-sky-800 dark:hover:bg-gray-700 group">
                             <FaTable className="mr-2 w-5 h-5 text-white transition duration-75 dark:text-gray-400  dark:group-hover:text-white" />
                             <div className="ms-3 text-lg ">Dashboard</div>
                         </a>
@@ -137,7 +137,7 @@ export const SideNav = () => {
                         ))}
                     </div> */}
                     <li onClick={AddUserHandler} className="flex items-right mb-5">
-                        <a href="#" className="flex items-center py-4 px-10 text-white rounded-lg dark:text-white hover:bg-sky-800 dark:hover:bg-gray-700 group">
+                        <a  className="flex items-center py-4 px-10 text-white rounded-lg dark:text-white hover:bg-sky-800 dark:hover:bg-gray-700 group">
                             <FaUserPlus className="mr-2 w-5 h-5 text-white transition duration-75 dark:text-gray-400  dark:group-hover:text-white" />
                             <span className="ms-3  text-lg">Add User</span>
                         </a>

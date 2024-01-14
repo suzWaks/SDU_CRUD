@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import { Sections } from './Sections';
 import { Tabledpt } from './Tabledpt';
 import { useLocation } from 'react-router-dom';
-import { FaEdit } from 'react-icons/fa';
-import axios from "axios";
+
 
 export const DeptView = () => {
     const location = useLocation();

@@ -117,21 +117,6 @@ export const Userview = () => {
         bodyFormData.append('user', blob);
         // bodyFormData.append('profileImageFile', image);
 
-        function getGenderType(genderId) {
-            switch (genderId) {
-                case 1:
-                    return 'Male';
-                case 2:
-                    return 'Female';
-                case 3:
-                    return 'Others';
-                default:
-                    return '';
-            }
-        }
-
-
-
         console.log("updated data format: ", updatedUserData);
         axios.put('https://smiling-mark-production.up.railway.app/users', bodyFormData, {
             headers: {

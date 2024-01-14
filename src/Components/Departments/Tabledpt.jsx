@@ -6,7 +6,6 @@ import axios from "axios";
 export const Tabledpt = () => {
     const location = useLocation();
     const [data, setData] = useState([]);
-    const [counter, setCounter] = useState(1);
     const navigate = useNavigate();
     const [searchTerm, setSearchTerm] = useState("");
 
@@ -108,6 +107,7 @@ export const Tabledpt = () => {
                                         className="flex items-center px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                                     >
                                         <img
+                                        alt="user_profile image"
                                             class="w-10 h-10 rounded-full"
                                             src={`https://smiling-mark-production.up.railway.app/profile_images/${user.userId}`}
 
@@ -122,12 +122,12 @@ export const Tabledpt = () => {
                                     <td className="px-6 py-4">{user.mobileNo}</td>
                                     <td className="px-6 py-4">{user?.section?.sectName}</td>
                                     <td className="px-6 py-4 cursor-pointer ">
-                                        <a
+                                        <button
                                             className="bg-sky-600 text-white px-3 py-2 rounded "
                                             onClick={() => viewUserHandler(user.userId)}
                                         >
                                             View
-                                        </a>
+                                        </button>
                                     </td>
                                 </tr>
                             ))
