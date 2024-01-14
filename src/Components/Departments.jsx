@@ -33,7 +33,7 @@ export const Departments = () => {
     };
 
     const closeModal = () => {
-        navigate('/');
+        navigate('/departments');
         setIsModalOpen(false);
         setModalMessage("");
         
