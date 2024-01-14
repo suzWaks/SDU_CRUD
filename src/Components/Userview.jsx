@@ -206,13 +206,13 @@ export const Userview = () => {
                     <div className="p-4 border-t-2 border-sky-600 rounded-lg bg-gray-100/5 ">
                         <div className="max-w-sm mx-auto md:w-full md:mx-0">
                             <div className="inline-flex items-center space-x-4">
-                                <a className="relative block">
+                                <div className="relative block">
                                     <img
                                         alt="profile"
                                         src={`https://smiling-mark-production.up.railway.app/profile_images/${userData?.userId}`}
                                         className="mx-auto object-cover rounded-full h-16 w-16 "
                                     />
-                                </a>
+                                </div>
                                 <h1 className="text-gray-600 text-xl">
 
                                     {userData.firstName}

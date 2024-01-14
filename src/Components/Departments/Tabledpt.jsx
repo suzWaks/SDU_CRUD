@@ -28,7 +28,7 @@ export const Tabledpt = () => {
             .get(`https://smiling-mark-production.up.railway.app/users/departments/${location.state.deptDetails.deptId}`)
             .then((response) => setData(response.data))
             .catch((error) => console.error("Error fetching data:", error));
-    }, []);
+    }, [location.state.deptDetails.deptId]);
 
     return (
         <div class="relative overflow-x-auto shadow-md sm:rounded-lg m-5 p-5">
@@ -107,7 +107,7 @@ export const Tabledpt = () => {
                                         className="flex items-center px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                                     >
                                         <img
-                                        alt="user_profile image"
+                                        alt="user_profile"
                                             class="w-10 h-10 rounded-full"
                                             src={`https://smiling-mark-production.up.railway.app/profile_images/${user.userId}`}
 

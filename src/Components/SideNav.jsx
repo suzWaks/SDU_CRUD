@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { FaBars, FaTable, FaUserPlus, FaFolder } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 
 export const SideNav = () => {
     const navigate = useNavigate();
-    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
     const [expanded, setExpanded] = useState(true);
     const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth <= 768);
@@ -22,9 +20,6 @@ export const SideNav = () => {
         navigate('/adduser');
     };
 
-    const toggleDropdown = () => {
-        setIsDropdownOpen(!isDropdownOpen);
-    };
     const handleBarsClick = () => {
         setExpanded(!expanded);
     };

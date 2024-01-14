@@ -22,7 +22,6 @@ export const Departments = () => {
         axios
             .get("https://smiling-mark-production.up.railway.app/departments")
             .then((response) => setCardData(response.data),
-                console.log("data: ", cardData)
             )
 
             .catch((error) => console.error("Error fetching data:", error));
@@ -70,7 +69,7 @@ export const Departments = () => {
         // Set the editing department ID
         setEditingDepartmentId(department.deptId);
 
-        const imagePath = department.departmentImage ? department.departmentImage.deptImagePath : '';
+
         setFormValues({
             deptName: department.deptName,
             deptDescription: department.deptDescription,
@@ -241,22 +240,23 @@ export const Departments = () => {
                         className="max-w-sm p-2 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 overflow-hidden"
                         style={{ height: "24rem", width: "22rem" }}
                     >
-                        <a onClick={() => viewDeptHandler(card.deptId)}>
-                            <img
-                                alt="department_image"
-                                className="rounded-t-lg cursor-pointer"
-                                style={{ height: "65%", width: "100%" }}
-                                src={`https://smiling-mark-production.up.railway.app/departments/images/${card.deptId}`}
 
-                            />
-                        </a>
+                        <img
+                            onClick={() => viewDeptHandler(card.deptId)}
+                            alt="department_image"
+                            className="rounded-t-lg cursor-pointer"
+                            style={{ height: "65%", width: "100%" }}
+                            src={`https://smiling-mark-production.up.railway.app/departments/images/${card.deptId}`}
+
+                        />
+
                         <div className="p-5 flex flex-col justify-between">
-                            <div className="flex items-center justify-between mb-2">
-                                <a onClick={() => viewDeptHandler(card.deptId)}>
-                                    <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white cursor-pointer">
-                                        {card.deptName}
-                                    </h5>
-                                </a>
+                            <div  className="flex items-center justify-between mb-2">
+
+                                <h5 onClick={() => viewDeptHandler(card.deptId)} className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white cursor-pointer">
+                                    {card.deptName}
+                                </h5>
+
                                 <button
                                     onClick={() => handleEditDepartment(card.deptId)}
                                     className="px-1 py-1 text-white rounded-md"
