@@ -147,7 +147,7 @@ export const Userview = () => {
                 }
             })
             .catch(error => {
-                showSuccessModal("Unable to edit user, please check your CID/ Emlpoyee ID")
+                showSuccessModal("Unable to edit user, might have duplcate CID/ Emlpoyee ID or incorrect inputs ")
             });
     };
 
@@ -245,6 +245,8 @@ export const Userview = () => {
                                 <div className="max-w-sm mx-auto md:w-2/3 flex-1">
                                     <div className="relative">
                                         <input
+                                            maxLength="8"
+
                                             disabled={!isEditing}
                                             onChange={handleChange}
                                             // value={location.state.userDetails.userId}
@@ -376,12 +378,14 @@ export const Userview = () => {
                                         <input
                                             disabled={!isEditing}
                                             onChange={handleChange}
-                                            // value={location.state.userDetails.department}
                                             defaultValue={userData.mobileNo}
-                                            type="number"
+                                            type="text"
                                             id="mobileNo"
+                                            pattern="[0-9]*"
+                                            maxLength="8"
                                             className="rounded-lg border-transparent border border-gray-500 w-full px-4 bg-white text-gray-500 placeholder-gray-600 shadow-md text-base focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                         />
+
                                     </div>
                                 </div>
                             </div>
@@ -431,6 +435,8 @@ export const Userview = () => {
                                 <div className="max-w-sm mx-auto md:w-2/3 flex-1">
                                     <div className="relative">
                                         <input
+                                            pattern="[0-9]*"
+                                            maxLength="11"
                                             disabled={!isEditing}
                                             onChange={handleChange}
                                             // value={location.state.userDetails.department}

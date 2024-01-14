@@ -4,7 +4,7 @@ import axios from "axios";
 
 export const Table = () => {
     const [data, setData] = useState([]);
-    const [counter, setCounter] = useState(1);
+
     const navigate = useNavigate();
     const [searchTerm, setSearchTerm] = useState("");
 
@@ -108,6 +108,7 @@ export const Table = () => {
                                         <img
                                             class="w-10 h-10 rounded-full"
                                             src={`https://smiling-mark-production.up.railway.app/profile_images/${user.userId}`}
+                                            alt="User_image"
 
                                         />
                                         <div className="ps-3">
@@ -120,12 +121,12 @@ export const Table = () => {
                                     <td className="px-6 py-4">{user.mobileNo}</td>
                                     <td className="px-6 py-4">{user?.section?.department?.deptName}</td>
                                     <td className="px-6 py-4 cursor-pointer ">
-                                        <a
+                                        <button
                                             className="bg-sky-600 text-white px-3 py-2 rounded "
                                             onClick={() => viewUserHandler(user.userId)}
                                         >
                                             View
-                                        </a>
+                                        </button>
                                     </td>
                                 </tr>
                             ))}

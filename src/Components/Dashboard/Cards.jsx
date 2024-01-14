@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { FaMale, FaFemale, FaTransgender, FaUsers, FaFolder } from 'react-icons/fa';
+import { FaMale, FaFemale, FaTransgender, FaUsers} from 'react-icons/fa';
 import axios from 'axios';
 
 export const Cards = () => {
