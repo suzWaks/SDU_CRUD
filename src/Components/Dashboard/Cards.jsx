@@ -44,12 +44,12 @@ export const Cards = () => {
     ];
 
     return (
-        <div className='w-max-screen pt-10 pb-5'>
-            <div className="flex justify-evenly space-x-4 m-4 overflow-auto">
+        <div className='w-full pt-10 pb-5'>
+            <div className="flex flex-wrap justify-evenly space-x-4 m-4 overflow-x-auto">
                 {cardData.map((data, index) => (
                     <div
                         key={index}
-                        className="transition duration-200 shadow-md ease-in-out transform hover:-translate-y-1 flex-grow w-64 p-6  border border-gray-200 rounded-lg hover:shadow-lg dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700 flex"
+                        className="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 transition duration-200 shadow-md ease-in-out transform hover:-translate-y-1 flex-grow p-6 border border-gray-200 rounded-lg hover:shadow-lg dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700 mb-4"
                         style={{
                             backgroundColor: data.bg,
                         }}
@@ -64,4 +64,5 @@ export const Cards = () => {
             </div>
         </div>
     );
+
 };
