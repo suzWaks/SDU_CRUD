@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { FaMale, FaFemale, FaTransgender, FaUsers} from 'react-icons/fa';
+import { FaMale, FaFemale, FaTransgender, FaUsers } from 'react-icons/fa';
 import axios from 'axios';
 
 export const Cards = () => {
@@ -44,7 +44,7 @@ export const Cards = () => {
     ];
 
     return (
-        <div className='w-max-screen pt-10 pb-5 '>
+        <div className='w-max-screen pt-10 pb-5 overflow-auto'>
             <div className="flex justify-evenly space-x-4 m-4">
                 {cardData.map((data, index) => (
                     <div
