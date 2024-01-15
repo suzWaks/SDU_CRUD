@@ -478,7 +478,7 @@ export const Userview = () => {
                                         // onClick={handleUpdate}
                                         onClick={() => {
                                             setIsEditing(false);
-                                            window.location.reload();
+                                            navigate("/userview");
                                         }}
                                         type="button"
                                         className="py-2 px-4 mr-4 outline-green-600 hover:bg-green-700 focus:ring-green-500 focus:ring-offset-green-200 text-green-500 hover:text-white transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 rounded-lg"
