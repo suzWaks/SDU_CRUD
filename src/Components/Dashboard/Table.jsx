@@ -87,6 +87,7 @@ export const Table = () => {
                 </thead>
                 <tbody>
                     {Array.isArray(data) &&
+                        data.length > 0 ? (
                         data
                             .filter((user) => {
                                 const fullName = [user.firstName, user.middleName, user.lastName]
@@ -129,7 +130,15 @@ export const Table = () => {
                                         </button>
                                     </td>
                                 </tr>
-                            ))}
+                            ))
+                    ) : (
+                        <tr>
+                            <td colspan="5" className="p-4 text-center">
+                                <h1 className="text-lg">No users found</h1>
+                            </td>
+                        </tr>
+                    )
+                    }
                 </tbody>
             </table>
         </div>
