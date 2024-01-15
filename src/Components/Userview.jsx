@@ -210,7 +210,7 @@ export const Userview = () => {
                                     <img
                                         alt="profile"
                                         src={`https://smiling-mark-production.up.railway.app/profile_images/${userData?.userId}`}
-                                        className="mx-auto object-cover rounded-full h-16 w-16 z-0"
+                                        className="mx-auto object-cover rounded-full h-16 w-16 z-0 sm:pr-5"
                                     />
                                 </div>
                                 <h1 className="text-gray-600 text-xl">
