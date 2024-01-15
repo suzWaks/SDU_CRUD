@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 export const SideNav = () => {
     const navigate = useNavigate();
 
-    const [expanded, setExpanded] = useState(true);
+    const [expanded, setExpanded] = useState(false);
     const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth <= 768);
 
     const DashHandler = () => {
@@ -72,8 +72,9 @@ export const SideNav = () => {
                 <div onClick={DashHandler} className="text-center py-8 cursor-pointer">
                     <img className='pl-11 ml-9' src="https://www.tashicell.com/themes/tashicell/assets/images/logo.png" alt="Logo" />
                     <h1 className="text-2xl font-bold mb-4 text-white">SDU UMS</h1>
+                    <hr className='w-[224px] ml-10 mb-[30px] mt-[50px]' style={{ display: isSmallScreen && !expanded ? 'none' : 'block' }}></hr>
                 </div>
-                <hr className='w-[224px] ml-10 mb-11'></hr>
+
                 <ul className="space-y-2 font-medium pl-9">
                     <li onClick={DashHandler} className="flex items-right">
                         <div className="flex items-center cursor-pointer py-4 px-10 text-white rounded-lg dark:text-white hover:bg-sky-800 dark:hover:bg-gray-700 group">
