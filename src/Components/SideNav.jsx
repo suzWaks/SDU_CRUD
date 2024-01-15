@@ -10,14 +10,17 @@ export const SideNav = () => {
 
     const DashHandler = () => {
         navigate('/');
+        setExpanded(!expanded);
     };
 
     const DeptHandler = () => {
         navigate('/departments');
+        setExpanded(!expanded);
     };
 
     const AddUserHandler = () => {
         navigate('/adduser');
+        setExpanded(!expanded);
     };
 
     const handleBarsClick = () => {
