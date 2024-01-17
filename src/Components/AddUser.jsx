@@ -164,10 +164,9 @@ export const AddUser = () => {
                                     </label>
                                     <input
                                         onChange={(e) => setFirstName(e.target.value)}
-                                        type="text"
-                                        name="firstName"
-                                        id="firstName"
-                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                        type="text" name="firstName" id="firstName"
+                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg 
+                                        focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
                                         placeholder="Type first name"
                                         required=""
                                     />
@@ -182,7 +181,8 @@ export const AddUser = () => {
                                     <input
                                         onChange={(e) => setMiddleName(e.target.value)}
                                         type="text" name="middleName" id="middleName"
-                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg 
+                                        focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
                                         placeholder="Type middle name" required=""
                                     />
                                 </div>
@@ -196,7 +196,8 @@ export const AddUser = () => {
                                     <input
                                         onChange={(e) => setLastName(e.target.value)}
                                         type="text" name="lastName" id="lastName"
-                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg
+                                         focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
                                         placeholder="Type last name" required=""
                                     />
                                 </div>
@@ -213,12 +214,9 @@ export const AddUser = () => {
                                 class="sm:col-span-2 grid grid-cols-3 gap-4"
                             >
                                 <div class="flex items-center ps-4 border border-gray-200 rounded dark:border-gray-700">
-                                    <input
-                                        id="bordered-radio-1"
-                                        type="radio"
-                                        value="1"
-                                        name="bordered-radio"
-                                        class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                                    <input 
+                                        id="bordered-radio-1" type="radio" value="1"  name="bordered-radio"
+                                        class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500"
                                     />
                                     <label
                                         for="bordered-radio-1"
@@ -229,11 +227,8 @@ export const AddUser = () => {
                                 </div>
                                 <div class="flex items-center ps-4 border border-gray-200 rounded dark:border-gray-700">
                                     <input
-                                        id="bordered-radio-2"
-                                        type="radio"
-                                        value="2"
-                                        name="bordered-radio"
-                                        class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                                        id="bordered-radio-2" type="radio" value="2" name="bordered-radio"
+                                        class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500"
                                     />
                                     <label
                                         for="bordered-radio-2"
@@ -244,11 +239,8 @@ export const AddUser = () => {
                                 </div>
                                 <div class="flex items-center ps-4 border border-gray-200 rounded dark:border-gray-700">
                                     <input
-                                        id="bordered-radio-3"
-                                        type="radio"
-                                        value="3"
-                                        name="bordered-radio"
-                                        class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                                        id="bordered-radio-3" type="radio" value="3" name="bordered-radio"
+                                        class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500"
                                     />
                                     <label
                                         for="bordered-radio-3"
@@ -278,12 +270,11 @@ export const AddUser = () => {
                                                     .slice(0, 8))
                                             )
                                         }
-                                        type="number"
-                                        name="employeeId"
-                                        id="employeeId"
-                                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                        placeholder="12345678"
-                                        required
+                                        type="number" name="employeeId" id="employeeId"
+                                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg 
+                                        focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
+                                        placeholder="12345678" required
+                                        
                                     />
                                 </div>
                                 <div class="col-span-2">
@@ -296,12 +287,11 @@ export const AddUser = () => {
                                     <input
                                         onChange={(e) => setEmail(e.target.value)}
                                         pattern="[^\s@]+@[^\s@]+\.[^\s@]+"
-                                        type="text"
-                                        name="email"
-                                        id="email"
-                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                        placeholder="abc@gmail.com"
-                                        required=""
+                                        type="text" name="email" id="email"
+                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg
+                                         focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
+                                        placeholder="abc@gmail.com" required=""
+                                        
                                     />
                                 </div>
                             </div>
@@ -324,12 +314,11 @@ export const AddUser = () => {
                                                     .slice(0, 11))
                                             )
                                         }
-                                        type="number"
-                                        name="CID"
-                                        id="CID"
-                                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                        placeholder="12345678910"
-                                        required
+                                        type="number" name="CID" id="CID"  
+                                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg 
+                                        focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
+                                        placeholder="12345678910" required
+                                        
                                     />
                                 </div>
                                 <div>
@@ -341,10 +330,9 @@ export const AddUser = () => {
                                     </label>
                                     <input
                                         onChange={(e) => setDob(e.target.value)}
-                                        type="date"
-                                        name="dob"
-                                        id="dob"
-                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                        type="date" name="dob" id="dob"
+                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg 
+                                        focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
                                         required=""
                                     />
                                 </div>
@@ -358,12 +346,11 @@ export const AddUser = () => {
                                 </label>
                                 <input
                                     onChange={(e) => setPermanentAddress(e.target.value)}
-                                    type="text"
-                                    name="brand"
-                                    id="brand"
-                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                    placeholder="Permanent Address"
-                                    required=""
+                                    type="text" name="brand" id="brand"
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg 
+                                    focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
+                                    placeholder="Permanent Address" required=""
+
                                 />
                             </div>
                             <div class="w-full">
@@ -375,25 +362,25 @@ export const AddUser = () => {
                                 </label>
                                 <input
                                     onChange={(e) => setCurrentAddress(e.target.value)}
-                                    type="text"
-                                    name="price"
-                                    id="price"
-                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                    placeholder="Present Address"
-                                    required=""
+                                    type="text" name="price" id="price"
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600
+                                     focus:border-primary-600 block w-full p-2.5"
+                                    placeholder="Present Address" required=""
+
                                 />
                             </div>
                             <div>
                                 <label
-                                    for="category"
-                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                                    for="category" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                                 >
                                     Department
                                 </label>
                                 <select
                                     onChange={(e) => setDepartmentId(e.target.value)}
                                     id="category"
-                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg 
+                                    focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5"
+
                                 >
                                     <option selected disabled>
                                         Select department
@@ -401,7 +388,6 @@ export const AddUser = () => {
                                     {Array.isArray(department) &&
                                         department.map((dpt) => (
                                             <option value={dpt.deptId}>{dpt.deptName}</option>
-                                            // , console.log("ID:", dpt.deptId)
                                         ))}
                                 </select>
                             </div>
@@ -416,7 +402,8 @@ export const AddUser = () => {
                                 <select
                                     onChange={(e) => setSectionId(e.target.value)}
                                     id="category"
-                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg
+                                     focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5"
                                 >
                                     {departmentId ? (
                                         <>
@@ -457,9 +444,7 @@ export const AddUser = () => {
                                                 .slice(0, 8))
                                         )
                                     }
-                                    type="number"
-                                    name="mobileNo"
-                                    id="mobileNo"
+                                    type="number" name="mobileNo" id="mobileNo"
                                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm 
                                     rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5
                                     "
@@ -478,7 +463,7 @@ export const AddUser = () => {
                                     onChange={(e) => setImage(e.target.files[0])}
                                     class="block w-full text-sm text-blue-500 border border-gray-300 
                                     rounded-lg cursor-pointer bg-gray-50"
-                                    aria-describedby="user_avatar_help"id="user_avatar" type="file"
+                                    aria-describedby="user_avatar_help" id="user_avatar" type="file"
                                 />
                             </div>
                         </div>
