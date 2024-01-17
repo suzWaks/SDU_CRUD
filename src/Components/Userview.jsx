@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import axios from "axios";
-
+import { updateUser } from "../Services/User/updateUser";
+import fetchDept from "../Services/Department/fetchDept";
+import { fetchSections } from "../Services/Sections/fetchSect";
+import { deleteUser } from "../Services/User/deleteUser";
 export const Userview = () => {
 
     const [successMessage, setSuccessMessage] = useState("");
@@ -80,66 +82,11 @@ export const Userview = () => {
 
     const updateAPIData = async () => {
         console.log("data format: ", userData);
-        var bodyFormData = new FormData();
 
-        console.log("New Gender", userData.gender.genderId);
-
-        const updatedUserData = {
-            userId: userData.userId,
-            employeeId: userData.employeeId,
-            firstName: userData.firstName,
-            middleName: userData.middleName,
-            lastName: userData.lastName,
-            gender: {
-                genderId: parseInt(userData.gender.genderId !== undefined ? userData.gender.genderId : userData.gender),
-                // genderType: getGenderType(parseInt(userData.gender)),
-                // genderId: userData.gender.genderId,
-            },
-            email: userData.email,
-            mobileNo: userData.mobileNo,
-            cidNo: userData.cid === undefined ? userData.cidNo : userData.cid,
-            dob: userData.dob,
-            address: {
-                addressId: userData.address.addressId,
-                currentAddress: userData.presentAddress === undefined ? userData.address.currentAddress : userData.presentAddress,
-                permanentAddress: userData.permanentAddress === undefined ? userData.address.permanentAddress : userData.permanentAddress,
-            },
-            section: {
-                sectId: parseInt(userData.section.sectId === undefined ? userData.section : userData.section.sectId),
-            },
-            profileImage: userData.profileImage,
-        };
-
-        const json = JSON.stringify(updatedUserData);
-        const blob = new Blob([json], {
-            type: 'application/json'
-        })
-        bodyFormData.append('user', blob);
-        // bodyFormData.append('profileImageFile', image);
-
-        console.log("updated data format: ", updatedUserData);
-        axios.put('https://smiling-mark-production.up.railway.app/users', bodyFormData, {
-            headers: {
-                'Content-Type': 'multipart/form-data',
-            },
-        })
-            .then(response => {
-                console.log(response.status);
-                if (response.status === 201) {
-
-                    showSuccessModal("User edited successfully");
-
-                }
-            })
-            .catch(error => {
-                showSuccessModal("Unable to edit user, might have duplcate CID/ Emlpoyee ID or incorrect inputs ")
-            });
+        await updateUser(userData, showSuccessModal);
     };
 
-
     const handleChange = (e) => {
-        console.log("Department inside handle", department);
-        console.log("Changing value: ", e.target.value);
         const { id, value } = e.target;
         setUserData((prevData) => ({
             ...prevData,
@@ -147,54 +94,32 @@ export const Userview = () => {
         }));
     };
 
+    //Delete user
     const onDelete = async () => {
         const ID = location.state.userDetails?.userId;
-        try {
-            await axios.delete(
-                `https://smiling-mark-production.up.railway.app/users/${ID}`
-            );
-            showDeleteModal("User deleted successfully")
-            // alert("Deleted Successfully"); 
-            console.log("Location:", location);
-
-        } catch (error) {
-            showDeleteModal("Failed to delete user")
-            console.error("Error deleting data:", error);
-
-        }
+        await deleteUser(ID, showDeleteModal);
     };
-    console.log("User Details::: ", userData);
+
 
     //Fetch departments
     const [department, setDepartment] = useState();
-    // console.log("User Details: ", location.state.userDetails);
-    useEffect(() => {
-        axios.get('https://smiling-mark-production.up.railway.app/departments')
-            .then(response => {
-                setDepartment(response.data);
-                console.log("department data:", response.data);
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            })
-    }
-        , []);
+    fetchDept()
+        .then((response) => {
+            setDepartment(response.data);
+        })
 
 
     //Fetch sections
     const [sections, setSections] = useState([]);
-    console.log("Dept ID: ", departmentId);
     useEffect(() => {
-        axios.get('https://smiling-mark-production.up.railway.app/sections')
-            .then(response => {
-                // Filter sections based on the selected departmentId
-                const filteredSections = response.data.filter(section => section.department.deptId === parseInt(departmentId));
+        const fetchData = async () => {
+            try {
+                const filteredSections = await fetchSections(departmentId);
                 setSections(filteredSections);
-                console.log("Filtered sections:", filteredSections);
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
+            } catch (error) {
+            }
+        };
+        fetchData();
     }, [departmentId]);
 
 
