@@ -1,11 +1,14 @@
-import React, {useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { FaEdit } from "react-icons/fa";
 import fetchDept from "../Services/Department/fetchDept";
+import { handleEditDepartment, editDepartment } from "../Services/Department/editDept";
+import { updateDepartment } from "../Services/Department/updateDept";
+import Spinner from "../Modals/Spinner";
 
 export const Departments = () => {
-
+    const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
     const [cardData, setCardData] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -19,9 +22,9 @@ export const Departments = () => {
     const [editingDepartmentId, setEditingDepartmentId] = useState(null);
 
     fetchDept()
-    .then((response) => {
-        setCardData(response.data);
-    })
+        .then((response) => {
+            setCardData(response.data);
+        })
 
     const openModal = (message) => {
         setModalMessage(message);
@@ -34,8 +37,6 @@ export const Departments = () => {
         setModalMessage("");
     };
 
-    // 
-
     const addDept = () => {
         setFormValues({
             deptName: "",
@@ -45,105 +46,30 @@ export const Departments = () => {
         setIsModalOpen(true);
     }
 
-    const handleEditDepartment = (id) => {
-        // Find the department with the given id in cardData
-        const department = cardData.find((dept) => dept.deptId === id);
-
-        // Check if the department is found
-        if (department) {
-            // Call the function to handle editing with the department details
-            editDepartment(department);
-        }
-    };
-
-    const editDepartment = (department) => {
-        console.log("Editing department:", department);
-
-        // Navigate to the edit page or open a modal for editing
-        setIsModalOpen(true);
-
-        // Set the editing department ID
-        setEditingDepartmentId(department.deptId);
-
-
-        setFormValues({
-            deptName: department.deptName,
-            deptDescription: department.deptDescription,
-            image: null, // Clear the previous image to prevent displaying the wrong image
-        });
-
-        // Fetch the image and set it in the state
-        axios
-            .get(`https://smiling-mark-production.up.railway.app/departments/images/${department.deptId}`, {
-                responseType: 'blob',
-            })
-            .then((response) => {
-                console.log("Fetching image")
-                const imageFile = new File([response.data], `${department.deptId}.png`, { type: 'image/png' });
-                console.log(imageFile);
-                setImage(imageFile);
-            })
-            .catch((error) => {
-                console.error("Error fetching department image:", error);
-            });
-    };
-
-    const handleUpdateDepartment = (event) => {
+    const handleUpdateDepartment = async (event) => {
+        setLoading(true); // Set loading to true for spinner when starting the update
         event.preventDefault();
-        console.log("Updating");
-        // Check if an image is selected
-        if (image) {
-            var bodyFormData = new FormData();
 
-            const updatedDepartmentData = {
-                deptId: editingDepartmentId,
-                deptName: formValues.deptName,
-                deptDescription: formValues.deptDescription,
-            };
+        try {
+            const success = await updateDepartment(editingDepartmentId, formValues, image, setLoading);
 
-            console.log("Dept Name: ", updatedDepartmentData);
+            if (success) {
+                // Clear form values and close the modal
+                setFormValues({
+                    deptName: '',
+                    deptDescription: '',
+                    image: null,
+                });
+                setIsModalOpen(false);
+                setEditingDepartmentId(null);
 
-            const json = JSON.stringify(updatedDepartmentData);
-            const blob = new Blob([json], {
-                type: 'application/json',
-            });
-
-            bodyFormData.append('department', blob);
-            bodyFormData.append('departmentImage', image);
-
-            axios
-                .put(
-                    `https://smiling-mark-production.up.railway.app/departments`,
-                    bodyFormData,
-                    {
-                        headers: {
-                            'Content-Type': 'multipart/form-data',
-                        },
-                    }
-                )
-                .then(() => {
-                    console.log("Updating data")
-                    // Clear form values and close the modal
-                    setFormValues({
-                        deptName: "",
-                        deptDescription: "",
-                        image: null,
-                    });
-                    setIsModalOpen(false);
-                    setEditingDepartmentId(null);
-
-                    // Open the success message modal
-                    openModal("Department updated successfully!");
-                })
-                .catch((error) =>
-                    console.error("Error updating department:", error)
-                );
-        } else {
-            // Handle the case where no image is selected
-            console.error("Please select an image");
+                // Open the success message modal
+                openModal('Department updated successfully!');
+            }
+        } finally {
+            setLoading(false); // Set loading to false when the update is finished (whether successful or not)
         }
     };
-
 
     //handle add department
     const handleAddDepartment = (event) => {
@@ -254,7 +180,7 @@ export const Departments = () => {
                                 </h5>
 
                                 <button
-                                    onClick={() => handleEditDepartment(card.deptId)}
+                                    onClick={() => handleEditDepartment(card.deptId, cardData, editDepartment, setIsModalOpen, setEditingDepartmentId, setFormValues, setImage)}
                                     className="px-1 py-1 text-white rounded-md"
                                 >
                                     <FaEdit className="text-sky-500 w-6 h-auto" />
@@ -375,18 +301,22 @@ export const Departments = () => {
                                     type="submit"
                                     className="text-white inline-flex items-center bg-sky-600 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                                 >
-                                    <svg
-                                        className="me-1 -ms-1 w-5 h-5"
-                                        fill="currentColor"
-                                        viewBox="0 0 20 20"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                    >
-                                        <path
-                                            fillRule="evenodd"
-                                            d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
-                                            clipRule="evenodd"
-                                        ></path>
-                                    </svg>
+                                    {loading && <Spinner />}
+                                    {!loading &&
+                                        <svg
+                                            className="me-1 -ms-1 w-5 h-5"
+                                            fill="currentColor"
+                                            viewBox="0 0 20 20"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                            <path
+                                                fillRule="evenodd"
+                                                d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
+                                                clipRule="evenodd"
+                                            ></path>
+                                        </svg>
+                                    }
+
                                     {editingDepartmentId
                                         ? "Update department"
                                         : "Add new department"}
