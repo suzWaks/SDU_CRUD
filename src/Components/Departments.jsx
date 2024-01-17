@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, {useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { FaEdit } from "react-icons/fa";
+import fetchDept from "../Services/Department/fetchDept";
 
 export const Departments = () => {
 
@@ -17,15 +18,10 @@ export const Departments = () => {
     const [image, setImage] = useState(null);
     const [editingDepartmentId, setEditingDepartmentId] = useState(null);
 
-    useEffect(() => {
-        // Fetch data from API when the component mounts
-        axios
-            .get("https://smiling-mark-production.up.railway.app/departments")
-            .then((response) => setCardData(response.data),
-            )
-
-            .catch((error) => console.error("Error fetching data:", error));
-    });
+    fetchDept()
+    .then((response) => {
+        setCardData(response.data);
+    })
 
     const openModal = (message) => {
         setModalMessage(message);

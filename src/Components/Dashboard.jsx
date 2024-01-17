@@ -10,8 +10,6 @@ export const Dashboard = () => {
             <hr></hr>
             <Cards />
             <Table />
-
-
         </div>
     );
 };

@@ -1,37 +1,21 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import users from "../../Services/Dashboard/usersFetch";
+import viewUserHandler from "../../Services/Dashboard/userView";
 
 export const Table = () => {
     const [data, setData] = useState([]);
-
     const navigate = useNavigate();
     const [searchTerm, setSearchTerm] = useState("");
 
-    const viewUserHandler = (id) => {
-        // Make an API call to fetch user details based on id
-        axios
-            .get(`https://smiling-mark-production.up.railway.app/users/${id}`)
-            .then((response) => {
-                const userDetails = response.data;
-                console.log(userDetails);
-
-                // Navigate to the /userview page and pass the user details as props
-                navigate("/userview", { replace: true, state: { userDetails } });
-            })
-            .catch((error) => console.error("Error fetching user data:", error));
-    };
-
-    useEffect(() => {
-        axios
-            .get("https://smiling-mark-production.up.railway.app/users")
-            .then((response) => setData(response.data))
-            .catch((error) => console.error("Error fetching data:", error));
-    }, []);
+    users()
+        .then((response) => {
+            setData(response.data);
+        })
 
     return (
         <div class="relative overflow-x-auto shadow-md sm:rounded-lg m-5 p-5">
-            <div class="flex items-center justify-between flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4 bg-white dark:bg-gray-900">
+            <div class="flex items-center justify-between flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4 bg-white">
                 <div>
                 </div>
                 <label for="table-search" class="sr-only">
@@ -56,17 +40,15 @@ export const Table = () => {
                         </svg>
                     </div>
                     <input
-                        type="text"
-                        id="table-search-users"
-                        value={searchTerm}
+                        type="text" id="table-search-users" value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                         class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                         placeholder="Search by name"
                     />
                 </div>
             </div>
-            <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+            <table class="w-full text-sm text-left rtl:text-right text-gray-500">
+                <thead class="text-xs text-gray-700 uppercase bg-gray-50">
                     <tr>
                         <th scope="col" class="p-4">
                             SI.no
@@ -124,7 +106,7 @@ export const Table = () => {
                                     <td className="px-6 py-4 cursor-pointer ">
                                         <button
                                             className="bg-sky-600 text-white px-3 py-2 rounded "
-                                            onClick={() => viewUserHandler(user.userId)}
+                                            onClick={() => viewUserHandler(user.userId, navigate)}
                                         >
                                             View
                                         </button>
