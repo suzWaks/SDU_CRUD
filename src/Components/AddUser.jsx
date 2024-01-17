@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import { useNavigate } from 'react-router-dom';
+import fetchDept from "../Services/Department/fetchDept";
+import addUser from "../Services/User/addUser";
+import { fetchSections } from "../Services/Sections/fetchSect";
+import SuccessMessage from "../Modals/Alert";
+import ConfirmationModal from "../Modals/AddDept";
 
 export const AddUser = () => {
     const navigate = useNavigate();
@@ -19,18 +23,14 @@ export const AddUser = () => {
     const [employeeId, setEmployeeId] = useState("");
     const [dob, setDob] = useState("");
     const [image, setImage] = useState(null);
-    
-    //
-    const [isAddConfirmationModalVisible, setAddConfirmationModalVisible] =
-        useState(false);
+
+    const [isAddConfirmationModalVisible, setAddConfirmationModalVisible] = useState(false);
     const [successMessage, setSuccessMessage] = useState("");
     const [modalMessage, setModalMessage] = useState("");
 
     // Show success modal function
     const showSuccessModal = (message) => {
-        console.log("showSuccessModal called: ", message);
         setSuccessMessage(message);
-        // setAddConfirmationModalVisible(true);
         setTimeout(() => {
             navigate('/');
             hideSuccessModal();
@@ -50,23 +50,15 @@ export const AddUser = () => {
         setAddConfirmationModalVisible(true);
     };
 
-    const hideAddConfirmationModal = () => {
-        setAddConfirmationModalVisible(false);
-    };
-
     const validateForm = () => {
         // Check if all required fields are filled in
         return (
             firstName.trim() !== "" &&
-            // middleName.trim() !== "" &&
-            // lastName.trim() !== "" &&
             genderId !== "" &&
             employeeId.trim() !== "" &&
             email.trim() !== "" &&
             cidNo.trim() !== "" &&
             dob.trim() !== "" &&
-            // permanentAddress.trim() !== "" &&
-            // currentAddress.trim() !== "" &&
             departmentId !== "" &&
             sectionId !== "" &&
             mobileNo.trim() !== "" &&
@@ -118,58 +110,38 @@ export const AddUser = () => {
         bodyFormData.append("user", blob);
         bodyFormData.append("profileImageFile", image);
 
-        axios
-            .post(
-                "https://smiling-mark-production.up.railway.app/users",
-                bodyFormData,
-                {
-                    headers: {
-                        "Content-Type": "multipart/form-data",
-                    },
-                }
-            )
+        //Add user
+        addUser(bodyFormData)
             .then((response) => {
-                console.log(response.status);
                 if (response.status === 201) {
-
                     showSuccessModal("User added successfully");
-
                 }
             })
             .catch((error) => {
-                showSuccessModal("Unable to add user, please check your CID/ Emlpoyee ID")
+                showSuccessModal("Unable to add user, please check your CID/ Employee ID");
                 console.error("Error:", error);
             });
     };
 
+    //Fetch departments in the form
     const [department, setDepartment] = useState();
+    fetchDept()
+        .then((response) => {
+            setDepartment(response.data);
+        })
 
-    useEffect(() => {
-        axios
-            .get("https://smiling-mark-production.up.railway.app/departments")
-            .then((response) => {
-                setDepartment(response.data);
-                console.log("department data:", response.data);
-            })
-            .catch((error) => {
-                console.error("Error:", error);
-            });
-    }, []);
+
+    //Fetch sections based on department ID
     const [sections, setSections] = useState([]);
-
     useEffect(() => {
-        axios
-            .get("https://smiling-mark-production.up.railway.app/sections")
-            .then((response) => {
-                // Filter sections based on the selected departmentId
-                const filteredSections = response.data.filter(
-                    (section) => section.department.deptId === parseInt(departmentId)
-                );
+        const fetchData = async () => {
+            try {
+                const filteredSections = await fetchSections(departmentId);
                 setSections(filteredSections);
-            })
-            .catch((error) => {
-                console.error("Error:", error);
-            });
+            } catch (error) {
+            }
+        };
+        fetchData();
     }, [departmentId]);
 
     return (
@@ -209,12 +181,9 @@ export const AddUser = () => {
                                     </label>
                                     <input
                                         onChange={(e) => setMiddleName(e.target.value)}
-                                        type="text"
-                                        name="middleName"
-                                        id="middleName"
+                                        type="text" name="middleName" id="middleName"
                                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                        placeholder="Type middle name"
-                                        required=""
+                                        placeholder="Type middle name" required=""
                                     />
                                 </div>
                                 <div>
@@ -226,12 +195,9 @@ export const AddUser = () => {
                                     </label>
                                     <input
                                         onChange={(e) => setLastName(e.target.value)}
-                                        type="text"
-                                        name="lastName"
-                                        id="lastName"
+                                        type="text" name="lastName" id="lastName"
                                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                        placeholder="Type last name"
-                                        required=""
+                                        placeholder="Type last name" required=""
                                     />
                                 </div>
                             </div>
@@ -494,30 +460,30 @@ export const AddUser = () => {
                                     type="number"
                                     name="mobileNo"
                                     id="mobileNo"
-                                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm 
+                                    rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5
+                                    "
                                     placeholder="77345678"
                                     required
                                 />{" "}
                             </div>
                             <div class="float-end">
                                 <label
-                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                                    class="block mb-2 text-sm font-medium text-gray-90"
                                     for="user_avatar"
                                 >
                                     Upload user picture
                                 </label>
                                 <input
                                     onChange={(e) => setImage(e.target.files[0])}
-                                    class="block w-full text-sm text-blue-500 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-blue-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
-                                    aria-describedby="user_avatar_help"
-                                    id="user_avatar"
-                                    type="file"
+                                    class="block w-full text-sm text-blue-500 border border-gray-300 
+                                    rounded-lg cursor-pointer bg-gray-50"
+                                    aria-describedby="user_avatar_help"id="user_avatar" type="file"
                                 />
                             </div>
                         </div>
 
                         <button
-                            //   onClick={postData}
                             onClick={handleAddUserClick}
                             type="submit"
                             class="inline-flex  items-center px-5 py-2.5 mt-4 sm:mt-6 text-sm font-medium text-center text-white bg-sky-600 rounded-lg focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900  hover:bg-sky-700"
@@ -532,82 +498,19 @@ export const AddUser = () => {
                         </button>
                     </form>
                 </div>
-                {isAddConfirmationModalVisible && (
-                    <div
-                        className="fixed inset-0 z-50 overflow-hidden flex items-center justify-center"
-                        onClick={hideAddConfirmationModal}
-                    >
-                        <div className="absolute inset-0 bg-black opacity-10"></div>
 
-                        <div className="z-50 bg-white p-6 rounded-lg shadow-md">
-                            <div className="flex flex-col items-center justify-center">
-                                <svg
-                                    className="flex-shrink-0 inline w-10 h-10 mx-auto mb-3"
-                                    aria-hidden="true"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    fill="currentColor"
-                                    viewBox="0 0 20 20"
-                                >
-                                    <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
-                                </svg>
-                            </div>
-                            <h3 className="text-lg font-normal mb-4">
-                                {modalMessage}
-                            </h3>
-                            {modalMessage === "Are you sure you want to add the user?" ? (
-                                <>
-                                    <button
-                                        onClick={() => {
-                                            postData();
-                                            hideAddConfirmationModal();
-                                        }}
-                                        className="bg-sky-600 text-white px-4 py-2 rounded-lg mr-5 ml-12 hover:bg-sky-500"
-                                    >
-                                        Yes, I am sure
-                                    </button>
-                                    <button
-                                        onClick={() => {
-                                            hideAddConfirmationModal();
-                                        }}
-                                        className="bg-gray-300 text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-200"
-                                    >
-                                        No, Cancel
-                                    </button>
-                                </>
-                            ) : (
-                                <button
-                                    onClick={() => {
-                                        hideAddConfirmationModal();
-                                    }}
-                                    className="bg-sky-600 text-white px-4 py-2 rounded-lg mr-5 ml-12 hover:bg-sky-500"
-                                >
-                                    Okay
-                                </button>
-                            )}
-                        </div>
-                    </div>
-                )}
-                {successMessage && (
-                    <div
-                        className={`fixed flex-col animate-pulse top-4 right-4 z-50 p-4 text-sm text-${successMessage === "Unable to add user, please check your CID/ Emlpoyee ID" ? 'red' : 'green'}-800 rounded-lg bg-${successMessage === "Unable to add user, please check your CID/ Emlpoyee ID" ? 'red' : 'green'}-300`}
-                        role="alert"
-                    >
-                        <div>
-                            <svg
-                                className="flex-shrink-0 inline w-4 h-4 me-3"
-                                aria-hidden="true"
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="white"
-                                viewBox="0 0 20 20"
-                            >
-                                <path d="M10 ..." />
-                            </svg>
-                            <span className="sr-only">Info</span>
-                            <span className="font-medium">{successMessage === "Unable to add user, please check your CID/ Emlpoyee ID" ? 'Error' : 'Success'}</span> {successMessage}
-                            {/* <span className="font-medium">Success!</span> {successMessage} */}
-                        </div>
-                    </div>
-                )}
+                {/* AddDept modal */}
+                <ConfirmationModal
+                    isVisible={isAddConfirmationModalVisible}
+                    hideModal={() => setAddConfirmationModalVisible(false)}
+                    modalMessage={modalMessage}
+                    onConfirm={() => {
+                        postData();
+                        setAddConfirmationModalVisible(false);
+                    }}
+                />
+
+                <SuccessMessage successMessage={successMessage} />  {/* Alert modal */}
 
             </section>
         </div>
