@@ -4,7 +4,7 @@ import fetchDept from "../Services/Department/fetchDept";
 import addUser from "../Services/User/addUser";
 import { fetchSections } from "../Services/Sections/fetchSect";
 import SuccessMessage from "../Modals/Alert";
-import ConfirmationModal from "../Modals/AddDept";
+import ConfirmationModal from "../Modals/confirmAddUser";
 
 export const AddUser = () => {
     const navigate = useNavigate();

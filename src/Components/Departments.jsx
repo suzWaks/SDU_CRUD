@@ -122,7 +122,7 @@ export const Departments = () => {
                 ))}
             </div>
 
-            {/* Modal for adding a new department */}
+            {/* Form for adding a new department */}
             <DepartmentModal
                 isModalOpen={isModalOpen}
                 setIsModalOpen={setIsModalOpen}
@@ -136,7 +136,7 @@ export const Departments = () => {
                 loading={loading}
             />
 
-            {/* Custom modal for displaying messages*/}
+            {/* Custom modal for displaying success messages after update/ delete*/}
             {modalMessage && (
                 <div className="fixed top-0 right-0 bottom-0 left-0 z-50 flex items-center justify-center bg-stone-800/40">
                     <div class="relative p-4  max-h-full">
