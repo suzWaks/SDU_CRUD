@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import { FaEdit } from "react-icons/fa";
 import fetchDept from "../Services/Department/fetchDept";
 import { handleEditDepartment, editDepartment } from "../Services/Department/editDept";
 import { updateDepartment } from "../Services/Department/updateDept";
-import Spinner from "../Modals/Spinner";
+import viewDeptHandler from '../Services/Department/viewDept'
+import { addDepartment } from "../Services/Department/addDept";
+import DepartmentModal from "../Modals/DeptForm";
 
 export const Departments = () => {
     const [loading, setLoading] = useState(false);
@@ -46,99 +47,26 @@ export const Departments = () => {
         setIsModalOpen(true);
     }
 
-    const handleUpdateDepartment = async (event) => {
-        setLoading(true); // Set loading to true for spinner when starting the update
-        event.preventDefault();
+    const handleUpdateDepartment = updateDepartment(
+        editingDepartmentId,
+        formValues,
+        image,
+        setFormValues,
+        setIsModalOpen,
+        openModal,
+        setLoading
+    );
 
-        try {
-            const success = await updateDepartment(editingDepartmentId, formValues, image, setLoading);
-
-            if (success) {
-                // Clear form values and close the modal
-                setFormValues({
-                    deptName: '',
-                    deptDescription: '',
-                    image: null,
-                });
-                setIsModalOpen(false);
-                setEditingDepartmentId(null);
-
-                // Open the success message modal
-                openModal('Department updated successfully!');
-            }
-        } finally {
-            setLoading(false); // Set loading to false when the update is finished (whether successful or not)
-        }
-    };
 
     //handle add department
-    const handleAddDepartment = (event) => {
-        event.preventDefault();
-        console.log("Adding");
-
-        // Check if an image is selected
-        if (image) {
-            var bodyFormData = new FormData();
-
-            const newDepartmentData = {
-                deptName: formValues.deptName,
-                deptDescription: formValues.deptDescription,
-            };
-
-            const json = JSON.stringify(newDepartmentData);
-            const blob = new Blob([json], {
-                type: 'application/json',
-            });
-
-            bodyFormData.append('department', blob);
-            bodyFormData.append('departmentImage', image);
-
-            axios
-                .post(
-                    'https://smiling-mark-production.up.railway.app/departments',
-                    bodyFormData,
-                    {
-                        headers: {
-                            'Content-Type': 'multipart/form-data',
-                        },
-                    }
-                )
-                .then(() => {
-                    console.log(bodyFormData);
-                    // Clear form values and close the modal
-                    setFormValues({
-                        deptName: "",
-                        deptDescription: "",
-                        image: null,
-                    });
-                    setIsModalOpen(false);
-
-                    // Open the success message modal
-                    openModal("Department added successfully!");
-                })
-                .catch((error) =>
-                    console.error("Error adding department:", error)
-                );
-        } else {
-            // Handle the case where no image is selected
-            console.error("Please select an image");
-        }
-    };
-    const viewDeptHandler = (id) => {
-        // Make an API call to fetch user details based on id
-        axios
-            .get(`https://smiling-mark-production.up.railway.app/departments/${id}`)
-            .then((response) => {
-                const deptDetails = response.data;
-                console.log(deptDetails);
-
-                // Navigate to the /userview page and pass the user details as props
-                navigate("/deptview", { replace: true, state: { deptDetails } });
-            })
-            .catch((error) =>
-                console.error("Error fetching department data:", error)
-            );
-    };
+    const handleAddDepartment = addDepartment(
+        formValues,
+        image,
+        setFormValues,
+        setIsModalOpen,
+        openModal,
+        setLoading  // Pass setLoading function to addDepartment
+    );
 
     return (
         <div className="w-full h-full overflow-auto">
@@ -164,7 +92,7 @@ export const Departments = () => {
                     >
 
                         <img
-                            onClick={() => viewDeptHandler(card.deptId)}
+                            onClick={() => viewDeptHandler(card.deptId, navigate)}
                             alt="department_image"
                             className="rounded-t-lg cursor-pointer"
                             style={{ height: "65%", width: "100%" }}
@@ -175,7 +103,7 @@ export const Departments = () => {
                         <div className="p-5 flex flex-col justify-between">
                             <div className="flex items-center justify-between mb-2">
 
-                                <h5 onClick={() => viewDeptHandler(card.deptId)} className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white cursor-pointer">
+                                <h5 onClick={() => viewDeptHandler(card.deptId, navigate)} className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white cursor-pointer">
                                     {card.deptName}
                                 </h5>
 
@@ -186,7 +114,7 @@ export const Departments = () => {
                                     <FaEdit className="text-sky-500 w-6 h-auto" />
                                 </button>
                             </div>
-                            <p onClick={() => viewDeptHandler(card.deptId)} className="cursor-pointer mb-3 font-normal text-gray-700 dark:text-gray-400 overflow-hidden overflow-ellipsis max-h-[3.6em] line-clamp-2">
+                            <p onClick={() => viewDeptHandler(card.deptId, navigate)} className="cursor-pointer mb-3 font-normal text-gray-700 dark:text-gray-400 overflow-hidden overflow-ellipsis max-h-[3.6em] line-clamp-2">
                                 {card.deptDescription}
                             </p>
                         </div>
@@ -195,137 +123,18 @@ export const Departments = () => {
             </div>
 
             {/* Modal for adding a new department */}
-            {isModalOpen && (
-                <div
-                    id="crud-modal"
-                    role="dialog"
-                    aria-hidden="false"
-                    tabIndex="-1"
-                    className="fixed top-0 right-0 bottom-0 left-0 z-50 flex items-center justify-center max-h-screen max-w-screen bg-stone-800/50"
-                >
-                    <div className="relative p-4 w-full max-w-md max-h-full">
-                        <div className="relative bg-white rounded-lg shadow dark:bg-gray-700 p-1">
-                            <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
-                                <h3 className="text-2xl font-semibold text-gray-900 dark:text-white">
-                                    {editingDepartmentId
-                                        ? "Update department"
-                                        : "Add new department"}
-                                </h3>
-                                <button
-                                    type="button"
-                                    className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
-                                    onClick={() => setIsModalOpen(false)}
-                                >
-                                    <svg
-                                        className="w-3 h-3"
-                                        aria-hidden="true"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        fill="none"
-                                        viewBox="0 0 14 14"
-                                    >
-                                        <path
-                                            stroke="currentColor"
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            strokeWidth="2"
-                                            d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
-                                        />
-                                    </svg>
-                                    <span className="sr-only">Close modal</span>
-                                </button>
-                            </div>
-                            <form onSubmit={editingDepartmentId
-                                ? handleUpdateDepartment
-                                : handleAddDepartment} className="p-4 md:p-5">
-                                <div className="grid gap-4 mb-4 grid-cols-2">
-                                    <div className="col-span-2">
-                                        <label
-                                            htmlFor="name"
-                                            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                                        >
-                                            Name
-                                        </label>
-                                        <input
-                                            type="text"
-                                            name="name"
-                                            id="name"
-                                            defaultValue={formValues.deptName}
-                                            onChange={(e) => setFormValues({ ...formValues, deptName: e.target.value })}
-                                            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                            placeholder="Type department name"
-                                            required
-                                        />
-                                    </div>
-
-                                    <div className="col-span-2">
-                                        <label
-                                            htmlFor="description"
-                                            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                                        >
-                                            Department Description
-                                        </label>
-                                        <textarea
-                                            id="description"
-                                            name="description"
-                                            maxLength="256"
-                                            rows="4"
-                                            defaultValue={formValues.deptDescription}
-                                            onChange={(e) => setFormValues({ ...formValues, deptDescription: e.target.value })}
-                                            className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                            placeholder="Write something about the department"
-                                            required
-                                        ></textarea>
-                                    </div>
-
-                                    <div class="float-end">
-                                        <label
-                                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                                            htmlFor="image"
-                                        >
-                                            Upload user picture
-                                        </label>
-                                        <input
-                                            onChange={(e) => setImage(e.target.files[0])}
-                                            class="block w-full text-sm text-blue-500 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-blue-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
-
-                                            id="image"
-                                            type="file"
-                                            name="image"
-
-                                        />
-                                        <span>{image ? image.name : 'No file selected'}</span>
-                                    </div>
-                                </div>
-
-                                <button
-                                    type="submit"
-                                    className="text-white inline-flex items-center bg-sky-600 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                                >
-                                    {loading && <Spinner />}
-                                    {!loading &&
-                                        <svg
-                                            className="me-1 -ms-1 w-5 h-5"
-                                            fill="currentColor"
-                                            viewBox="0 0 20 20"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                        >
-                                            <path
-                                                fillRule="evenodd"
-                                                d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
-                                                clipRule="evenodd"
-                                            ></path>
-                                        </svg>
-                                    }
-
-                                    {editingDepartmentId
-                                        ? "Update department"
-                                        : "Add new department"}
-                                </button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            )}
+            <DepartmentModal
+                isModalOpen={isModalOpen}
+                setIsModalOpen={setIsModalOpen}
+                editingDepartmentId={editingDepartmentId}
+                handleAddDepartment={handleAddDepartment}
+                handleUpdateDepartment={handleUpdateDepartment}
+                formValues={formValues}
+                setFormValues={setFormValues}
+                setImage={setImage}
+                image={image}
+                loading={loading}
+            />
 
             {/* Custom modal for displaying messages*/}
             {modalMessage && (

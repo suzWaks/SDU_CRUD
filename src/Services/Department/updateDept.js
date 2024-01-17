@@ -1,8 +1,9 @@
 import axios from 'axios';
 import API_URL from '../config';
 
-export const updateDepartment = async (editingDepartmentId, formValues, image) => {
-    try {
+const updateDepartment = (editingDepartmentId, formValues, image, setFormValues, setIsModalOpen, openModal, setLoading) => {
+    return (event) => {
+        event.preventDefault();
         // Check if an image is selected
         if (image) {
             const bodyFormData = new FormData();
@@ -21,20 +22,35 @@ export const updateDepartment = async (editingDepartmentId, formValues, image) =
             bodyFormData.append('department', blob);
             bodyFormData.append('departmentImage', image);
 
-            await axios.put(`${API_URL}/departments`, bodyFormData, {
+            setLoading(true);
+            axios.put(`${API_URL}/departments`, bodyFormData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
-            });
+            }).then(() => {
 
-            return true; // Success
+                // Clear form values and close the modal
+                setFormValues({
+                    deptName: "",
+                    deptDescription: "",
+                    image: null,
+                });
+                setLoading(false);
+                setIsModalOpen(false);
+
+                // Open the success message modal
+                openModal("Department updated successfully!");
+            })
+                .catch((error) => {
+                    setLoading(false);
+                    console.error("Error adding department:", error);
+                }
+                );
         } else {
-            // Handle the case where no image is selected
-            console.error('Please select an image');
-            return false;
+            setLoading(false);
+            console.error("Please select an image");
         }
-    } catch (error) {
-        console.error('Error updating department:', error);
-        return false;
     }
 };
+
+export { updateDepartment }

@@ -4,7 +4,7 @@ import API_URL from '../config';
 const viewUserHandler = (id, navigate) => {
     // Make an API call to fetch user details based on id
     axios
-        .get(`${API_URL}/${id}`)
+        .get(`${API_URL}/users/${id}`)
         .then((response) => {
             const userDetails = response.data;
             console.log(userDetails);
