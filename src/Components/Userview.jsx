@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { updateUser } from "../Services/User/updateUser";
 import fetchDept from "../Services/Department/fetchDept";
-import { fetchSections } from "../Services/Sections/fetchSect";
+import { fetchFilteredSections } from "../Services/Sections/fetchFilSect";
 import { deleteUser } from "../Services/User/deleteUser";
 export const Userview = () => {
 
@@ -114,7 +114,7 @@ export const Userview = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const filteredSections = await fetchSections(departmentId);
+                const filteredSections = await fetchFilteredSections(departmentId);
                 setSections(filteredSections);
             } catch (error) {
             }

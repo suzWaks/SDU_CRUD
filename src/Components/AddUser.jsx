@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
 import fetchDept from "../Services/Department/fetchDept";
 import addUser from "../Services/User/addUser";
-import { fetchSections } from "../Services/Sections/fetchSect";
+import { fetchFilteredSections } from "../Services/Sections/fetchFilSect";
 import SuccessMessage from "../Modals/Alert";
 import ConfirmationModal from "../Modals/confirmAddUser";
 
@@ -136,7 +136,7 @@ export const AddUser = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const filteredSections = await fetchSections(departmentId);
+                const filteredSections = await fetchFilteredSections(departmentId);
                 setSections(filteredSections);
             } catch (error) {
             }

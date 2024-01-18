@@ -2,20 +2,21 @@ import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { FaPlus } from "react-icons/fa";
 import axios from "axios";
+import fetchSect from "../../Services/Sections/fetchSect";
 
 export const Sections = () => {
     const location = useLocation();
     const [sectionData, setSectionData] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
-    //   const [modalMessage, setModalMessage] = useState("");
     const [successMessage, setSuccessMessage] = useState("");
 
     // Show success modal function
     const showSuccessModal = (message) => {
         console.log("showSuccessModal called: ", message);
         setSuccessMessage(message);
-        // setAddConfirmationModalVisible(true);
+       
         setTimeout(() => {
+            // window.location.reload();
             hideSuccessModal();
         }, 3000);
     };
@@ -25,33 +26,23 @@ export const Sections = () => {
         setSuccessMessage("");
     };
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await axios.get(
-                    `https://smiling-mark-production.up.railway.app/sections/departments/${location.state.deptDetails.deptId}`
-                );
-                setSectionData(response.data);
-                console.log(response.data);
-            } catch (error) {
-                console.error("Error fetching data:", error);
-            }
-        };
 
-        fetchData();
-    });
+    //Fetch sections to display in departments page
+    const deptId = location.state.deptDetails.deptId;
+    fetchSect(deptId)
+        .then((response) => {
+            setSectionData(response.data);
+        })
+        .catch((error) => {
+            console.error('Error fetching data:', error);
+        });
+
 
     const handleAddSection = (event) => {
         event.preventDefault();
         try {
             // Fetch data from input fields
             const name = document.getElementById("name").value;
-
-            // Make sure required fields are not empty
-            //   if (!name) {
-            //     window.alert("Please fill in the section name!");
-            //     return;
-            //   }
 
             // Define the data for the new department
             const newSectionData = {
