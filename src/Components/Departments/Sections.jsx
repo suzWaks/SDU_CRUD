@@ -14,7 +14,7 @@ export const Sections = () => {
     const showSuccessModal = (message) => {
         console.log("showSuccessModal called: ", message);
         setSuccessMessage(message);
-       
+
         setTimeout(() => {
             // window.location.reload();
             hideSuccessModal();
@@ -74,6 +74,7 @@ export const Sections = () => {
             console.error("Error adding section:", error);
         }
     };
+
     return (
         <div className="container mx-auto p-4 md:p-8 lg:p-12">
             <hr></hr>

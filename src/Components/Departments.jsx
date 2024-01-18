@@ -110,7 +110,7 @@ export const Departments = () => {
 
                                 <button
                                     onClick={() => handleEditDepartment(card.deptId, cardData, editDepartment, setIsModalOpen,
-                                         setEditingDepartmentId, setFormValues, setImage)}
+                                        setEditingDepartmentId, setFormValues, setImage)}
                                     className="px-1 py-1 text-white rounded-md"
                                 >
                                     <FaEdit className="text-sky-500 w-6 h-auto" />
