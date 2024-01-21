@@ -1,3 +1,3 @@
-const API_URL = 'https://smiling-mark-production.up.railway.app';
+const API_URL = 'https://cheerful-lock-production.up.railway.app';
 
 export default API_URL;

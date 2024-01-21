@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import users from "../../Services/Dashboard/usersFetch";
 import viewUserHandler from "../../Services/Dashboard/userView";
@@ -8,11 +8,16 @@ export const Table = () => {
     const navigate = useNavigate();
     const [searchTerm, setSearchTerm] = useState("");
 
-    users()
-        .then((response) => {
-            setData(response.data);
-        })
-
+    useEffect(() => {
+        // Fetch users using the users function
+        users()
+            .then((response) => {
+                setData(response);
+            })
+            .catch((error) => {
+                console.error('Error fetching users:', error);
+            });
+    }, []);
     return (
         <div class="relative overflow-x-auto shadow-md sm:rounded-lg m-5 p-5">
             <div class="flex items-center justify-between flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4 bg-white">

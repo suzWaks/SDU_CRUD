@@ -382,12 +382,6 @@ export const Userview = () => {
                     {/* Save and Delete buttons */}
                     <div className="flex w-full px-4 pb-4 text-gray-500 bg-white">
                         <div className="ml-auto">
-                            {/* <button
-                type="submit"
-                className="py-2 px-4 mr-4 bg-blue-600 hover:bg-blue-700 focus:ring-blue-500 focus:ring-offset-blue-200 text-white transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 rounded-lg"
-              >
-                Edit
-              </button> */}
                             {isEditing ? (
                                 <div className="flex">
                                     <button
@@ -413,13 +407,6 @@ export const Userview = () => {
                                 </div>
 
                             ) : (
-                                // <button
-                                //   onClick={handleEdit}
-                                //   type="button"
-                                //   className="py-2 px-4 mr-4 bg-blue-600 hover:bg-blue-700 focus:ring-blue-500 focus:ring-offset-blue-200 text-white transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 rounded-lg"
-                                // >
-                                //   Edit
-                                // </button>
                                 <div className="flex w-full px-4 pb-4 text-gray-500 bg-white">
                                     <div className="ml-auto">
                                         <button

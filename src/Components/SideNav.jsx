@@ -1,15 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { FaBars, FaTable, FaUserPlus, FaFolder } from 'react-icons/fa';
+import { FaBars, FaTable, FaUserPlus, FaFolder, FaSignInAlt, FaSignOutAlt } from "react-icons/fa";
 import { useNavigate } from 'react-router-dom';
+import { Cookies } from 'react-cookie';
+
 
 export const SideNav = () => {
     const navigate = useNavigate();
+    const cookies = new Cookies();
 
     const [expanded, setExpanded] = useState(false);
     const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth <= 768);
 
     const DashHandler = () => {
-        navigate('/');
+        navigate('/dashboard');
         setExpanded(!expanded);
     };
 
@@ -21,6 +24,27 @@ export const SideNav = () => {
     const AddUserHandler = () => {
         navigate('/adduser');
         setExpanded(!expanded);
+    };
+
+    const LoginHandler = () => {
+        navigate("/register");
+        setExpanded(!expanded);
+    };
+    const LogoutHandler = () => {
+
+
+        // Clear the token from cookies
+        cookies.remove('authToken', { path: '/' });
+
+        // Display a logout message
+        window.alert('Logout Successful');
+
+        // Navigate to the root page
+        navigate('/');
+        window.location.reload();
+
+
+        return null; // or return a component/render nothing
     };
 
     const handleBarsClick = () => {
@@ -82,6 +106,18 @@ export const SideNav = () => {
                         <div className="flex cursor-pointer items-center py-4 px-10 text-white rounded-lg hover:bg-sky-800 group">
                             <FaUserPlus className="mr-2 w-5 h-5 text-white transition duration-75" />
                             <span className="ms-3  text-lg">Add User</span>
+                        </div>
+                    </li>
+                    <li onClick={LoginHandler} className="flex items-right mb-5">
+                        <div className="flex cursor-pointer items-center py-4 px-10 text-white rounded-lg dark:text-white hover:bg-sky-800 dark:hover:bg-gray-700 group">
+                            <FaSignInAlt className="mr-2 w-5 h-5 text-white transition duration-75 dark:text-gray-400  dark:group-hover:text-white" />
+                            <span className="ms-3  text-lg">Login</span>
+                        </div>
+                    </li>
+                    <li onClick={LogoutHandler} className="flex items-right mb-5">
+                        <div className="flex cursor-pointer items-center py-4 px-10 text-white rounded-lg dark:text-white hover:bg-sky-800 dark:hover:bg-gray-700 group">
+                            <FaSignOutAlt className="mr-2 w-5 h-5 text-white transition duration-75 dark:text-gray-400  dark:group-hover:text-white" />
+                            <span className="ms-3  text-lg">Logout</span>
                         </div>
                     </li>
                 </ul>
