@@ -7,6 +7,8 @@ import { updateDepartment } from "../Services/Department/updateDept";
 import viewDeptHandler from '../Services/Department/viewDept'
 import { addDepartment } from "../Services/Department/addDept";
 import DepartmentModal from "../Modals/DeptForm";
+import API_URL from '../Services/config';
+
 
 export const Departments = () => {
     const [loading, setLoading] = useState(false);
@@ -96,8 +98,7 @@ export const Departments = () => {
                             alt="department_image"
                             className="rounded-t-lg cursor-pointer"
                             style={{ height: "65%", width: "100%" }}
-                            src={`https://smiling-mark-production.up.railway.app/departments/images/${card.deptId}`}
-
+                            src={`${API_URL}/departments/images/${card.deptId}`}
                         />
 
                         <div className="p-5 flex flex-col justify-between">

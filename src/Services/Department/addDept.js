@@ -1,10 +1,14 @@
 import axios from 'axios';
 import API_URL from '../config';
+import { Cookies } from 'react-cookie';
 
 const addDepartment = (formValues, image, setFormValues, setIsModalOpen, openModal, setLoading) => {
     return (event) => {
         event.preventDefault();
         console.log("Adding");
+
+        const cookies = new Cookies();
+        const token = cookies.get('authToken');
 
         // Check if an image is selected
         if (image) {
@@ -22,6 +26,7 @@ const addDepartment = (formValues, image, setFormValues, setIsModalOpen, openMod
 
             bodyFormData.append('department', blob);
             bodyFormData.append('departmentImage', image);
+
             setLoading(true);
             axios
                 .post(
@@ -30,11 +35,11 @@ const addDepartment = (formValues, image, setFormValues, setIsModalOpen, openMod
                     {
                         headers: {
                             'Content-Type': 'multipart/form-data',
+                            Authorization: `Bearer ${token}`,  // Include the token in the headers
                         },
                     }
                 )
                 .then(() => {
-                   
                     // Clear form values and close the modal
                     setFormValues({
                         deptName: "",
@@ -50,9 +55,9 @@ const addDepartment = (formValues, image, setFormValues, setIsModalOpen, openMod
                 .catch((error) => {
                     setLoading(false);
                     console.error("Error adding department:", error);
-                }
-                );
-        } else {setLoading(false);
+                });
+        } else {
+            setLoading(false);
             // Handle the case where no image is selected
             console.error("Please select an image");
         }

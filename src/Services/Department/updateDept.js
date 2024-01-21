@@ -1,9 +1,14 @@
 import axios from 'axios';
 import API_URL from '../config';
+import { Cookies } from 'react-cookie';
 
 const updateDepartment = (editingDepartmentId, formValues, image, setFormValues, setIsModalOpen, openModal, setLoading) => {
     return (event) => {
         event.preventDefault();
+
+        const cookies = new Cookies();
+        const token = cookies.get('authToken');
+
         // Check if an image is selected
         if (image) {
             const bodyFormData = new FormData();
@@ -26,6 +31,7 @@ const updateDepartment = (editingDepartmentId, formValues, image, setFormValues,
             axios.put(`${API_URL}/departments`, bodyFormData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
+                    Authorization: `Bearer ${token}`,  // Include the token in the headers
                 },
             }).then(() => {
 
@@ -43,7 +49,7 @@ const updateDepartment = (editingDepartmentId, formValues, image, setFormValues,
             })
                 .catch((error) => {
                     setLoading(false);
-                    console.error("Error adding department:", error);
+                    console.error("Error updating department:", error);
                 }
                 );
         } else {
