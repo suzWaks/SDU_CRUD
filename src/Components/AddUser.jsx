@@ -32,7 +32,7 @@ export const AddUser = () => {
     const showSuccessModal = (message) => {
         setSuccessMessage(message);
         setTimeout(() => {
-            navigate('/');
+            navigate('/dashboard');
             hideSuccessModal();
         }, 3000);
 

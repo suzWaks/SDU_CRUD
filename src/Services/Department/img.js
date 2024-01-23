@@ -2,7 +2,7 @@ import axios from "axios";
 import API_URL from "../config";
 import { Cookies } from 'react-cookie';
 
-const addUser = (userData) => {
+const fetchDepartmentImage = (deptId) => {
     const cookies = new Cookies();
 
     try {
@@ -13,12 +13,11 @@ const addUser = (userData) => {
         const config = {
             headers: {
                 Authorization: `Bearer ${token}`,
-                "Content-Type": "multipart/form-data",
             },
         };
 
-        // Make the POST request to add a new user with the provided data
-        return axios.post(`${API_URL}/users`, userData, config);
+        // Make the GET request to fetch the department image with the provided department ID
+        return axios.get(`${API_URL}/departments/images/${deptId}`, config);
     } catch (error) {
         console.error('Error getting token from cookies:', error);
         // You may want to handle this error appropriately based on your application's requirements
@@ -26,4 +25,4 @@ const addUser = (userData) => {
     }
 };
 
-export default addUser;
+export default fetchDepartmentImage;

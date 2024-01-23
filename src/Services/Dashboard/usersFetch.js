@@ -17,7 +17,7 @@ const users = async () => {
         };
 
         // Make the request with the token in the headers
-        const response = await axios.get(`${API_URL}/user`, config);
+        const response = await axios.get(`${API_URL}/users`, config);
         console.log("User data", response);
 
         return response.data;

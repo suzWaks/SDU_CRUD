@@ -26,7 +26,7 @@ const Login = () => {
     try {
       console.log("Request Payload:", JSON.stringify({ email, password }));
       const response = await axios.post(
-        "https://cheerful-lock-production.up.railway.app/auth/login",
+        "https://real-coal-production.up.railway.app/auth/login",
         JSON.stringify({ email, password }),
         {
           headers: { "Content-Type": "application/json" },
@@ -75,13 +75,14 @@ const Login = () => {
       </div>
       <div id="loginroot">
         {success ? (
-          <section id="loginSec">
-            <h1>You are logged in!</h1>
-            <br />
-            <p>
-              <a href="/dashboard">Go to Home</a>
+          <section id="loginSec" class="bg-gray-100 flex flex-col items-center justify-center">
+            <h1 class="text-4xl font-bold mb-4">You are logged in!</h1>
+            <p class="mb-8">
+              <a href='/dashboard' class="text-blue-500 hover:text-blue-600">Go to Home</a>
             </p>
           </section>
+
+
         ) : (
           <section id="loginSec">
             <p

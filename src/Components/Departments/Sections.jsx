@@ -3,6 +3,7 @@ import { useLocation } from "react-router-dom";
 import { FaPlus } from "react-icons/fa";
 import axios from "axios";
 import fetchSect from "../../Services/Sections/fetchSect";
+import { Cookies } from 'react-cookie';
 
 export const Sections = () => {
     const location = useLocation();
@@ -29,9 +30,12 @@ export const Sections = () => {
 
     //Fetch sections to display in departments page
     const deptId = location.state.deptDetails.deptId;
+    console.log("Department ID:", deptId)
     fetchSect(deptId)
         .then((response) => {
-            setSectionData(response.data);
+            console.log("data from section: ", response)
+            setSectionData(response);
+            console.log("data after set: ", sectionData)
         })
         .catch((error) => {
             console.error('Error fetching data:', error);
@@ -40,11 +44,15 @@ export const Sections = () => {
 
     const handleAddSection = (event) => {
         event.preventDefault();
+        const cookies = new Cookies();
         try {
+            // Get the token from cookies
+            const token = cookies.get('authToken');
+
             // Fetch data from input fields
             const name = document.getElementById("name").value;
 
-            // Define the data for the new department
+            // Define the data for the new section
             const newSectionData = {
                 sectName: name,
                 department: {
@@ -53,11 +61,19 @@ export const Sections = () => {
             };
             console.log(newSectionData, "Adding data");
 
-            // Make a POST request to add a new department with the provided data
+            // Set the token in the request headers
+            const config = {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            };
+
+            // Make a POST request to add a new section with the provided data
             axios
                 .post(
-                    "https://smiling-mark-production.up.railway.app/sections",
-                    newSectionData
+                    "https://real-coal-production.up.railway.app/sections",
+                    newSectionData,
+                    config
                 )
                 .then(() => {
                     // Close the modal
@@ -91,7 +107,7 @@ export const Sections = () => {
             </div>
 
             <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                {sectionData.map((section) => (
+                {sectionData?.map((section) => (
                     <li className="flex flex-row mb-2 border-gray-400">
                         <div className="transition duration-500 shadow ease-in-out transform hover:-translate-y-1 hover:shadow-lg select-none cursor-pointer bg-sky-600 dark:bg-gray-800 rounded-md flex flex-1 items-center p-4">
                             <h1 className="mb-4 text-xl font-bold capitalize leading-none tracking-tight text-white">

@@ -102,7 +102,7 @@ const Register = () => {
         setSuccess(true);
         try {
             const response = await axios.post(
-                "https://65890c1b324d41715258647c.mockapi.io/api/v1/reactcrud",
+                "https://real-coal-production.up.railway.app/users/auth/register",
                 JSON.stringify({ user, email, pwd }),
                 {
                     headers: { "Content-Type": "application/json" },

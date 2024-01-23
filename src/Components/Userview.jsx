@@ -4,6 +4,9 @@ import { updateUser } from "../Services/User/updateUser";
 import fetchDept from "../Services/Department/fetchDept";
 import { fetchFilteredSections } from "../Services/Sections/fetchFilSect";
 import { deleteUser } from "../Services/User/deleteUser";
+import user from '../usrPlace.jpg'
+import API_URL from "../Services/config";
+
 export const Userview = () => {
 
     const [successMessage, setSuccessMessage] = useState("");
@@ -15,7 +18,7 @@ export const Userview = () => {
         // setAddConfirmationModalVisible(true);
         setTimeout(() => {
             hideSuccessModal();
-            navigate('/');
+            navigate('/dashboard');
         }, 3000);
     };
 
@@ -34,7 +37,7 @@ export const Userview = () => {
         // setAddConfirmationModalVisible(true);
         setTimeout(() => {
             hideDeleteModal();
-            navigate('/');
+            navigate('/dashboard');
         }, 3000);
     };
 
@@ -134,7 +137,7 @@ export const Userview = () => {
                                 <div className="relative block pl-8">
                                     <img
                                         alt="profile"
-                                        src={`https://smiling-mark-production.up.railway.app/profile_images/${userData?.userId}`}
+                                        src={`${API_URL}/profile_images/${userData.userId}`}
                                         className="mx-auto object-cover rounded-full h-16 w-16 z-0 "
                                     />
                                 </div>
@@ -518,7 +521,7 @@ export const Userview = () => {
             }
             {successMessage && (
                 <div
-                    className={`fixed flex-col animate-pulse top-4 right-4 z-50 p-4 text-sm text-${successMessage === "Unable to edit user, please check your CID/ Emlpoyee ID" ? 'red' : 'green'}-800 rounded-lg bg-${successMessage === "Unable to edit user, please check your CID/ Emlpoyee ID" ? 'red' : 'green'}-300`}
+                    className={`fixed flex-col animate-pulse top-4 right-4 z-50 p-4 text-sm text-${successMessage === "Unable to edit user, might have duplicate CID/Employee ID or incorrect inputs" ? 'red' : 'green'}-800 rounded-lg bg-${successMessage === "Unable to edit user, please check your CID/ Emlpoyee ID" ? 'red' : 'green'}-300`}
                     role="alert"
                 >
                     <div>
@@ -532,7 +535,7 @@ export const Userview = () => {
                             <path d="M10 ..." />
                         </svg>
                         <span className="sr-only">Info</span>
-                        <span className="font-medium">{successMessage === "Unable to edit user, please check your CID/ Emlpoyee ID" ? 'Error' : 'Success'}</span> {successMessage}
+                        <span className="font-medium">{successMessage === "Unable to edit user, might have duplicate CID/Employee ID or incorrect inputs" ? 'Error' : 'Success'}</span> {successMessage}
                         {/* <span className="font-medium">Success!</span> {successMessage} */}
                     </div>
                 </div>

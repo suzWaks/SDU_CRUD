@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaEdit } from "react-icons/fa";
 import fetchDept from "../Services/Department/fetchDept";
@@ -21,7 +21,7 @@ export const Departments = () => {
         deptDescription: "",
         image: null,
     });
-    const [image, setImage] = useState(null);
+    const [image, setImage] = useState({});
     const [editingDepartmentId, setEditingDepartmentId] = useState(null);
 
     fetchDept()
@@ -69,6 +69,7 @@ export const Departments = () => {
         openModal,
         setLoading
     );
+
 
     return (
         <div className="w-full h-full overflow-auto">

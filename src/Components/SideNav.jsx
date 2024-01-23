@@ -103,17 +103,19 @@ export const SideNav = () => {
                         </div>
                     </li>
                     <li onClick={AddUserHandler} className="flex items-right mb-5">
-                        <div className="flex cursor-pointer items-center py-4 px-10 text-white rounded-lg hover:bg-sky-800 group">
+                        <div className="flex cursor-pointer items-center py-4 px-10 mb-20 text-white rounded-lg hover:bg-sky-800 group">
                             <FaUserPlus className="mr-2 w-5 h-5 text-white transition duration-75" />
                             <span className="ms-3  text-lg">Add User</span>
                         </div>
                     </li>
-                    <li onClick={LoginHandler} className="flex items-right mb-5">
+
+                    {/* <li onClick={LoginHandler} className="flex items-right mb-5">
                         <div className="flex cursor-pointer items-center py-4 px-10 text-white rounded-lg dark:text-white hover:bg-sky-800 dark:hover:bg-gray-700 group">
                             <FaSignInAlt className="mr-2 w-5 h-5 text-white transition duration-75 dark:text-gray-400  dark:group-hover:text-white" />
                             <span className="ms-3  text-lg">Login</span>
                         </div>
-                    </li>
+                    </li> */}
+                    <hr className='w-[224px]  mb-[30px] mt-[150px]' style={{ display: isSmallScreen && !expanded ? 'none' : 'block' }}></hr>
                     <li onClick={LogoutHandler} className="flex items-right mb-5">
                         <div className="flex cursor-pointer items-center py-4 px-10 text-white rounded-lg dark:text-white hover:bg-sky-800 dark:hover:bg-gray-700 group">
                             <FaSignOutAlt className="mr-2 w-5 h-5 text-white transition duration-75 dark:text-gray-400  dark:group-hover:text-white" />

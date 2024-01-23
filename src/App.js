@@ -7,7 +7,7 @@ import { Departments } from "./Components/Departments";
 import { NotFound } from "./Components/NotFound";
 import { Userview } from "./Components/Userview";
 import { DeptView } from "./Components/Departments/DeptView";
-import Register from "./Components/Register";
+import Register from "./Components/Register/Register";
 import Login from "./Components/Login";
 
 function App() {

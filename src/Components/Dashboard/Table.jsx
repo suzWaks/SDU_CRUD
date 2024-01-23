@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import users from "../../Services/Dashboard/usersFetch";
 import viewUserHandler from "../../Services/Dashboard/userView";
+import API_URL from "../../Services/config";
+import userP from '../../usrPlace.jpg'
 
 export const Table = () => {
     const [data, setData] = useState([]);
@@ -95,7 +97,7 @@ export const Table = () => {
                                     >
                                         <img
                                             class="w-10 h-10 rounded-full"
-                                            src={`https://smiling-mark-production.up.railway.app/profile_images/${user.userId}`}
+                                            src={`${API_URL}/profile_images/${user.userId}`}
                                             alt="User_image"
 
                                         />
